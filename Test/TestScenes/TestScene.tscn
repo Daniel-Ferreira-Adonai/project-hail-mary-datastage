@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ck06lmn0lest7"]
+
+[ext_resource type="Script" uid="uid://cvajufsv6y372" path="res://Test/TestScripts/TestLabel.cs" id="1_dracy"]
+[ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="2_m34pr"]
+[ext_resource type="PackedScene" uid="uid://gxjift2bhc36" path="res://src/Core/Card/Card.tscn" id="3_jxxhp"]
+
+[node name="TestScene" type="Node2D" unique_id=1599094848]
+
+[node name="Label" type="Label" parent="." unique_id=422891216]
+offset_left = 188.0
+offset_top = 97.0
+offset_right = 228.0
+offset_bottom = 120.0
+script = ExtResource("1_dracy")
+
+[node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("2_m34pr")]
+position = Vector2(401, 474)
+
+[node name="Card" parent="CardManager" unique_id=536318436 instance=ExtResource("3_jxxhp")]
+
+[node name="Card2" parent="CardManager" unique_id=1360966225 instance=ExtResource("3_jxxhp")]
+position = Vector2(-173, -345)
+
+[node name="Card3" parent="CardManager" unique_id=301748566 instance=ExtResource("3_jxxhp")]
+position = Vector2(318, -150)

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://gxjift2bhc36"]
+
+[ext_resource type="Texture2D" uid="uid://ewyq8otaowan" path="res://Test/TestImagesSprites/poker-card-poker-playing-card-pixel-art-style-pixelated-icon-png.webp" id="1_x5fvy"]
+[ext_resource type="Script" uid="uid://cf2kgclc80lmy" path="res://src/Core/Card/Card.cs" id="2_5dnpl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sxv2k"]
+size = Vector2(689.6298, 968.1924)
+
+[node name="Card" type="Node2D" unique_id=536318436]
+script = ExtResource("2_5dnpl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=135902449]
+texture_filter = 1
+texture_repeat = 1
+scale = Vector2(0.22295915, 0.20969391)
+texture = ExtResource("1_x5fvy")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2009067737]
+position = Vector2(0, -0.99999994)
+scale = Vector2(0.22295915, 0.20969391)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1276301791]
+shape = SubResource("RectangleShape2D_sxv2k")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
