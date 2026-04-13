@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="StrikeCard" format=3 uid="uid://deuislm71c5v8"]
+
+[ext_resource type="Script" uid="uid://m0buo8r1j0wt" path="res://src/Core/Card/CardsScripts/StrikeCard.cs" id="1_c27ku"]
+
+[resource]
+script = ExtResource("1_c27ku")
+CardName = "Ataque"
+EnergyCost = 1
+Damage = 6
+Description = "Este card ataca o inimigo"
+metadata/_custom_type_script = "uid://m0buo8r1j0wt"

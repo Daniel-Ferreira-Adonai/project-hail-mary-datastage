@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://cvajufsv6y372" path="res://Test/TestScripts/TestLabel.cs" id="1_dracy"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="2_m34pr"]
 [ext_resource type="PackedScene" uid="uid://gxjift2bhc36" path="res://src/Core/Card/Card.tscn" id="3_jxxhp"]
+[ext_resource type="PackedScene" uid="uid://dwyhfk5ns0ms7" path="res://src/Core/Card/Hand.tscn" id="4_jxxhp"]
+[ext_resource type="Script" uid="uid://b77s43wmxq2h1" path="res://Test/TestScripts/Button.cs" id="5_p77mi"]
 
 [node name="TestScene" type="Node2D" unique_id=1599094848]
 
@@ -13,13 +15,19 @@ offset_right = 228.0
 offset_bottom = 120.0
 script = ExtResource("1_dracy")
 
-[node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("2_m34pr")]
-position = Vector2(401, 474)
+[node name="CardManager" parent="." unique_id=855153483 node_paths=PackedStringArray("_handNode") instance=ExtResource("2_m34pr")]
+_cardScene = ExtResource("3_jxxhp")
+_handNode = NodePath("Hand")
 
-[node name="Card" parent="CardManager" unique_id=536318436 instance=ExtResource("3_jxxhp")]
+[node name="Hand" parent="CardManager" unique_id=175438194 instance=ExtResource("4_jxxhp")]
 
-[node name="Card2" parent="CardManager" unique_id=1360966225 instance=ExtResource("3_jxxhp")]
-position = Vector2(-173, -345)
+[node name="Button" type="Button" parent="." unique_id=131207061]
+offset_left = 106.0
+offset_top = 300.0
+offset_right = 364.0
+offset_bottom = 427.0
+text = "DrawCardTestButton
+"
+script = ExtResource("5_p77mi")
 
-[node name="Card3" parent="CardManager" unique_id=301748566 instance=ExtResource("3_jxxhp")]
-position = Vector2(318, -150)
+[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]

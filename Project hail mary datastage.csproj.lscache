@@ -61,9 +61,12 @@ src/Core/Card/
  Card.cs
  CardData.cs
  CardManager.cs
+ CardsScripts/StrikeCard.cs
  Hand.cs
 src/Core/Mouse tracking/MouseInputTracker.cs
-Test/TestScripts/TestLabel.cs
+Test/TestScripts/
+ Button.cs
+ TestLabel.cs
 
 [metadataReferences]
 <NUGET>/

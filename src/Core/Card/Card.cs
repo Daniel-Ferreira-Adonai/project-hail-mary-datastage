@@ -12,7 +12,7 @@ public partial class Card : Node2D
 	
 	public override void _Ready()
 	{
-		GetParent<CardManager>().ConnectCardSignals(this);
+   		 GetParent().GetParent<CardManager>().ConnectCardSignals(this);
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 	}
 
@@ -31,5 +31,8 @@ public partial class Card : Node2D
 	public void Setup(CardData data)
 	{
 		Data = data;
-	}
+		 GetNode<Label>("Nome").Text = data.CardName;
+		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
+		GetNode<Label>("Descricao").Text = data.Description;
+		}
 }
