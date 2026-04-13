@@ -9,4 +9,4 @@ public partial class StrikeCard : CardData
 		// if (target is Enemy enemy)
 		//     enemy.TakeDamage(Damage);
 	}
-}
+  }
