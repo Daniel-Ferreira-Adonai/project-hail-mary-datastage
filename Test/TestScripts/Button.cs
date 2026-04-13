@@ -14,7 +14,7 @@ public partial class Button : Godot.Button
 	}
 	public void _on_button_down()
 	{
-		var node = GetParent().GetNode<CardManager>("CardManager");
-		node.DrawCard();
+		var node = GetParent().GetNode<GameManager>("GameManager").GetNode<CardManager>("CardManager");
+		node.DrawCard(1);
 	}
 }

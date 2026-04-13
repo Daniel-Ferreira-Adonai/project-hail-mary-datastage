@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cso48pa1xu8vm"]
+
+[ext_resource type="Script" uid="uid://3ge5a1uafqn7" path="res://src/Core/GameManager/GameManager.cs" id="1_ijvuh"]
+[ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="2_y1dpi"]
+
+[node name="GameManager" type="Node2D" unique_id=1684369228]
+script = ExtResource("1_ijvuh")
+
+[node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=1953663898]
+position = Vector2(152.00002, 706)
+scale = Vector2(0.26458335, 0.26458335)
+texture = ExtResource("2_y1dpi")
+
+[node name="ValorEnergia" type="Label" parent="MoedaEnergia" unique_id=1445174283]
+offset_left = -52.913414
+offset_top = -105.82684
+offset_right = 70.236275
+offset_bottom = 7.881897
+theme_override_font_sizes/font_size = 80
+text = "1"

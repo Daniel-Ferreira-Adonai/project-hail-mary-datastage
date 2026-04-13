@@ -63,10 +63,20 @@ src/Core/Card/
  CardManager.cs
  CardsScripts/StrikeCard.cs
  Hand.cs
-src/Core/Mouse tracking/MouseInputTracker.cs
-Test/TestScripts/
- Button.cs
- TestLabel.cs
+src/Core/Enemy/
+ Enemy.cs
+ EnemyTurn.cs
+ IntentData.cs
+ IntentScripts/AttackIntent.cs
+src/Core/
+ GameManager/GameManager.cs
+ Mouse tracking/MouseInputTracker.cs
+ Player/Player.cs
+Test/
+ TestScenes/endTurn.cs
+ TestScripts/
+  Button.cs
+  TestLabel.cs
 
 [metadataReferences]
 <NUGET>/

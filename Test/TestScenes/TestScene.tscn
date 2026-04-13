@@ -1,12 +1,29 @@
 [gd_scene format=3 uid="uid://ck06lmn0lest7"]
 
 [ext_resource type="Script" uid="uid://cvajufsv6y372" path="res://Test/TestScripts/TestLabel.cs" id="1_dracy"]
+[ext_resource type="PackedScene" uid="uid://4h0xrpwrcvts" path="res://src/Core/Player/Player.tscn" id="2_kmu3i"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="2_m34pr"]
+[ext_resource type="PackedScene" uid="uid://cso48pa1xu8vm" path="res://src/Core/GameManager/GameManager.tscn" id="2_wb8t6"]
 [ext_resource type="PackedScene" uid="uid://gxjift2bhc36" path="res://src/Core/Card/Card.tscn" id="3_jxxhp"]
 [ext_resource type="PackedScene" uid="uid://dwyhfk5ns0ms7" path="res://src/Core/Card/Hand.tscn" id="4_jxxhp"]
 [ext_resource type="Script" uid="uid://b77s43wmxq2h1" path="res://Test/TestScripts/Button.cs" id="5_p77mi"]
+[ext_resource type="PackedScene" uid="uid://jb2kvmuhw0l2" path="res://src/Core/Enemy/Enemy.tscn" id="6_owj1l"]
+[ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="7_bwyxq"]
+[ext_resource type="Resource" uid="uid://5mtebsyl8ngl" path="res://Data/EnemyTurns/TestEnemyTurns.tres" id="9_8g175"]
 
 [node name="TestScene" type="Node2D" unique_id=1599094848]
+
+[node name="GameManager" parent="." unique_id=1684369228 instance=ExtResource("2_wb8t6")]
+
+[node name="CardManager" parent="GameManager" unique_id=855153483 node_paths=PackedStringArray("_handNode") instance=ExtResource("2_m34pr")]
+_cardScene = ExtResource("3_jxxhp")
+_handNode = NodePath("Hand")
+
+[node name="Hand" parent="GameManager/CardManager" unique_id=175438194 instance=ExtResource("4_jxxhp")]
+
+[node name="Player" parent="GameManager" unique_id=1708444179 instance=ExtResource("2_kmu3i")]
+position = Vector2(610, 394)
+currentHp = 30
 
 [node name="Label" type="Label" parent="." unique_id=422891216]
 offset_left = 188.0
@@ -14,12 +31,6 @@ offset_top = 97.0
 offset_right = 228.0
 offset_bottom = 120.0
 script = ExtResource("1_dracy")
-
-[node name="CardManager" parent="." unique_id=855153483 node_paths=PackedStringArray("_handNode") instance=ExtResource("2_m34pr")]
-_cardScene = ExtResource("3_jxxhp")
-_handNode = NodePath("Hand")
-
-[node name="Hand" parent="CardManager" unique_id=175438194 instance=ExtResource("4_jxxhp")]
 
 [node name="Button" type="Button" parent="." unique_id=131207061]
 offset_left = 106.0
@@ -30,4 +41,24 @@ text = "DrawCardTestButton
 "
 script = ExtResource("5_p77mi")
 
+[node name="Enemy" parent="." unique_id=186659099 groups=["enemies"] instance=ExtResource("6_owj1l")]
+position = Vector2(1432, 385)
+health = 50
+Strength = 6
+enemyTurns = Array[Object]([ExtResource("9_8g175")])
+
+[node name="endTurn" type="Button" parent="." unique_id=1234448758]
+offset_left = 710.0
+offset_top = 69.0
+offset_right = 1135.0
+offset_bottom = 182.0
+text = "END TURN"
+script = ExtResource("7_bwyxq")
+
+[node name="Enemy2" parent="." unique_id=347291746 instance=ExtResource("6_owj1l")]
+position = Vector2(1209, 382)
+Strength = 6
+enemyTurns = Array[Object]([ExtResource("9_8g175")])
+
 [connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
+[connection signal="button_down" from="endTurn" to="endTurn" method="_on_button_down2"]

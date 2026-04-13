@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://jb2kvmuhw0l2"]
+
+[ext_resource type="Script" uid="uid://bfvhik4w2dn1f" path="res://src/Core/Enemy/Enemy.cs" id="1_1qhr4"]
+[ext_resource type="Texture2D" uid="uid://bbpyjwj3iulbj" path="res://icon.svg" id="2_dly40"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d5873"]
+size = Vector2(163, 151)
+
+[node name="Enemy" type="Node2D" unique_id=186659099 node_paths=PackedStringArray("healthLabel")]
+script = ExtResource("1_1qhr4")
+healthLabel = NodePath("health")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1568294413]
+texture = ExtResource("2_dly40")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1208113315 groups=["enemies"]]
+position = Vector2(0, -1)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1747829034]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_d5873")
+
+[node name="health" type="Label" parent="." unique_id=994846822]
+offset_left = -20.0
+offset_top = 65.0
+offset_right = 20.0
+offset_bottom = 88.0
+text = "20"
+horizontal_alignment = 1

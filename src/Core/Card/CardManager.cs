@@ -15,33 +15,33 @@ public partial class CardManager : Node2D
 	[Export] private PackedScene _cardScene;  
 	[Export] private Hand _handNode;  
 
+	[Export] public int cardsDrawedPerTurn = 5;
+
 	private List<CardData> _deck = new List<CardData>();  
 	private List<Card> _handList = new List<Card>();      
 	private List<CardData> _discard = new List<CardData>();  
 	public Dictionary<Card, float> _originalRotations = new Dictionary<Card, float>();
 	public Dictionary<Card, Vector2> _originalPositions = new Dictionary<Card, Vector2>();
 	public Dictionary<Card, Vector2> _originalScales = new Dictionary<Card, Vector2>();
+
+	public GameManager _gameManager;
 	public bool IsArranging { get; set; } = false;
 
 	public override void _Ready()
 	{
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 
-		CardData strike = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
 
-		for (int i = 0; i < 8; i++)
-			_deck.Add(strike);
+		_gameManager = GetParent<GameManager>();
 
-		for (int i = 0; i < 5; i++)
-		{
-			var timer = GetTree().CreateTimer(i * 0.6f);
-			timer.Timeout += DrawCard;
-		}
+		
 	}
 
-	public void DrawCard()
+	public async void DrawCard(int count)
 	{
-		if (_deck.Count == 0) return;
+		for(int i = 0; i < count; i++)
+		{
+			if (_deck.Count == 0) return;
 		if (_handList.Count >= 9) return;
 
 		CardData currentCardData = _deck[0];
@@ -53,6 +53,10 @@ public partial class CardManager : Node2D
 		_handList.Add(card);
 		_handNode.AddCard(card);
 		_originalScales[card] = card.Scale;
+		await ToSignal(GetTree().CreateTimer(0.6f), SceneTreeTimer.SignalName.Timeout);
+		}
+		_handNode.ArrangeFan();
+
 	}
 
 	public void ShuffleDeck()
@@ -66,7 +70,21 @@ public partial class CardManager : Node2D
 			(_deck[i], _deck[j]) = (_deck[j], _deck[i]);
 		}
 	}
+	public void DiscardHand()
+{
+    for (int i = _handList.Count - 1; i >= 0; i--)
+    {
+        Card card = _handList[i];
+        
+        
+        handleCardDeckTurn(card);
+    }
 
+		_handList.Clear();
+		_originalPositions.Clear();
+		_originalRotations.Clear();
+		_originalScales.Clear();
+}
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
@@ -191,13 +209,36 @@ public partial class CardManager : Node2D
 		Vector2 scale = _originalScales[CardBeingDraged];
 		CardBeingDraged.Scale = new Vector2(scale.X, scale.Y);
 		CardBeingDraged.Rotation = 0f;
+		
+		TryToPlayCard(CardBeingDraged);
+
 		CardBeingDraged = null;
 		_originalPositions.Clear();
 		_originalRotations.Clear();
 		IsHoveringOnCard = false;
 		_handNode.ArrangeFan();
 	}
-
+	public void TryToPlayCard(Card card)
+	{
+		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack)
+		{
+			Enemy Enemy = _gameManager.getEnemy(CardBeingDraged);
+			GD.Print(Enemy);
+			if(Enemy is Enemy enemy)
+			{
+				CardBeingDraged.Play(enemy);
+				handleCardDeckTurn(card);
+			} 
+		}
+		
+	}
+	public void handleCardDeckTurn(Card card)
+	{
+			_handList.Remove(card);
+			_handNode.RemoveCard(card);
+			_discard.Add(card.Data);
+			card.QueueFree();
+	}
 	private void DragLogic(double delta)
 	{
 		Vector2 targetPos = _mouse.ScreenPosition.Clamp(Vector2.Zero, ScreenSize);
@@ -221,7 +262,19 @@ public partial class CardManager : Node2D
 
 		_lastCardPosition = CardBeingDraged.GlobalPosition;
 	}
+	public void OrganizeHand()
+	{
+		_handNode.ArrangeFan();
+	}
+	public void StartDeck()
+	{
+		CardData strike = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
 
+		for (int i = 0; i < 30; i++)
+			_deck.Add(strike);
+
+		DrawCard(cardsDrawedPerTurn);
+	}
 	private float GetPositionToMoveUpRelativeToBottom(Card card)
 	{
 		float originalScaleY = _originalScales[card].Y;

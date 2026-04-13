@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://4h0xrpwrcvts"]
+
+[ext_resource type="Script" uid="uid://cd8yq1331mvhx" path="res://src/Core/Player/Player.cs" id="1_honyp"]
+[ext_resource type="Texture2D" uid="uid://bsfvpvy4kwsgd" path="res://src/Core/Player/PlayerAssets/il_570xN.7467067048_bt92.webp" id="1_o5cxo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
+size = Vector2(58, 54)
+
+[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("healthLabel")]
+scale = Vector2(3.830325, 3.5672452)
+script = ExtResource("1_honyp")
+healthLabel = NodePath("PlayerHealth")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
+position = Vector2(0.49999905, -5.500001)
+scale = Vector2(0.10701754, 0.1)
+texture = ExtResource("1_o5cxo")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2040385468]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=678420500]
+position = Vector2(1, -5)
+shape = SubResource("RectangleShape2D_honyp")
+
+[node name="PlayerHealth" type="Label" parent="." unique_id=1078069633]
+offset_left = -10.965127
+offset_top = 20.183641
+offset_right = 29.034874
+offset_bottom = 43.18364
+text = "50"

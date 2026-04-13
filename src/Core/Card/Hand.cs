@@ -37,20 +37,24 @@ public partial class Hand : Node2D
     var tween = card.CreateTween().SetParallel();
     tween.TweenProperty(card, "modulate", new Color(1, 1, 1, 1f), 0.3f);
 
-    ArrangeFan(); // calcula posição final e anima todas as cartas
+    ArrangeFan();
 }
 	public void RemoveCard(Card card)
 	{
 		_cards.Remove(card);
 		ArrangeFan();
 	}
+    public void ClearList()
+    {
+        _cards.Clear();
+    }
 	public void ArrangeFan()
 {
     int count = _cards.Count;
     if (count == 0) return;
    
     var manager = GetParent<CardManager>();
-    manager.IsArranging = true;  // bloqueia hover
+    manager.IsArranging = true;  
 
     Vector2 screenSize = GetViewport().GetVisibleRect().Size;
     float cardWidth = 100f;

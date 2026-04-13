@@ -4,9 +4,9 @@ using System;
 [GlobalClass]
 public partial class StrikeCard : CardData
 {
-	public override void Execute(Node2D target = null)
+	public override void ExecuteEnemy(Enemy target = null)
 	{
-		// if (target is Enemy enemy)
-		//     enemy.TakeDamage(Damage);
+		if (target is Enemy enemy)
+		 	enemy.TakeDamage(Damage);
 	}
   }

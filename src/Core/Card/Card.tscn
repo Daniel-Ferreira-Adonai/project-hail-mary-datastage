@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="8_dedhd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxv2k"]
-size = Vector2(1954.5269, 6639.3867)
+size = Vector2(1954.5269, 6697.0703)
 
 [node name="Card" type="Node2D" unique_id=536318436]
 scale = Vector2(0.22605857, 0.21323428)
@@ -56,17 +56,18 @@ position = Vector2(0, -0.99999994)
 scale = Vector2(0.22295915, 0.20969391)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1276301791]
-position = Vector2(13.201139, 4.7688975)
-scale = Vector2(1.7695905, 0.8939462)
+position = Vector2(13.201139, -21.014225)
+scale = Vector2(1.7695906, 0.8939462)
 shape = SubResource("RectangleShape2D_sxv2k")
 
 [node name="Custo" type="Label" parent="." unique_id=427992970]
-offset_left = -380.43234
-offset_top = -680.0033
-offset_right = -340.43234
-offset_bottom = -657.0033
+offset_left = -376.00873
+offset_top = -680.00323
+offset_right = -336.00873
+offset_bottom = -657.00323
 scale = Vector2(9.714022, 7.3665743)
 text = "1"
+autowrap_mode = 2
 
 [node name="Nome" type="Label" parent="." unique_id=1769307325]
 offset_left = -207.91072
@@ -75,14 +76,20 @@ offset_right = -44.91072
 offset_bottom = -549.1406
 scale = Vector2(2.7640736, 3.8945355)
 text = "Lorde Bumbum mole"
+horizontal_alignment = 1
+autowrap_mode = 2
 
-[node name="Descricao" type="Label" parent="." unique_id=1188534827]
-offset_left = -216.758
-offset_top = 168.82838
-offset_right = -53.757996
-offset_bottom = 191.82838
-scale = Vector2(2.7640736, 3.8945355)
-text = "6 de dano ao atacar"
+[node name="Descricao" type="RichTextLabel" parent="." unique_id=2106512951]
+offset_left = -269.84158
+offset_top = 173.51813
+offset_right = 290.97873
+offset_bottom = 384.55356
+scale = Vector2(1.0017493, 1.0058365)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "Testando Texto
+"
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

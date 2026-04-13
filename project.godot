@@ -31,6 +31,14 @@ window/vsync/vsync_mode=0
 
 project/assembly_name="Project hail mary datastage"
 
+[global_group]
+
+enemies=""
+
+[layer_names]
+
+2d_render/layer_2="Enemy"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

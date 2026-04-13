@@ -11,6 +11,8 @@ public partial class CardData : Resource
     [Export] public string Description { get; set; }
     [Export] public Texture2D Art { get; set; }
 
-        public virtual void Execute(Node2D target = null) { }
+    [Export] public CardType tipoCarta {get; set;}
+
+        public virtual void ExecuteEnemy(Enemy target = null) { }
 
 }
