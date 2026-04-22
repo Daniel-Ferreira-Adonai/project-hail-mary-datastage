@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 
-public partial class GameManager : Node2D
+public partial class CombatManager : Node2D
 {
 	MouseInputTracker _mouse;
 
@@ -23,14 +23,26 @@ public partial class GameManager : Node2D
 		energyLabel = GetNode<Sprite2D>("MoedaEnergia").GetNode<Label>("ValorEnergia");
 		UpdateEnergy(maxEnergy);
 		_cardManager = GetNode<CardManager>("CardManager");
+		if (Player != null)
+		{
+			Player.StatsChanged += OnPlayerStatsChanged;
+		}
+		
 		StartGame();
 	}
+	private void OnPlayerStatsChanged()
+	{
+	_cardManager.UpdateAllCardPreviews(Player, RaycastCheckForEnemy());	
+	}
+	
 	public void EndTurn()
 	{
 		GD.Print("Cheguei aqui");
 		currentEnergy = maxEnergy;
 		_cardManager.DiscardHand();
 		ExecuteEnemyTurns();
+		Player.UpdateTemporaryValues();
+		Player.UpdateLabelValues();
 		StartTurn();
 		
 	}
@@ -43,8 +55,8 @@ public partial class GameManager : Node2D
 	public void StartGame()
 	{
 		_cardManager.StartDeck();
+		
 	}
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
@@ -107,6 +119,58 @@ public partial class GameManager : Node2D
 		}
 		return null;
 	}
+	public Player getPlayer(Card card)
+	{
+		if(!canPlayCard(card)) return null;
+		handleCardPlayed(card);
+
+		return Player;
+	}
+	public Player getPlayer()
+	{
+		return Player;
+	}
+    public static int Calculate(int baseDamage, Player player, Enemy target = null, Card card = null)
+    {
+        float damage = baseDamage;
+        
+        damage += player.Strength;
+		damage += player.TemporaryStrength;
+        
+		if(card != null)
+		{
+			
+		}
+        if (target != null && target.Vulnerable > 0)
+            damage *= 1.5f;
+        
+        if (player.IsWeak)
+            damage *= 0.75f;
+        
+        return Mathf.Max(0, Mathf.FloorToInt(damage));
+    }
+     public static int CalculateEnemieAttack(Enemy enemy)
+    {
+        float damage = enemy.Strength + enemy.BuffedStrength;
+        
+        
+        if (enemy.Weak > 0)
+            damage *= 0.75f;
+        
+        
+        
+        return Mathf.Max(0, Mathf.FloorToInt(damage));
+    }
+    public static int CalculateBlock(int baseBlock, Player player)
+    {
+        float block = baseBlock + player.Dexterity + player.TemporaryDexterity;
+        
+        if (player.IsFrail)
+            block *= 0.75f;
+        
+        return Mathf.Max(0, Mathf.FloorToInt(block));
+    }
+
 	public void UpdateEnergy(int energy)
 	{
 		energyLabel.Text = energy.ToString();

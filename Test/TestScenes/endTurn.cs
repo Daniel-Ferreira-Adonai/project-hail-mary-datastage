@@ -3,16 +3,16 @@ using System;
 
 public partial class endTurn : Button
 {
-	GameManager _gamaManager;
+	CombatManager _combatManager;
 	public override void _Ready()
 	{
-		_gamaManager = GetParent().GetNode<GameManager>("GameManager");
+		_combatManager = GetParent().GetNode<CombatManager>("CardManager");
 	}
 
 	public void _on_button_down2()
 	{
 		GD.Print("tste");
-		_gamaManager.EndTurn();
+		_combatManager.EndTurn();
 	}
 	public override void _Process(double delta)
 	{

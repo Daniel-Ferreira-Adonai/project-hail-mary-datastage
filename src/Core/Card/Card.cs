@@ -12,7 +12,7 @@ public partial class Card : Node2D
 	
 	public override void _Ready()
 	{
-   		 GetParent().GetParent<CardManager>().ConnectCardSignals(this);
+   		//  GetParent().GetParent<CardManager>().ConnectCardSignals(this);
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 	}
 
@@ -28,12 +28,67 @@ public partial class Card : Node2D
 	{
 		EmitSignal(SignalName.CardUnhovered, this);
 	}
-	public void Play(object target)
-	{
-		if(target is Enemy enemy){
-			Data.ExecuteEnemy(enemy);
-		}
-	}
+	public void Play(object enemie, object playerObj)
+{
+    if (playerObj is not Player player)
+        return;
+
+    if (Data.tipoCarta == CardData.CardType.Attack)
+    {
+        if (enemie is Enemy enemy)
+        {
+            Data.Execute(enemy, player);
+        }
+    }
+    else
+    {
+        Data.Execute(player);
+    }
+}
+	public void UpdateDamagePreview(Player player, Enemy target = null)
+{
+    if (Data.tipoCarta != CardData.CardType.Attack) 
+        return;
+
+    int previewDamage = CombatManager.Calculate(Data.Damage, player, target);
+
+    var descricaoLabel = GetNode<RichTextLabel>("Descricao");
+
+    string texto = Data.Description
+        .Replace("$d", previewDamage.ToString());
+
+    descricaoLabel.Text = texto;
+
+    if (previewDamage > Data.Damage)
+        descricaoLabel.AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f)); 
+    else if (previewDamage < Data.Damage)
+        descricaoLabel.AddThemeColorOverride("font_color", new Color(1f, 0.3f, 0.3f)); 
+    else
+        descricaoLabel.RemoveThemeColorOverride("font_color"); 
+}
+    
+    public void UpdateBlockPreview(Player player)
+{
+    if (Data.tipoCarta != CardData.CardType.Skill) 
+        return;
+
+    int previewBlock = CombatManager.CalculateBlock(Data.Block, player);
+
+    var descricaoLabel = GetNode<RichTextLabel>("Descricao");
+
+    string texto = Data.Description
+        .Replace("$b", previewBlock.ToString());
+
+    descricaoLabel.Text = texto;
+
+    if (previewBlock > Data.Block)
+        descricaoLabel.AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f));
+    else if (previewBlock < Data.Block)
+        descricaoLabel.AddThemeColorOverride("font_color", new Color(1f, 0.3f, 0.3f));
+    else
+        descricaoLabel.RemoveThemeColorOverride("font_color");
+}
+
 	public void Setup(CardData data)
 	{
 		Data = data;
@@ -41,4 +96,14 @@ public partial class Card : Node2D
 		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
 		GetNode<RichTextLabel>("Descricao").Text = data.Description;
 		}
+        public void UnloadVisuals()
+    {
+        // GetNode<Sprite2D>("MolduraFotoCard").Texture = null;
+    }
+		public void LoadVisuals()
+        {
+            // // carrega textura só quando entra na mão
+            // if (Data.Art != null)
+            //     GetNode<Sprite2D>("MolduraFotoCard").Texture = Data.Art;
+        }
 }

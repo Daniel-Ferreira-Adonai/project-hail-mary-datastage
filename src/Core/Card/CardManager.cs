@@ -12,52 +12,64 @@ public partial class CardManager : Node2D
 	private Vector2 _lastCardPosition;
 	private float _maxCardRotation = 0.3f;
 	private float _hoverScale = 1.30f;
+	[Export] private float _playThresholdY = 0.6f; 
+
 	[Export] private PackedScene _cardScene;  
 	[Export] private Hand _handNode;  
 
 	[Export] public int cardsDrawedPerTurn = 5;
 
-	private List<CardData> _deck = new List<CardData>();  
+	private List<Card> _deck = new List<Card>();  
 	private List<Card> _handList = new List<Card>();      
-	private List<CardData> _discard = new List<CardData>();  
+	private List<Card> _discard = new List<Card>();  
 	public Dictionary<Card, float> _originalRotations = new Dictionary<Card, float>();
 	public Dictionary<Card, Vector2> _originalPositions = new Dictionary<Card, Vector2>();
 	public Dictionary<Card, Vector2> _originalScales = new Dictionary<Card, Vector2>();
 
-	public GameManager _gameManager;
+	private Dictionary<Card, Tween> _activeTweens = new();
+
+	public CombatManager _combatManager;
 	public bool IsArranging { get; set; } = false;
+	private Card _currentHoveredCard = null;
 
 	public override void _Ready()
 	{
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 
 
-		_gameManager = GetParent<GameManager>();
+		_combatManager = GetParent<CombatManager>();
 
 		
 	}
 
-	public async void DrawCard(int count)
-	{
-		for(int i = 0; i < count; i++)
-		{
-			if (_deck.Count == 0) return;
-		if (_handList.Count >= 9) return;
+public async void DrawCard(int count)
+{
+    if (_deck.Count <= 0)
+        ShuffleDeck();
 
-		CardData currentCardData = _deck[0];
-		_deck.RemoveAt(0);
+    for (int i = 0; i < count; i++)
+    {
+        if (_deck.Count == 0) return;
+        if (_handList.Count >= 9) return;
 
-		Card card = _cardScene.Instantiate<Card>();
-		_handNode.AddChild(card);
-		card.Setup(currentCardData);
-		_handList.Add(card);
-		_handNode.AddCard(card);
-		_originalScales[card] = card.Scale;
-		await ToSignal(GetTree().CreateTimer(0.6f), SceneTreeTimer.SignalName.Timeout);
-		}
-		_handNode.ArrangeFan();
+        Card card = _deck[0];
+        _deck.RemoveAt(0);
 
-	}
+        _handNode.AddChild(card);
+		card.LoadVisuals();
+        _handList.Add(card);
+
+        card.UpdateDamagePreview(_combatManager.Player, _combatManager.RaycastCheckForEnemy());
+        card.UpdateBlockPreview(_combatManager.Player);
+
+        _handNode.AddCard(card);
+        _originalScales[card] = card.Scale;
+
+        await ToSignal(GetTree().CreateTimer(0.6f), SceneTreeTimer.SignalName.Timeout);
+    }
+
+    _handNode.ArrangeFan();
+}
 
 	public void ShuffleDeck()
 	{
@@ -99,73 +111,129 @@ public partial class CardManager : Node2D
 		}
 	}
 
-	public void ConnectCardSignals(Card card)
-	{
-		card.Connect(Card.SignalName.CardHovered, Callable.From<Card>(OnCardHovered));
-		card.Connect(Card.SignalName.CardUnhovered, Callable.From<Card>(OnCardUnhovered));
-	}
+	// public void ConnectCardSignals(Card card)
+	// {
+	// 	card.Connect(Card.SignalName.CardHovered, Callable.From<Card>(OnCardHovered));
+	// 	card.Connect(Card.SignalName.CardUnhovered, Callable.From<Card>(OnCardUnhovered));
+	// }
 
-	private void OnCardHovered(Card card)
-	{
-		if (!IsHoveringOnCard && !IsArranging)
-		{
-			IsHoveringOnCard = true;
-			HighlightCard(card, true);
-		}
-	}
+	// private void OnCardHovered(Card card)
+	// {
+	// 	if (!IsHoveringOnCard && !IsArranging)
+	// 	{
+	// 		IsHoveringOnCard = true;
+	// 		HighlightCard(card, true);
+	// 	}
+	// }
 
-	private void OnCardUnhovered(Card card)
-	{
-		if (CardBeingDraged is null)
-		{
-			HighlightCard(card, false);
-			Card newCard = RaycastCheckForCard();
-			if (newCard != null)
-				HighlightCard(newCard, true);
-			else
-				IsHoveringOnCard = false;
-		}
-	}
+	// private void OnCardUnhovered(Card card)
+	// {
+	// 	if (CardBeingDraged is null)
+	// 	{
+	// 		HighlightCard(card, false);
+	// 		Card newCard = RaycastCheckForCard();
+	// 		if (newCard != null)
+	// 			HighlightCard(newCard, true);
+	// 		else
+	// 			IsHoveringOnCard = false;
+	// 	}
+	// }
 
-	public override void _Process(double delta)
-	{
-		if (CardBeingDraged != null)
-			DragLogic(delta);
-	}
+public override void _Process(double delta)
+{
+    if (CardBeingDraged != null)
+    {
+        DragLogic(delta);
+		Enemy hoveredEnemy = _combatManager.RaycastCheckForEnemy();
+		CardBeingDraged.UpdateDamagePreview(_combatManager.Player, hoveredEnemy);
 
+		
+        return;
+    }
+	
+    Card hovered = RaycastCheckForCard();
+
+    if (_currentHoveredCard != null && (!GodotObject.IsInstanceValid(_currentHoveredCard) || _currentHoveredCard.IsQueuedForDeletion()))
+    {
+        _currentHoveredCard = null;
+    }
+
+    if (hovered != _currentHoveredCard)
+    {
+        if (GodotObject.IsInstanceValid(_currentHoveredCard))
+            HighlightCard(_currentHoveredCard, false);
+
+        _currentHoveredCard = hovered;
+
+        if (GodotObject.IsInstanceValid(_currentHoveredCard))
+            HighlightCard(_currentHoveredCard, true);
+    }
+}
 	private void HighlightCard(Card card, bool hovered)
-	{
-		var tween = CreateTween().SetParallel();
+{
+    if (!GodotObject.IsInstanceValid(card) || card.IsQueuedForDeletion())
+    {
+        _activeTweens.Remove(card);
+        return;
+    }
 
-		if (hovered)
-		{
-			if (!_originalPositions.ContainsKey(card))
-			{
-				_originalPositions[card] = card.Position;
-				_originalRotations[card] = card.RotationDegrees;
-			}
+    if (_activeTweens.TryGetValue(card, out var existing))
+    {
+        if (GodotObject.IsInstanceValid(existing)) 
+        {
+            existing.Kill();
+        }
+        _activeTweens.Remove(card);
+    }
 
-			Vector2 scale = _originalScales[card];
-			float moveUp = GetPositionToMoveUpRelativeToBottom(card);
-			Vector2 originalPos = _originalPositions[card];
+    var shadow = card.GetNodeOrNull<Node2D>("CardShadow");
+    if (shadow == null) return; 
 
-			tween.TweenProperty(card, "position", new Vector2(originalPos.X, originalPos.Y - moveUp), 0.15f);
-			tween.TweenProperty(card, "rotation_degrees", 0f, 0.15f);
-			tween.TweenProperty(card, "scale", new Vector2(scale.X * _hoverScale, scale.Y * _hoverScale), 0.15f);
-			card.ZIndex = 2;
-		}
-		else
-		{
-			if (_originalPositions.ContainsKey(card))
-			{
-				tween.TweenProperty(card, "position", _originalPositions[card], 0.15f);
-				tween.TweenProperty(card, "rotation_degrees", _originalRotations[card], 0.15f);
-			}
-			Vector2 scale = _originalScales[card];
-			tween.TweenProperty(card, "scale", new Vector2(scale.X, scale.Y), 0.15f);
-			card.ZIndex = 1;
-		}
-	}
+    var tween = CreateTween().SetParallel();
+    tween.SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back);
+    _activeTweens[card] = tween;
+
+    if (hovered)
+    {
+        if (!_originalPositions.ContainsKey(card))
+        {
+            _originalPositions[card] = card.Position;
+            _originalRotations[card] = card.RotationDegrees;
+			
+        }
+
+        Vector2 scale = _originalScales[card];
+        float moveUp = GetPositionToMoveUpRelativeToBottom(card);
+        Vector2 originalPos = _originalPositions[card];
+
+        tween.TweenProperty(card, "position", new Vector2(originalPos.X, originalPos.Y - moveUp), 0.2f);
+        tween.TweenProperty(card, "rotation_degrees", 0f, 0.2f);
+        tween.TweenProperty(card, "scale", new Vector2(scale.X * _hoverScale, scale.Y * _hoverScale), 0.2f);
+
+        tween.TweenProperty(shadow, "position", new Vector2(18f, 0f), 0.2f);
+        tween.TweenProperty(shadow, "modulate:a", 0.6f, 0.2f);
+        tween.TweenProperty(shadow, "scale", new Vector2(1.1f, 1.1f), 0.2f);
+
+        card.ZIndex = 2;
+    }
+    else
+    {
+        if (_originalPositions.ContainsKey(card))
+        {
+            tween.TweenProperty(card, "position", _originalPositions[card], 0.15f);
+            tween.TweenProperty(card, "rotation_degrees", _originalRotations[card], 0.15f);
+        }
+
+        Vector2 scale = _originalScales.ContainsKey(card) ? _originalScales[card] : card.Scale;
+        tween.TweenProperty(card, "scale", scale, 0.15f);
+
+        tween.TweenProperty(shadow, "position", new Vector2(5f, -10f), 0.15f);
+        tween.TweenProperty(shadow, "modulate:a", 0.25f, 0.15f);
+        tween.TweenProperty(shadow, "scale", Vector2.One, 0.15f);
+
+        card.ZIndex = 1;
+    }
+}
 
 	public Card RaycastCheckForCard()
 	{
@@ -197,11 +265,20 @@ public partial class CardManager : Node2D
 
 	private void StartDragging(Card card)
 	{
+		KillActiveTween(card);
 		Vector2 scale = _originalScales[card];
 		CardBeingDraged = card;
 		card.Scale = new Vector2(scale.X, scale.Y);
+		GD.Print(card.Scale);
 	}
-
+	public void UpdateAllCardPreviews(Player player, Enemy target)
+{
+    foreach (Card card in _handNode.getHandCards())
+    {
+        card.UpdateDamagePreview(player, target);
+        card.UpdateBlockPreview(player);
+    }
+}
 	private void FinishDrag()
 	{
 		if (CardBeingDraged is null) return;
@@ -213,6 +290,12 @@ public partial class CardManager : Node2D
 		TryToPlayCard(CardBeingDraged);
 
 		CardBeingDraged = null;
+
+		if (_currentHoveredCard != null)
+	{
+		HighlightCard(_currentHoveredCard, false);
+		_currentHoveredCard = null;
+	}
 		_originalPositions.Clear();
 		_originalRotations.Clear();
 		IsHoveringOnCard = false;
@@ -220,24 +303,59 @@ public partial class CardManager : Node2D
 	}
 	public void TryToPlayCard(Card card)
 	{
+		if (!IsInPlayZone() || CardBeingDraged is null)
+		{
+			return;
+		}
 		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack)
 		{
-			Enemy Enemy = _gameManager.getEnemy(CardBeingDraged);
+			Enemy Enemy = _combatManager.getEnemy(CardBeingDraged);
 			GD.Print(Enemy);
 			if(Enemy is Enemy enemy)
 			{
-				CardBeingDraged.Play(enemy);
+				CardBeingDraged.Play(enemy,_combatManager.getPlayer());
 				handleCardDeckTurn(card);
 			} 
+			return;
+		}
+		if(CardBeingDraged.Data.tipoCarta != CardData.CardType.Attack)
+		{
+			Player player = _combatManager.getPlayer(card);
+			if(player is Player Player)
+			{
+				GD.Print("entrei aq");
+			CardBeingDraged.Play(null,Player);
+			handleCardDeckTurn(card);
+			}
+			
 		}
 		
 	}
 	public void handleCardDeckTurn(Card card)
+{
+    if (card == _currentHoveredCard) _currentHoveredCard = null;
+    if (card == CardBeingDraged) CardBeingDraged = null;
+
+    if (_activeTweens.TryGetValue(card, out var tween))
+    {
+        tween.Kill();
+        _activeTweens.Remove(card);
+    }
+
+    _handList.Remove(card);
+	_handNode.RemoveCard(card);
+    _handNode.RemoveChild(card);
+    _discard.Add(card);
+    
+    _originalPositions.Remove(card);
+    _originalRotations.Remove(card);
+    _originalScales.Remove(card);
+
+    card.QueueFree();
+}
+		private bool IsInPlayZone()
 	{
-			_handList.Remove(card);
-			_handNode.RemoveCard(card);
-			_discard.Add(card.Data);
-			card.QueueFree();
+		return _mouse.ScreenPosition.Y < ScreenSize.Y * _playThresholdY;
 	}
 	private void DragLogic(double delta)
 	{
@@ -247,7 +365,7 @@ public partial class CardManager : Node2D
 			targetPos,
 			(float)delta * 15f
 		);
-
+		
 		float desiredRotation = Mathf.Clamp(
 			(CardBeingDraged.GlobalPosition.X - _lastCardPosition.X) * 0.75f,
 			-_maxCardRotation,
@@ -261,20 +379,47 @@ public partial class CardManager : Node2D
 		);
 
 		_lastCardPosition = CardBeingDraged.GlobalPosition;
+
+		
+		var shadow = CardBeingDraged.GetNode<Node2D>("CardShadow");
+
+		Vector2 baseOffset = new Vector2(12f, 0f);
+
+		float rotationFactor = Mathf.Abs(CardBeingDraged.Rotation) / _maxCardRotation;
+		float liftAmount = Mathf.Lerp(0f, 8f, rotationFactor);
+
+		Vector2 targetShadowPos = baseOffset + new Vector2(0f, liftAmount);
+
+		shadow.Position = shadow.Position.Lerp(targetShadowPos, (float)delta * 20f);
+
+		float targetOpacity = Mathf.Lerp(0.35f, 0.55f, rotationFactor);
+		shadow.Modulate = shadow.Modulate.Lerp(
+			new Color(0f, 0f, 0f, targetOpacity),
+			(float)delta * 20f
+		);
 	}
 	public void OrganizeHand()
 	{
 		_handNode.ArrangeFan();
 	}
 	public void StartDeck()
-	{
-		CardData strike = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
+{
+    CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
+    CardData defendData = GD.Load<CardData>("res://Data/Cards/BlockCard.tres");
 
-		for (int i = 0; i < 30; i++)
-			_deck.Add(strike);
+    for (int i = 0; i < 10; i++)
+    {
+        Card strike = _cardScene.Instantiate<Card>();
+        strike.Setup(strikeData);
+        _deck.Add(strike);
 
-		DrawCard(cardsDrawedPerTurn);
-	}
+        Card defend = _cardScene.Instantiate<Card>();
+        defend.Setup(defendData);
+        _deck.Add(defend);
+    }
+
+    DrawCard(cardsDrawedPerTurn);
+}
 	private float GetPositionToMoveUpRelativeToBottom(Card card)
 	{
 		float originalScaleY = _originalScales[card].Y;
@@ -289,4 +434,15 @@ public partial class CardManager : Node2D
 		float moveUp = overflow > 0 ? overflow + 10f : 0f;
 		return moveUp;
 	}
+	private void KillActiveTween(Card card)
+{
+    if (_activeTweens.TryGetValue(card, out var tween))
+    {
+        if (GodotObject.IsInstanceValid(tween))
+        {
+            tween.Kill();
+        }
+        _activeTweens.Remove(card);
+    }
+}
 }

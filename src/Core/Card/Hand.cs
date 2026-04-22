@@ -48,13 +48,19 @@ public partial class Hand : Node2D
     {
         _cards.Clear();
     }
-	public void ArrangeFan()
+    public List<Card> getHandCards()
+    {
+        return _cards;
+    }
+public void ArrangeFan()
 {
     int count = _cards.Count;
     if (count == 0) return;
-   
+
     var manager = GetParent<CardManager>();
-    manager.IsArranging = true;  
+    manager.IsArranging = true;
+    manager._originalPositions.Clear(); 
+    manager._originalRotations.Clear();  
 
     Vector2 screenSize = GetViewport().GetVisibleRect().Size;
     float cardWidth = 100f;
@@ -68,13 +74,17 @@ public partial class Hand : Node2D
     }
 
     float offset = (screenSize.X - allCardsSize) / 2f - Position.X + cardWidth / 2f;
-  if (count == 1)
+
+    if (count == 1)
     {
         _cards[0].Position = new Vector2(offset, _yMin);
         _cards[0].RotationDegrees = 0f;
+        manager._originalPositions[_cards[0]] = new Vector2(offset, _yMin);
+        manager._originalRotations[_cards[0]] = 0f;
         return;
     }
-   Tween lastTween = null;
+
+    Tween lastTween = null;
 
     for (int i = 0; i < count; i++)
     {
@@ -85,6 +95,10 @@ public partial class Hand : Node2D
         float x = offset + cardWidth * i + finalXSep * i;
         float y = _yMin - _yMax * yMultiplier;
         float angle = _maxRotationDegrees * rotMultiplier;
+
+        // Salva a posição FINAL antes do tween rodar
+        manager._originalPositions[_cards[i]] = new Vector2(x, y);
+        manager._originalRotations[_cards[i]] = angle;
 
         var tween = _cards[i].CreateTween().SetParallel();
         tween.TweenProperty(_cards[i], "position", new Vector2(x, y), 0.2f)
@@ -97,8 +111,5 @@ public partial class Hand : Node2D
     }
 
     lastTween.Finished += () => manager.IsArranging = false;
-    manager._originalRotations.Clear();
-    manager._originalPositions.Clear();
-    
 }
 }

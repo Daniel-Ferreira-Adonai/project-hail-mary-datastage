@@ -8,7 +8,11 @@
 script = ExtResource("2_5his8")
 metadata/_custom_type_script = "uid://bccl3286c7bxr"
 
+[sub_resource type="Resource" id="Resource_5his8"]
+script = ExtResource("1_xfqut")
+metadata/_custom_type_script = "uid://3mvxj3fv4f1g"
+
 [resource]
 script = ExtResource("2_cop32")
-Actions = Array[ExtResource("1_xfqut")]([SubResource("Resource_cop32")])
+Actions = Array[ExtResource("1_xfqut")]([SubResource("Resource_cop32"), SubResource("Resource_5his8")])
 metadata/_custom_type_script = "uid://cierbh5kwpggb"

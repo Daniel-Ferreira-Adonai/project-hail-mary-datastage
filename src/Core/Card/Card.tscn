@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cj5r1c10po7bu" path="res://src/Core/Card/CardAssets/FundoCarta.png" id="2_1smdy"]
 [ext_resource type="Script" uid="uid://cf2kgclc80lmy" path="res://src/Core/Card/Card.cs" id="2_5dnpl"]
+[ext_resource type="PackedScene" uid="uid://0ggv3w4mrawt" path="res://src/Core/Card/CardAssets/CardShadow.tscn" id="2_p5als"]
 [ext_resource type="Texture2D" uid="uid://bey8hdox8hdpc" path="res://src/Core/Card/CardAssets/MolduraCard.png" id="2_s4x6c"]
 [ext_resource type="Texture2D" uid="uid://rxds2uax3olp" path="res://src/Core/Card/CardAssets/MolduraFotoCard.png" id="3_33phg"]
 [ext_resource type="Texture2D" uid="uid://dr7ehnna52xoc" path="res://src/Core/Card/CardAssets/FundoTexto.png" id="3_p5als"]
@@ -10,45 +11,51 @@
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="8_dedhd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxv2k"]
-size = Vector2(1954.5269, 6697.0703)
+size = Vector2(1827.5469, 7555.3174)
 
 [node name="Card" type="Node2D" unique_id=536318436]
 scale = Vector2(0.22605857, 0.21323428)
 script = ExtResource("2_5dnpl")
 
+[node name="CardShadow" parent="." unique_id=1760655952 instance=ExtResource("2_p5als")]
+position = Vector2(5, 5)
+scale = Vector2(1.1049827, 1.0775162)
+
 [node name="FundoCarta" type="Sprite2D" parent="." unique_id=1214044650]
-position = Vector2(-17.659958, 62.22937)
-scale = Vector2(0.7140292, 0.81987095)
+position = Vector2(1.9073486e-06, -14.069031)
+scale = Vector2(0.714029, 0.81987095)
 texture = ExtResource("2_1smdy")
 
 [node name="FundoTexto" type="Sprite2D" parent="." unique_id=1892115497]
 position = Vector2(23.546608, 286.2549)
-scale = Vector2(0.9126123, 0.7507025)
+scale = Vector2(0.91261214, 0.7507025)
 texture = ExtResource("3_p5als")
 
 [node name="BordaCard" type="Sprite2D" parent="." unique_id=135902449]
 texture_filter = 1
 texture_repeat = 1
 position = Vector2(0, -7.000001)
-scale = Vector2(1, 0.954)
+scale = Vector2(0.9852859, 0.8238112)
 texture = ExtResource("2_s4x6c")
 
 [node name="MolduraFotoCard" type="Sprite2D" parent="." unique_id=1932032565]
-position = Vector2(29.433258, -180.46506)
-scale = Vector2(0.8358256, 0.85070854)
+position = Vector2(29.433252, -180.46506)
+scale = Vector2(0.8358256, 0.85070866)
 texture = ExtResource("3_33phg")
 
 [node name="FinalCarta" type="Sprite2D" parent="." unique_id=1016256403]
-position = Vector2(13.720258, 342.26132)
-scale = Vector2(0.8866034, 0.8257125)
+position = Vector2(17.694529, 290.76)
+scale = Vector2(0.88660324, 0.82571256)
 texture = ExtResource("4_bf88h")
 
 [node name="TopCard" type="Sprite2D" parent="." unique_id=1356597111]
-position = Vector2(32.99635, -494.24734)
+position = Vector2(32.996346, -494.24734)
+scale = Vector2(0.9999999, 1)
 texture = ExtResource("5_1smdy")
 
 [node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=454289713]
-position = Vector2(-300.2193, -535.1723)
+position = Vector2(-296.06662, -502.10907)
+scale = Vector2(0.9999999, 1)
 texture = ExtResource("8_dedhd")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2009067737]
@@ -56,15 +63,15 @@ position = Vector2(0, -0.99999994)
 scale = Vector2(0.22295915, 0.20969391)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1276301791]
-position = Vector2(13.201139, -21.014225)
+position = Vector2(9.920257, 362.59918)
 scale = Vector2(1.7695906, 0.8939462)
 shape = SubResource("RectangleShape2D_sxv2k")
 
 [node name="Custo" type="Label" parent="." unique_id=427992970]
-offset_left = -376.00873
-offset_top = -680.00323
-offset_right = -336.00873
-offset_bottom = -657.00323
+offset_left = -371.85605
+offset_top = -646.93994
+offset_right = -331.85605
+offset_bottom = -623.93994
 scale = Vector2(9.714022, 7.3665743)
 text = "1"
 autowrap_mode = 2

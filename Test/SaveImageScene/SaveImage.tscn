@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://d08sxhe71c8y6"]
+
+[ext_resource type="PackedScene" uid="uid://0ggv3w4mrawt" path="res://src/Core/Card/CardAssets/CardShadow.tscn" id="1_garpy"]
+[ext_resource type="Script" uid="uid://besj3aivvquyt" path="res://Test/SaveImageScene/SaveImage.cs" id="1_v5x12"]
+
+[node name="SaveImage" type="Node2D" unique_id=2108972672]
+script = ExtResource("1_v5x12")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=725995149]
+offset_left = 237.0
+offset_top = -265.0
+offset_right = 1317.0
+offset_bottom = 1005.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=28246798]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1920, 1300)
+render_target_update_mode = 4
+
+[node name="CardShadow" parent="SubViewportContainer/SubViewport" unique_id=1760655952 instance=ExtResource("1_garpy")]
+position = Vector2(980, 720)

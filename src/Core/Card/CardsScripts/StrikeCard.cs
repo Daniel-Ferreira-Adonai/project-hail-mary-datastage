@@ -4,9 +4,12 @@ using System;
 [GlobalClass]
 public partial class StrikeCard : CardData
 {
-	public override void ExecuteEnemy(Enemy target = null)
+	public override void Execute(object target = null, object aux = null)
 	{
-		if (target is Enemy enemy)
-		 	enemy.TakeDamage(Damage);
+		if (target is Enemy enemy && aux is Player player)
+		{
+        int damage = CombatManager.Calculate(this.Damage, player, enemy);
+        enemy.TakeDamage(damage);
+		}
 	}
   }

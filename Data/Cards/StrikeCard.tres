@@ -7,5 +7,5 @@ script = ExtResource("1_c27ku")
 CardName = "Ataque"
 EnergyCost = 1
 Damage = 6
-Description = "Este card ataca o inimigo"
+Description = "Este card ataca o inimigo com $d"
 metadata/_custom_type_script = "uid://m0buo8r1j0wt"

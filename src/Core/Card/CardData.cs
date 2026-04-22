@@ -13,6 +13,6 @@ public partial class CardData : Resource
 
     [Export] public CardType tipoCarta {get; set;}
 
-        public virtual void ExecuteEnemy(Enemy target = null) { }
+    public virtual void Execute(object target = null, object aux = null) { }
 
 }

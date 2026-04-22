@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BlockCard" format=3 uid="uid://bhw7sjm0edvt8"]
+
+[ext_resource type="Script" uid="uid://dvihb1ucq6jns" path="res://src/Core/Card/CardsScripts/BlockCard.cs" id="1_rqnle"]
+
+[resource]
+script = ExtResource("1_rqnle")
+CardName = "Defesa"
+EnergyCost = 1
+Block = 8
+Description = "$b de defesa pratu cabron"
+tipoCarta = 1
+metadata/_custom_type_script = "uid://dvihb1ucq6jns"

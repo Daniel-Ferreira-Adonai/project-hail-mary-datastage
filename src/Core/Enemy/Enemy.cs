@@ -10,9 +10,15 @@ public partial class Enemy : Node
 	[Export]public Label healthLabel;
 
 	[Export] public int Strength;
+        
+	[Export] public int BuffedStrength;
+	
+	[Export] public int Vulnerable { get; set; } = 0;
+
+	[Export] public int Weak { get; set; } = 0;
+
 
 	[Export] public Array<EnemyTurn> enemyTurns;
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{	
 		AddToGroup("enemies");
@@ -23,7 +29,6 @@ public partial class Enemy : Node
 	{
 		return enemyTurns[0].Actions;
 	}
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
@@ -32,8 +37,14 @@ public partial class Enemy : Node
 		health -= damage;
 		atualizarHp();
 	}
+	public void die()
+	{
+		this.QueueFree();
+	}
 	public void atualizarHp()
 	{
-		healthLabel.Text = health.ToString();
+		healthLabel.Text = health <= 0 ? "0" :health.ToString() ;
+		if(health <= 0 ) 
+		die();
 	}
 }
