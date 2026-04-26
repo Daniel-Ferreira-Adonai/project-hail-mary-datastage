@@ -4,6 +4,7 @@ using System;
 public partial class CardDisplay : SubViewportContainer
 {
     [Export] SubViewport _viewport;
+    [Export] public bool PlayRewardChosenAnimation { get; set; } = true;
     
     [Signal] public delegate void CardChosenEventHandler(CardData cardData);
     
@@ -39,6 +40,7 @@ private void OnMouseExited()
     public void SetCard(CardData cardData)
     {
         _cardData = cardData;
+        _viewport ??= GetNode<SubViewport>("SubViewport");
         var card = _viewport.GetChild<Card>(0);
         card.Position = _viewport.Size2DOverride / 2;
         card.Setup(cardData);
@@ -50,12 +52,21 @@ private void OnMouseExited()
 		mouse.Pressed)
 		{
 			EmitSignal(SignalName.CardChosen, _cardData);
-			PlayChosenAnimation();
+            if (PlayRewardChosenAnimation)
+            {
+			    PlayChosenAnimation();
+            }
 		}
 	}
 
 	private async void PlayChosenAnimation()
 	{
+        var picker = GetParent()?.GetParent()?.GetParentOrNull<PickCardRewards>();
+        if (picker is null)
+        {
+            return;
+        }
+
 		MouseFilter = MouseFilterEnum.Ignore;
 		
 		var tween = CreateTween();
@@ -68,7 +79,6 @@ private void OnMouseExited()
 			.SetEase(Tween.EaseType.In);
 		tween.Parallel().TweenProperty(this, "modulate:a", 0.0f, 0.5f);
 
-		var picker = GetParent().GetParent().GetParent<PickCardRewards>();
 		foreach(var display in picker.GetCardDisplays())
 		{
 			if(display == this) continue;
