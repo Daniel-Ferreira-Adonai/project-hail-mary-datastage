@@ -77,6 +77,11 @@ src/Core/
   IntentData.cs
   IntentScripts/AttackIntent.cs
  GameManager/GameManager.cs
+ Map/
+  Map.cs
+  MapGenerator.cs
+  MapRoom.cs
+  Room.cs
  Mouse tracking/MouseInputTracker.cs
  Player/
   Player.cs
@@ -88,6 +93,9 @@ src/Core/
   PickCardsReward/PickCardRewards.cs
   RewardButton.cs
   RewardCard.cs
+ Shop/
+  Shop.cs
+  ShopDebugOpener.cs
  UI.cs
 Test/
  SaveImageScene/SaveImage.cs
