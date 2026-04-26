@@ -5,33 +5,33 @@ public partial class GameManager : Node
     public static GameManager Instance { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
 
-    [Export] private Node2D _combatScene;
-    [Export] private Node2D _mapScene;
     
-    private CombatManager _combatManager;
+    [Export] private CombatManager _combatManager;
 
     public override void _Ready()
     {
         Instance = this;
-        _combatManager = _combatScene.GetNode<CombatManager>("CombatManager");
         
         // começa no mapa
-        _combatScene.Visible = false;
-        _mapScene.Visible = true;
+        var encounter = GD.Load<EncounterData>("res://Data/Encounters/TesteEncounter.tres");
+        StartCombat(encounter);
     }
 
     public void StartCombat(EncounterData encounter)
     {
         CurrentEncounter = encounter;
-        _mapScene.Visible = false;
-        _combatScene.Visible = true;
+        // _mapScene.Visible = false;
+        _combatManager.Visible = true;
+        _combatManager.ProcessMode = ProcessModeEnum.Inherit;
+        _combatManager.CallDeferred(nameof(CombatManager.InitializeCombat), encounter);
         // _combatManager.ResetCombat(encounter);
     }
 
     public void OnCombatVictory()
     {
-        _combatScene.Visible = false;
-        _mapScene.Visible = true;
+        _combatManager.Visible = false;
+        _combatManager.ProcessMode = ProcessModeEnum.Disabled;
+        // _mapScene.Visible = true;
     }
 }
 

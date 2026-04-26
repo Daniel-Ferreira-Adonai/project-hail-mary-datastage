@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="2_y1dpi"]
 [ext_resource type="Texture2D" uid="uid://brqt2knrqjsel" path="res://Test/TestImagesSprites/fe82e069-fe05-4971-b042-44b4324043e3_scaled.jpg" id="3_ni4mj"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
+[ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="6_418fw"]
 
 [node name="CombatManager" type="Node2D" unique_id=1684369228]
 script = ExtResource("1_4c6rb")
@@ -27,3 +28,14 @@ theme_override_font_sizes/font_size = 80
 text = "1"
 
 [node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]
+
+[node name="endTurn" type="Button" parent="." unique_id=1071846408]
+offset_left = 1305.0
+offset_top = 551.00006
+offset_right = 1730.0
+offset_bottom = 664.00006
+scale = Vector2(0.7035611, 0.698996)
+text = "END TURN"
+script = ExtResource("6_418fw")
+
+[connection signal="button_down" from="endTurn" to="endTurn" method="_on_button_down2"]

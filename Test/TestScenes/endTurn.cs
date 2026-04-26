@@ -6,7 +6,7 @@ public partial class endTurn : Button
 	CombatManager _combatManager;
 	public override void _Ready()
 	{
-		_combatManager = GetParent().GetNode<CombatManager>("CombatManager");
+		_combatManager = GetParent<CombatManager>();
 	}
 
 	public void _on_button_down2()

@@ -39,8 +39,7 @@ public partial class CombatManager : Node2D
     if (Player != null)
         Player.StatsChanged += OnPlayerStatsChanged;
     SetupPlayerPosition();
-    var encounter = GD.Load<EncounterData>("res://Data/Encounters/TesteEncounter.tres");
-    InitializeCombat(encounter);
+    
 }
 	private void OnPlayerStatsChanged()
 	{
