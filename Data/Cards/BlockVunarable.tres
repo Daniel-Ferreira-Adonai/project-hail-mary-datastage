@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BlockVunarable" format=3 uid="uid://deoqxjx4q5n4k"]
+
+[ext_resource type="Script" uid="uid://cet23vfc447n" path="res://src/Core/Card/CardsScripts/BlockVunarable.cs" id="1_s6q7o"]
+
+[resource]
+script = ExtResource("1_s6q7o")
+CardName = "Defesa Assustadora"
+EnergyCost = 1
+Block = 6
+Description = "Você assusta seu inimigo com um grito assustador"
+metadata/_custom_type_script = "uid://cet23vfc447n"

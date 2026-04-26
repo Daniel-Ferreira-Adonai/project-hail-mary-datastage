@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 public partial class Player : Node2D
@@ -10,9 +11,12 @@ public partial class Player : Node2D
 
 	[Export] public int BlockValue;
 
+	public int Gold {get ; private set;}
 	[Export] Label healthLabel;
 
 	[Export] Label BlockLabel;
+	private List<CardData> _BaseDeck = new List<CardData>();  
+
 
  	[Signal]
     public delegate void StatsChangedEventHandler();
@@ -65,12 +69,13 @@ public partial class Player : Node2D
 
 	public override void _Ready()
 	{
+		setupBasicDeck();
+		PlayerManager.Instance.Player = this;
 		UpdateLabelValues();
 	}
 
 	public override void _Process(double delta)
 	{
-		
 	}
 	public void CalculateDamageTaken(int enemyDamage)
 	{	
@@ -96,5 +101,32 @@ public partial class Player : Node2D
 		_TemporaryDexterity = 0;
 		BlockValue = 0;
 
+	}
+	  public void ReceiveGold(int amount)
+    {
+        Gold += amount;
+    }
+	  public bool SpendGold(int amount)
+    {
+        if(Gold < amount) return false;
+        Gold -= amount;
+        return true;
+    }
+	public List<CardData> GetDeck() => _BaseDeck;
+	public void AddCardToDeck(CardData cardData)
+	{
+		_BaseDeck.Add(cardData);
+	}
+	public void setupBasicDeck()
+	{
+		CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
+        CardData defendData = GD.Load<CardData>("res://Data/Cards/BlockCard.tres");
+        CardData blockVunarable = GD.Load<CardData>("res://Data/Cards/BlockVunarable.tres");
+		for(int i = 0; i < 5; i++)
+		{
+			AddCardToDeck(strikeData);
+			AddCardToDeck(defendData);
+			AddCardToDeck(blockVunarable);
+		}
 	}
 }

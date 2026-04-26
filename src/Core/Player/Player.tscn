@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://4h0xrpwrcvts"]
 
 [ext_resource type="Script" uid="uid://cd8yq1331mvhx" path="res://src/Core/Player/Player.cs" id="1_honyp"]
-[ext_resource type="Texture2D" uid="uid://bsfvpvy4kwsgd" path="res://src/Core/Player/PlayerAssets/il_570xN.7467067048_bt92.webp" id="1_o5cxo"]
+[ext_resource type="Texture2D" uid="uid://dqa1wkqawqq3d" path="res://Test/TestImagesSprites/Untitled design (2).png" id="2_honyp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
 size = Vector2(58, 54)
@@ -13,9 +13,9 @@ healthLabel = NodePath("PlayerHealth")
 BlockLabel = NodePath("BlockLabel")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
-position = Vector2(0.49999905, -5.500001)
-scale = Vector2(0.10701754, 0.1)
-texture = ExtResource("1_o5cxo")
+position = Vector2(0.7832234, -5.886896)
+scale = Vector2(0.07183459, 0.071792886)
+texture = ExtResource("2_honyp")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2040385468]
 collision_layer = 4

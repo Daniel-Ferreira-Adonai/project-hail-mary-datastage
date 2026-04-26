@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b8h3yi4y8k457"]
+
+[ext_resource type="Script" uid="uid://cr1qcdwrfv10i" path="res://src/Core/UI.cs" id="1_f5ktt"]
+
+[node name="UI" type="CanvasLayer" unique_id=2146334214]
+layer = 10
+follow_viewport_enabled = true
+script = ExtResource("1_f5ktt")

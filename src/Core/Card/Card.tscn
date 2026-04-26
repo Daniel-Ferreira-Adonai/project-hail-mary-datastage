@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="8_dedhd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxv2k"]
-size = Vector2(1827.5469, 7555.3174)
+size = Vector2(1827.5469, 6679.701)
 
 [node name="Card" type="Node2D" unique_id=536318436]
 scale = Vector2(0.22605857, 0.21323428)
@@ -63,7 +63,7 @@ position = Vector2(0, -0.99999994)
 scale = Vector2(0.22295915, 0.20969391)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1276301791]
-position = Vector2(9.920257, 362.59918)
+position = Vector2(9.920257, -28.777695)
 scale = Vector2(1.7695906, 0.8939462)
 shape = SubResource("RectangleShape2D_sxv2k")
 

@@ -1,10 +1,17 @@
 [gd_scene format=3 uid="uid://cso48pa1xu8vm"]
 
 [ext_resource type="Script" uid="uid://dusp2hbsrm3jl" path="res://src/Core/CombatManager/CombatManager.cs" id="1_4c6rb"]
+[ext_resource type="PackedScene" uid="uid://ddgr4rnfn0peg" path="res://src/Core/Reward/RewardCard.tscn" id="2_ovfdv"]
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="2_y1dpi"]
+[ext_resource type="Texture2D" uid="uid://brqt2knrqjsel" path="res://Test/TestImagesSprites/fe82e069-fe05-4971-b042-44b4324043e3_scaled.jpg" id="3_ni4mj"]
+[ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
 
 [node name="CombatManager" type="Node2D" unique_id=1684369228]
 script = ExtResource("1_4c6rb")
+_rewardCardScene = ExtResource("2_ovfdv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=637661068]
+texture = ExtResource("3_ni4mj")
 
 [node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=1953663898]
 position = Vector2(152.00002, 706)
@@ -18,3 +25,5 @@ offset_right = 70.236275
 offset_bottom = 7.881897
 theme_override_font_sizes/font_size = 80
 text = "1"
+
+[node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]

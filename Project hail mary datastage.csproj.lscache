@@ -61,20 +61,34 @@ src/Core/Card/
  CardManager.cs
  CardsScripts/
   BlockCard.cs
+  BlockVunarable.cs
   StrikeCard.cs
  Hand.cs
 src/Core/
- CombatManager/CombatManager.cs
+ CardDisplay.cs
+ CombatManager/
+  CombatManager.cs
+  EncounterData.cs
  Enemy/
   Enemy.cs
+  EnemyData.cs
+  EnemyScaler.cs
   EnemyTurn.cs
   IntentData.cs
   IntentScripts/AttackIntent.cs
+ GameManager/GameManager.cs
  Mouse tracking/MouseInputTracker.cs
- Player/Player.cs
+ Player/
+  Player.cs
+  PlayerManager.cs
  Relic/
   RelicData.cs
   RelicScripts/SabedoriaDeBrigaRelic.cs
+ Reward/
+  PickCardsReward/PickCardRewards.cs
+  RewardButton.cs
+  RewardCard.cs
+ UI.cs
 Test/
  SaveImageScene/SaveImage.cs
  TestScenes/endTurn.cs

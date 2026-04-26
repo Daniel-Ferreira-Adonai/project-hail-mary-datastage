@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 MouseTracker="*uid://dwwhnkoqv51b4"
+UI="*uid://cr1qcdwrfv10i"
+PlayerManager="*uid://dasvrt836gvrb"
 
 [display]
 
@@ -34,6 +36,10 @@ project/assembly_name="Project hail mary datastage"
 [global_group]
 
 enemies=""
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
 
 [layer_names]
 

@@ -65,7 +65,7 @@ public async void DrawCard(int count)
         _handNode.AddCard(card);
         _originalScales[card] = card.Scale;
 
-        await ToSignal(GetTree().CreateTimer(0.6f), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
     }
 
     _handNode.ArrangeFan();
@@ -313,6 +313,7 @@ public override void _Process(double delta)
 			GD.Print(Enemy);
 			if(Enemy is Enemy enemy)
 			{
+				GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
 				CardBeingDraged.Play(enemy,_combatManager.getPlayer());
 				handleCardDeckTurn(card);
 			} 
@@ -404,18 +405,16 @@ public override void _Process(double delta)
 	}
 	public void StartDeck()
 {
-    CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
-    CardData defendData = GD.Load<CardData>("res://Data/Cards/BlockCard.tres");
+	 GD.Print($"Instance null? {PlayerManager.Instance == null}");
+    GD.Print($"Player null? {PlayerManager.Instance?.Player == null}");
+    GD.Print($"Deck null? {PlayerManager.Instance?.Player?.GetDeck() == null}");
+	var playerDeck = PlayerManager.Instance.Player.GetDeck();
 
-    for (int i = 0; i < 10; i++)
+     foreach(var cardData in playerDeck)
     {
-        Card strike = _cardScene.Instantiate<Card>();
-        strike.Setup(strikeData);
-        _deck.Add(strike);
-
-        Card defend = _cardScene.Instantiate<Card>();
-        defend.Setup(defendData);
-        _deck.Add(defend);
+        Card card = _cardScene.Instantiate<Card>();
+        card.Setup(cardData);
+        _deck.Add(card);
     }
 
     DrawCard(cardsDrawedPerTurn);
