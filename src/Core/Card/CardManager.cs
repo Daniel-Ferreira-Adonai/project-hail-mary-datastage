@@ -56,7 +56,8 @@ public async void DrawCard(int count)
         _deck.RemoveAt(0);
 
         _handNode.AddChild(card);
-		card.LoadVisuals();
+        card.Setup(card.Data); // <- agora está na árvore
+        card.LoadVisuals();
         _handList.Add(card);
 
         card.UpdateDamagePreview(_combatManager.Player, _combatManager.RaycastCheckForEnemy());
@@ -352,7 +353,6 @@ public override void _Process(double delta)
     _originalRotations.Remove(card);
     _originalScales.Remove(card);
 
-    card.QueueFree();
 }
 		private bool IsInPlayZone()
 	{
@@ -403,17 +403,14 @@ public override void _Process(double delta)
 	{
 		_handNode.ArrangeFan();
 	}
-	public void StartDeck()
+public void StartDeck()
 {
-	 GD.Print($"Instance null? {PlayerManager.Instance == null}");
-    GD.Print($"Player null? {PlayerManager.Instance?.Player == null}");
-    GD.Print($"Deck null? {PlayerManager.Instance?.Player?.GetDeck() == null}");
-	var playerDeck = PlayerManager.Instance.Player.GetDeck();
+    var playerDeck = PlayerManager.Instance.Player.GetDeck();
 
-     foreach(var cardData in playerDeck)
+    foreach (var cardData in playerDeck)
     {
         Card card = _cardScene.Instantiate<Card>();
-        card.Setup(cardData);
+        card.Data = cardData; 
         _deck.Add(card);
     }
 
@@ -443,5 +440,23 @@ public override void _Process(double delta)
         }
         _activeTweens.Remove(card);
     }
+}
+public void ResetDeck()
+{
+    foreach (var card in _handNode.getHandCards())
+        if (GodotObject.IsInstanceValid(card))
+            card.QueueFree();
+
+    _handNode.ClearList();
+
+    _deck.Clear();
+    _discard.Clear();
+    _handList.Clear();
+    _originalPositions.Clear();
+    _originalRotations.Clear();
+    _originalScales.Clear();
+    _activeTweens.Clear();
+    _currentHoveredCard = null;
+    CardBeingDraged = null;
 }
 }

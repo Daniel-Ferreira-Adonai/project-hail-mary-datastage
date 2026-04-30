@@ -5,7 +5,7 @@ public partial class Card : Node2D
 {
 	private MouseInputTracker _mouse;
 
-	public CardData Data {get; private set;}
+	public CardData Data {get;  set;}
 	
 	[Signal] public delegate void CardHoveredEventHandler(Card card);
 	[Signal] public delegate void CardUnhoveredEventHandler(Card card);
@@ -92,7 +92,7 @@ public partial class Card : Node2D
 	public void Setup(CardData data)
 	{
 		Data = data;
-		 GetNode<Label>("Nome").Text = data.CardName;
+		GetNode<Label>("Nome").Text = data.CardName;
 		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
 		GetNode<RichTextLabel>("Descricao").Text = data.Description;
 		}

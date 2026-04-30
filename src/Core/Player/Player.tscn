@@ -9,6 +9,8 @@ size = Vector2(58, 54)
 [node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("healthLabel", "BlockLabel")]
 scale = Vector2(3.830325, 3.5672452)
 script = ExtResource("1_honyp")
+MaxHp = 50
+currentHp = 50
 healthLabel = NodePath("PlayerHealth")
 BlockLabel = NodePath("BlockLabel")
 

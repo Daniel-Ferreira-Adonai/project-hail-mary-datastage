@@ -92,12 +92,17 @@ public partial class CombatManager : Node2D
 	}
 	public void InitializeCombat(EncounterData encounter)  
     {
+        _activeEnemies.Clear();
+        _cardManager.SetProcessInput(true);
+        currentEnergy = maxEnergy;
+        UpdateEnergy(currentEnergy);
         _currentEncounterData = encounter;
         SpawnEnemies(encounter);
         StartGame();
     }
 	public void StartGame()
 	{
+        _cardManager.ResetDeck();
 		_cardManager.StartDeck();
 		
 	}

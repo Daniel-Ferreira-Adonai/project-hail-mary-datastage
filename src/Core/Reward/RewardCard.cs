@@ -49,6 +49,7 @@ public partial class RewardCard : PanelContainer
 		
 		if(rewardButtons.Count == 0)
 		{
+			GameManager.Instance.ShowMap();
 			QueueFree();
 		}
 	}
