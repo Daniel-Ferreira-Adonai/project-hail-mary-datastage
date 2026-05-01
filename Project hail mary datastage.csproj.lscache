@@ -55,6 +55,7 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 .godot/mono/temp/obj/Debug/
  .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
  Project hail mary datastage.AssemblyInfo.cs
+Data/Relics/RelicBar.cs
 src/Core/Card/
  Card.cs
  CardData.cs
@@ -88,7 +89,10 @@ src/Core/
   PlayerManager.cs
  Relic/
   RelicData.cs
-  RelicScripts/SabedoriaDeBrigaRelic.cs
+  RelicScripts/
+   BulletproofVestRelic.cs
+   SabedoriaDeBrigaRelic.cs
+   XabuzadoRelic.cs
  Reward/
   PickCardsReward/PickCardRewards.cs
   RewardButton.cs
@@ -97,6 +101,9 @@ src/Core/
   Shop.cs
   ShopDebugOpener.cs
  UI.cs
+ UI/
+  TopBar.cs
+  TopHud.cs
 Test/
  SaveImageScene/SaveImage.cs
  TestScenes/endTurn.cs

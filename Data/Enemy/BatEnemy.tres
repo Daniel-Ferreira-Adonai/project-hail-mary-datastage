@@ -8,5 +8,6 @@
 script = ExtResource("1_7uoef")
 Sprite = ExtResource("1_74ikc")
 MaxHealth = 10
+Strength = 10
 TurnPatterns = Array[Object]([ExtResource("2_eowqw")])
 metadata/_custom_type_script = "uid://b2o7r58snev8f"

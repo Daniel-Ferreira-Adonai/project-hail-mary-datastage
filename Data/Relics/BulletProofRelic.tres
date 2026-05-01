@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BulletproofVestRelic" format=3 uid="uid://r6n8r3cyx36n"]
+
+[ext_resource type="Texture2D" uid="uid://b1nj6u7dxl3mh" path="res://Test/TestImagesSprites/art/tile_0085.png" id="1_5aypa"]
+[ext_resource type="Script" uid="uid://dmrbprlfs6o0s" path="res://src/Core/Relic/RelicScripts/BulletproofVestRelic.cs" id="1_wsv4g"]
+
+[resource]
+script = ExtResource("1_wsv4g")
+RelicName = "A prova de balas"
+Icon = ExtResource("1_5aypa")
+metadata/_custom_type_script = "uid://dmrbprlfs6o0s"

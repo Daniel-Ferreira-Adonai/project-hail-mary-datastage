@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 
@@ -24,8 +25,17 @@ public partial class Enemy : Node2D
     public int MaxHealth { get; private set; }
     public int Strength { get; set; }
     public int BuffedStrength { get; set; }
-    public int Vulnerable { get; set; } = 0;
-    public int Weak { get; set; } = 0;
+    public int Vulnerable
+    {
+        get => Debuffs.ContainsKey("Vulnerable") ? Debuffs["Vulnerable"] : 0;
+        set => Debuffs["Vulnerable"] = value;
+    }
+
+    public int Weak
+    {
+        get => Debuffs.ContainsKey("Weak") ? Debuffs["Weak"] : 0;
+        set => Debuffs["Weak"] = value;
+    }
     
     private Label _healthLabel;
     private Sprite2D _sprite;
@@ -33,6 +43,9 @@ public partial class Enemy : Node2D
     private CollisionShape2D _collision;
     private Array<EnemyTurn> _turnPatterns;
     private int _currentTurnIndex = 0;
+    public System.Collections.Generic.Dictionary<string, int> Debuffs { get; set; } = new();
+    public bool NextDebuffDoubled { get; set; } = false;
+
     
     [Signal]
     public delegate void DiedEventHandler(Enemy enemy);
@@ -137,7 +150,8 @@ public partial class Enemy : Node2D
     private void Die()
     {
         GD.Print($"{Name} morreu!");
-        
+        RemoveFromGroup("enemies"); 
+
         EmitSignal(SignalName.Died, this);
         
         var tween = CreateTween();
@@ -145,7 +159,18 @@ public partial class Enemy : Node2D
         tween.TweenProperty(this, "scale", Vector2.Zero, 0.5f).SetTrans(Tween.TransitionType.Back);
         tween.TweenCallback(Callable.From(QueueFree));
     }
-    
+        public void ApplyDebuff(string debuff, int value)
+    {
+        if (!Debuffs.ContainsKey(debuff))
+            Debuffs[debuff] = 0;
+
+        int finalValue = NextDebuffDoubled ? value * 2 : value;
+        NextDebuffDoubled = false;
+        Debuffs[debuff] += finalValue;
+
+        var combatManager = GetTree().GetFirstNodeInGroup("combat_manager") as CombatManager;
+        combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff));
+    }
     private void UpdateHealthLabel()
     {
         if (_healthLabel != null)
@@ -154,11 +179,18 @@ public partial class Enemy : Node2D
         }
     }
     
-    public void UpdateTemporaryEffects()
+        public void UpdateTemporaryEffects()
     {
-        if (Vulnerable > 0) Vulnerable--;
-        if (Weak > 0) Weak--;
-        
+        var keys = new List<string>(Debuffs.Keys);
+        foreach (var key in keys)
+        {
+            if (Debuffs[key] > 0)
+                Debuffs[key]--;
+            if (Debuffs[key] <= 0)
+                Debuffs.Remove(key);
+        }
+
         BuffedStrength = 0;
     }
+
 }

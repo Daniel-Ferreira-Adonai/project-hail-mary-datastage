@@ -99,6 +99,7 @@ public void ArrangeFan()
         // Salva a posição FINAL antes do tween rodar
         manager._originalPositions[_cards[i]] = new Vector2(x, y);
         manager._originalRotations[_cards[i]] = angle;
+        _cards[i].ZIndex = i; // <- adicione aqui
 
         var tween = _cards[i].CreateTween().SetParallel();
         tween.TweenProperty(_cards[i], "position", new Vector2(x, y), 0.2f)

@@ -75,7 +75,11 @@ public partial class CombatManager : Node2D
 		GD.Print("Cheguei aqui");
 		currentEnergy = maxEnergy;
 		_cardManager.DiscardHand();
+        
+        Player.TriggerRelics(r => r.OnTurnEnd(Player)); 
+
 		ExecuteEnemyTurns();
+        updateEnemyDebuffs();
 		Player.UpdateTemporaryValues();
 		Player.UpdateLabelValues();
 		if (!IsCombatOver())
@@ -84,9 +88,19 @@ public partial class CombatManager : Node2D
         }
 		
 	}
+    public void updateEnemyDebuffs()
+    {
+        var enemies = GetTree().GetNodesInGroup("enemies");
+        foreach (var node in enemies)
+            if (node is Enemy enemy)
+                enemy.UpdateTemporaryEffects();
+    }
 	public void StartTurn()
 	{
-		_cardManager.DrawCard(_cardManager.cardsDrawedPerTurn);
+        Player.TriggerRelics(r => r.OnTurnStart(Player)); 
+        int cardsToDraw = _cardManager.cardsDrawedPerTurn + Player.BonusCardsToDraw;
+        Player.BonusCardsToDraw = 0;
+		_cardManager.DrawCard(cardsToDraw);
 		UpdateEnergy(currentEnergy);
 		_cardManager.OrganizeHand();
 	}
@@ -99,6 +113,9 @@ public partial class CombatManager : Node2D
         _currentEncounterData = encounter;
         SpawnEnemies(encounter);
         StartGame();
+
+        Player.TriggerRelics(r => r.OnCombatStart(Player)); 
+
     }
 	public void StartGame()
 	{
@@ -385,6 +402,8 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     {
         GD.Print($"Inimigo {enemy.Name} morreu!");
         
+        Player.TriggerRelics(r => r.OnKillEnemy(Player, enemy)); 
+
         _activeEnemies.Remove(enemy);
         
         if (_activeEnemies.Count == 0)

@@ -16,7 +16,7 @@ public partial class Map : Node2D
     private Camera2D _camera2D;
 
     private Room[][] _mapData;
-    private int _floorsClimbed;
+    public int _floorsClimbed;
     private Room _lastRoom;
     private float _cameraEdgeY;
 	public override void _Ready()
@@ -31,6 +31,7 @@ public partial class Map : Node2D
 
     GenerateNewMap();
     UnlockFloor(0);
+    
 }
 
 public override void _Input(InputEvent @event)

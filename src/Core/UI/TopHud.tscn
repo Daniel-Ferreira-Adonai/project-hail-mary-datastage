@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://nv8ngfi0a4h4"]
+
+[ext_resource type="PackedScene" uid="uid://b0xkkm4laclqd" path="res://src/Core/UI/TopBar.tscn" id="1_k3ar6"]
+[ext_resource type="Script" uid="uid://by7gv3e782y1i" path="res://src/Core/UI/TopHud.cs" id="1_w0twy"]
+[ext_resource type="PackedScene" uid="uid://crk40rl1ibmgu" path="res://Data/Relics/RelicBar.tscn" id="3_og3ew"]
+
+[node name="TopHud" type="VBoxContainer" unique_id=313315863 node_paths=PackedStringArray("_topBar", "_relicBar")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 45.0
+grow_horizontal = 2
+script = ExtResource("1_w0twy")
+_topBar = NodePath("TopBar")
+_relicBar = NodePath("RelicBar")
+
+[node name="TopBar" parent="." unique_id=905095748 instance=ExtResource("1_k3ar6")]
+layout_mode = 2
+
+[node name="RelicBar" parent="." unique_id=698780172 instance=ExtResource("3_og3ew")]
+layout_mode = 2

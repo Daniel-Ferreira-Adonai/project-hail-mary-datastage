@@ -8,10 +8,14 @@ public partial class GameManager : Node
     [Export] private CombatManager _combatManager;
     [Export] private Map _map;
 
+    public TopHud _topHud;
     public override void _Ready()
     {
         Instance = this;
+        _topHud = UI.Instance.TopHud;
         ShowMap();
+        CallDeferred(nameof(UpdateTopBar)); 
+
     }
     public void ShowMap()
     {
@@ -58,6 +62,14 @@ public partial class GameManager : Node
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
         _map.ShowMap();
         _map.UnlockNextRooms();
+    }
+     public void UpdateTopBar()
+    {
+        var player = PlayerManager.Instance.Player;
+        if (player == null || _topHud == null) return;
+
+        _topHud.UpdateTopBar(_map);
+        
     }
 }
 

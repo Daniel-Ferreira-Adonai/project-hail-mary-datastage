@@ -9,6 +9,7 @@ public partial class CardData : Resource
     [Export] public int Damage { get; set; }
     [Export] public int Block { get; set; }
     [Export] public string Description { get; set; }
+    
     [Export] public Texture2D Art { get; set; }
 
     [Export] public CardType tipoCarta {get; set;}

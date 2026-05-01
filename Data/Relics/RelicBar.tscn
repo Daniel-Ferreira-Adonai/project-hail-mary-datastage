@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://crk40rl1ibmgu"]
+
+[ext_resource type="Script" uid="uid://cx7avks4igok4" path="res://Data/Relics/RelicBar.cs" id="1_xnb4m"]
+
+[node name="RelicBar" type="MarginContainer" unique_id=698780172 node_paths=PackedStringArray("_relicContainer")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_xnb4m")
+_relicContainer = NodePath("relicContainer")
+
+[node name="relicContainer" type="HBoxContainer" parent="." unique_id=1124166347]
+layout_mode = 2
+theme_override_constants/separation = 16

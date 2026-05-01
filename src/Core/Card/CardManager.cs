@@ -44,11 +44,13 @@ public partial class CardManager : Node2D
 
 public async void DrawCard(int count)
 {
-    if (_deck.Count <= 0)
-        ShuffleDeck();
+   
 
     for (int i = 0; i < count; i++)
     {
+		 if (_deck.Count <= 0)
+        ShuffleDeck();
+
         if (_deck.Count == 0) return;
         if (_handList.Count >= 9) return;
 
@@ -56,7 +58,7 @@ public async void DrawCard(int count)
         _deck.RemoveAt(0);
 
         _handNode.AddChild(card);
-        card.Setup(card.Data); // <- agora está na árvore
+        card.Setup(card.Data); 
         card.LoadVisuals();
         _handList.Add(card);
 
@@ -169,6 +171,7 @@ public override void _Process(double delta)
         if (GodotObject.IsInstanceValid(_currentHoveredCard))
             HighlightCard(_currentHoveredCard, true);
     }
+	GD.Print(_deck.Count);
 }
 	private void HighlightCard(Card card, bool hovered)
 {
@@ -215,7 +218,7 @@ public override void _Process(double delta)
         tween.TweenProperty(shadow, "modulate:a", 0.6f, 0.2f);
         tween.TweenProperty(shadow, "scale", new Vector2(1.1f, 1.1f), 0.2f);
 
-        card.ZIndex = 2;
+        card.ZIndex = 11;
     }
     else
     {
@@ -232,7 +235,8 @@ public override void _Process(double delta)
         tween.TweenProperty(shadow, "modulate:a", 0.25f, 0.15f);
         tween.TweenProperty(shadow, "scale", Vector2.One, 0.15f);
 
-        card.ZIndex = 1;
+        int index = _handList.IndexOf(card); 
+   		card.ZIndex = index >= 0 ? index : 0;
     }
 }
 
@@ -316,6 +320,8 @@ public override void _Process(double delta)
 			{
 				GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
 				CardBeingDraged.Play(enemy,_combatManager.getPlayer());
+				_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); // <- aqui
+
 				handleCardDeckTurn(card);
 			} 
 			return;
@@ -327,6 +333,7 @@ public override void _Process(double delta)
 			{
 				GD.Print("entrei aq");
 			CardBeingDraged.Play(null,Player);
+			_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); // <- aqui
 			handleCardDeckTurn(card);
 			}
 			

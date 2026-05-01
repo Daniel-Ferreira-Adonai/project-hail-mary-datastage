@@ -13,4 +13,6 @@ public partial class RelicData : Resource
     public virtual void OnCardPlayed(Player player, CardData card) { }
     public virtual void OnTakeDamage(Player player, ref int damage) { }
     public virtual void OnKillEnemy(Player player, Enemy enemy) { }
+    public virtual void OnDebuffApplied(Player player, string debuff) { }
+
 }
