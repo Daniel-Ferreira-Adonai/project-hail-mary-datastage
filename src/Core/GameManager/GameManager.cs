@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 public partial class GameManager : Node
@@ -45,8 +46,10 @@ public partial class GameManager : Node
         _map.UnlockNextRooms();
     }
 
-    public void StartCombat(EncounterData encounter)
+    public async void StartCombat(EncounterData encounter)
     {
+        await UI.Instance.FadeOut();
+
         CurrentEncounter = encounter;
         _map.HideMap();
         _combatManager.Visible = true;
@@ -54,14 +57,22 @@ public partial class GameManager : Node
         PlayerManager.Instance.Player.Visible = true; 
 
         _combatManager.CallDeferred(nameof(CombatManager.InitializeCombat), encounter);
+        
+        UI.Instance.FadeIn();
+
     }
 
-    public void OnCombatVictory()
+    public async void OnCombatVictory()
     {
+        await UI.Instance.FadeOut();
+
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
         _map.ShowMap();
-        _map.UnlockNextRooms();
+
+        PlayerManager.Instance.Player.Visible = false; 
+        UI.Instance.FadeIn();
+
     }
      public void UpdateTopBar()
     {

@@ -73,6 +73,27 @@ public partial class Player : Node2D
             EmitSignal(SignalName.StatsChanged);
         }
     }
+	private int _perCombatTemporaryStrength = 0;
+
+	[Export] public int PerCombatTemporaryStrength
+    {
+        get => _perCombatTemporaryStrength;
+        set
+        {
+            _perCombatTemporaryStrength = value;
+            EmitSignal(SignalName.StatsChanged);
+        }
+    }
+	private int _perCombatTemporarydexterity = 0;
+    [Export] public int PerCombatTemporaryDexterity
+    {
+        get => _perCombatTemporarydexterity;
+        set
+        {
+            _dexterity = value;
+            EmitSignal(SignalName.StatsChanged);
+        }
+    }
 	private int _dexterity = 0;
     [Export] public int Dexterity
     {
@@ -151,6 +172,11 @@ public partial class Player : Node2D
 		BlockValue = 0;
 
 	}
+	public void UpdatePerCombatTemporaryValues()
+	{
+		_perCombatTemporarydexterity = 0;
+		_perCombatTemporaryStrength = 0;
+	}
 	  public void ReceiveGold(int amount)
     {
         Gold += amount;
@@ -177,5 +203,17 @@ public partial class Player : Node2D
 			AddCardToDeck(defendData);
 			AddCardToDeck(blockVunarable);
 		}
+	}
+	public void TryToHeal(int healValue)
+	{
+		if(this._currentHp == MaxHp) 
+		return;
+
+		if(this._currentHp + healValue >= MaxHp)
+		{
+			currentHp = MaxHp;
+			return;
+		}
+		this.currentHp += healValue;
 	}
 }

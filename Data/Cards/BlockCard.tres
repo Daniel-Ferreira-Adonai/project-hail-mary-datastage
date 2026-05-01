@@ -6,7 +6,7 @@
 script = ExtResource("1_rqnle")
 CardName = "Defesa"
 EnergyCost = 1
-Block = 8
+Block = 10
 Description = "$b de defesa pratu cabron"
 tipoCarta = 1
 metadata/_custom_type_script = "uid://dvihb1ucq6jns"

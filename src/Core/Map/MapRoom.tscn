@@ -97,6 +97,8 @@ _animationPlayer = NodePath("AnimationPlayer")
 
 [node name="Line2D" type="Line2D" parent="Visuals" unique_id=1640051974]
 modulate = Color(1, 1, 1, 0)
+position = Vector2(9.536743e-07, -2)
+scale = Vector2(2.1666667, 2.3333333)
 points = PackedVector2Array(-6, -8, -10, 0, -8, 6, -4, 10, 4, 10, 10, 6, 10, -4, 4, -8, 0, -10, -6, -8, -6, -8)
 closed = true
 width = 2.0
@@ -107,7 +109,6 @@ texture_filter = 1
 texture = ExtResource("1_v21tb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1280236139]
-visible = false
 shape = SubResource("CircleShape2D_fv7i8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=125735063]

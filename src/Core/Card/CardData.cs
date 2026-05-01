@@ -3,7 +3,7 @@ using System;
 
 public partial class CardData : Resource
 {
-	public enum CardType{Attack, Skill, Power}
+	public enum CardType{Attack, Skill, SkillWithEnemyEffect, Power}
 	[Export] public string CardName { get; set; }
     [Export] public int EnergyCost { get; set; }
     [Export] public int Damage { get; set; }

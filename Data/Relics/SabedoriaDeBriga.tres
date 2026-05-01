@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SabedoriaDeBrigaRelic" format=3 uid="uid://bg477n1kewiv"]
+
+[ext_resource type="Script" uid="uid://b773nen07xc4q" path="res://src/Core/Relic/RelicScripts/SabedoriaDeBrigaRelic.cs" id="1_0namg"]
+[ext_resource type="Texture2D" uid="uid://csy0ohto3gt87" path="res://Test/TestImagesSprites/art/muscle.png" id="1_ydo4g"]
+
+[resource]
+script = ExtResource("1_0namg")
+RelicName = "Sabedoria De Briga"
+Description = "Você entrou em um clube no qual não pode falar sobre"
+Icon = ExtResource("1_ydo4g")
+metadata/_custom_type_script = "uid://b773nen07xc4q"

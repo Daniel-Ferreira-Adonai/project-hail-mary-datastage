@@ -33,7 +33,7 @@ public partial class Card : Node2D
     if (playerObj is not Player player)
         return;
 
-    if (Data.tipoCarta == CardData.CardType.Attack)
+    if (Data.tipoCarta == CardData.CardType.Attack || Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
     {
         if (enemie is Enemy enemy)
         {

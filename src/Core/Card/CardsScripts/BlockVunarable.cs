@@ -8,6 +8,7 @@ public partial class BlockVunarable : CardData
 	{
 		if (target is Enemy enemy && aux is Player player)
 		{
+			GD.Print("card jogado");
 			enemy.ApplyDebuff("Vulnerable",1);
 			player.BlockValue += this.Block;
 			player.UpdateLabelValues();

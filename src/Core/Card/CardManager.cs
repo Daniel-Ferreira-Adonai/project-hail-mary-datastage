@@ -312,28 +312,32 @@ public override void _Process(double delta)
 		{
 			return;
 		}
-		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack)
+		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack
+		    || CardBeingDraged.Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
 		{
 			Enemy Enemy = _combatManager.getEnemy(CardBeingDraged);
 			GD.Print(Enemy);
 			if(Enemy is Enemy enemy)
 			{
 				GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
+				_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
 				CardBeingDraged.Play(enemy,_combatManager.getPlayer());
-				_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); // <- aqui
+				_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
 
 				handleCardDeckTurn(card);
 			} 
 			return;
 		}
+		
 		if(CardBeingDraged.Data.tipoCarta != CardData.CardType.Attack)
 		{
 			Player player = _combatManager.getPlayer(card);
 			if(player is Player Player)
 			{
 				GD.Print("entrei aq");
+			_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
 			CardBeingDraged.Play(null,Player);
-			_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); // <- aqui
+			_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
 			handleCardDeckTurn(card);
 			}
 			
@@ -421,7 +425,9 @@ public void StartDeck()
         _deck.Add(card);
     }
 
-    DrawCard(cardsDrawedPerTurn);
+    DrawCard(cardsDrawedPerTurn + PlayerManager.Instance.Player.BonusCardsToDraw);
+	PlayerManager.Instance.Player.BonusCardsToDraw = 0;
+	
 }
 	private float GetPositionToMoveUpRelativeToBottom(Card card)
 	{

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="OvoVermelho" format=3 uid="uid://chj86bcoa001d"]
+
+[ext_resource type="Texture2D" uid="uid://boklhiqs1414d" path="res://Test/TestImagesSprites/art/tile_0115.png" id="1_bp7wq"]
+[ext_resource type="Script" uid="uid://clirw0hj5x1cv" path="res://src/Core/Relic/RelicScripts/OvoVermelho.cs" id="1_pfogy"]
+
+[resource]
+script = ExtResource("1_pfogy")
+RelicName = "OvoVermelho"
+Icon = ExtResource("1_bp7wq")
+metadata/_custom_type_script = "uid://clirw0hj5x1cv"

@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://cso48pa1xu8vm" path="res://src/Core/CombatManager/CombatManager.tscn" id="2_wb8t6"]
 [ext_resource type="Script" uid="uid://b77s43wmxq2h1" path="res://Test/TestScripts/Button.cs" id="5_p77mi"]
 [ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="7_bwyxq"]
-[ext_resource type="PackedScene" uid="uid://b8h3yi4y8k457" path="res://src/Core/UI.tscn" id="9_kmu3i"]
-[ext_resource type="Script" path="res://src/Core/Shop/ShopDebugOpener.cs" id="10_shop"]
+[ext_resource type="PackedScene" uid="uid://b8h3yi4y8k457" path="res://src/Core/UI/UI.tscn" id="9_kmu3i"]
+[ext_resource type="Script" uid="uid://no6nqsisuhx3" path="res://src/Core/Shop/ShopDebugOpener.cs" id="10_shop"]
 
 [node name="TestScene" type="Node2D" unique_id=1599094848]
 script = ExtResource("10_shop")

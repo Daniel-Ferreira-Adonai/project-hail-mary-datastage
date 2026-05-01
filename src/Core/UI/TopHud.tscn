@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b0xkkm4laclqd" path="res://src/Core/UI/TopBar.tscn" id="1_k3ar6"]
 [ext_resource type="Script" uid="uid://by7gv3e782y1i" path="res://src/Core/UI/TopHud.cs" id="1_w0twy"]
-[ext_resource type="PackedScene" uid="uid://crk40rl1ibmgu" path="res://Data/Relics/RelicBar.tscn" id="3_og3ew"]
+[ext_resource type="PackedScene" uid="uid://crk40rl1ibmgu" path="res://src/Core/UI/RelicBar.tscn" id="3_og3ew"]
 
 [node name="TopHud" type="VBoxContainer" unique_id=313315863 node_paths=PackedStringArray("_topBar", "_relicBar")]
 anchors_preset = 10

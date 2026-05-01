@@ -112,6 +112,8 @@ public partial class CombatManager : Node2D
         UpdateEnergy(currentEnergy);
         _currentEncounterData = encounter;
         SpawnEnemies(encounter);
+        Player.TriggerRelics(r => r.BeforeOnCombatStart(Player)); 
+
         StartGame();
 
         Player.TriggerRelics(r => r.OnCombatStart(Player)); 
@@ -202,6 +204,8 @@ public partial class CombatManager : Node2D
         
         damage += player.Strength;
 		damage += player.TemporaryStrength;
+        damage += player.PerCombatTemporaryStrength;
+
         
 		if(card != null)
 		{
@@ -229,7 +233,7 @@ public partial class CombatManager : Node2D
     }
     public static int CalculateBlock(int baseBlock, Player player)
     {
-        float block = baseBlock + player.Dexterity + player.TemporaryDexterity;
+        float block = baseBlock + player.Dexterity + player.TemporaryDexterity + player.PerCombatTemporaryDexterity;
         
         if (player.IsFrail)
             block *= 0.75f;
@@ -432,7 +436,7 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     private void EndCombat(bool victory)
     {
         GD.Print(victory ? "VITÓRIA!" : "DERROTA!");
-
+        PlayerManager.Instance.Player.UpdatePerCombatTemporaryValues();
         _cardManager.SetProcessInput(false);
 
         if (victory)

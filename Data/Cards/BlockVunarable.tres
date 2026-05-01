@@ -8,4 +8,5 @@ CardName = "Defesa Assustadora"
 EnergyCost = 1
 Block = 6
 Description = "Você assusta seu inimigo com um grito assustador"
+tipoCarta = 2
 metadata/_custom_type_script = "uid://cet23vfc447n"

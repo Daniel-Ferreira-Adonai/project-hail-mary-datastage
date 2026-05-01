@@ -1,6 +1,6 @@
 using Godot;
 using System;
-
+[GlobalClass]
 public partial class SabedoriaDeBrigaRelic : RelicData
 {
 	private bool _usedThisTurn = false;
@@ -9,13 +9,19 @@ public partial class SabedoriaDeBrigaRelic : RelicData
     {
         _usedThisTurn = false;
     }
+    public override void BeforeCardIsPlayed(Player player, CardData card)
+        {
+            if (_usedThisTurn) return;
+            if (card.tipoCarta != CardData.CardType.Attack) return;
 
-    // public override void OnCardPlayed(Player player, CardData card, ref int damage)
-    // {
-    //     if (_usedThisTurn) return;
-    //     if (card.Type != CardData.CardType.Attack) return;
+            card.Damage += 3;
+        }
+    public override void OnCardPlayed(Player player, CardData card)
+     {
+         if (_usedThisTurn) return;
+         if (card.tipoCarta != CardData.CardType.Attack) return;
 
-    //     damage += 3;
-    //     _usedThisTurn = true;
-    // }
+         card.Damage -= 3;
+         _usedThisTurn = true;
+     }
 }

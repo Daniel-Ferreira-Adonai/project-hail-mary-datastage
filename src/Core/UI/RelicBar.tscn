@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://crk40rl1ibmgu"]
 
-[ext_resource type="Script" uid="uid://cx7avks4igok4" path="res://Data/Relics/RelicBar.cs" id="1_xnb4m"]
+[ext_resource type="Script" uid="uid://cx7avks4igok4" path="res://src/Core/UI/RelicBar.cs" id="1_xnb4m"]
 
 [node name="RelicBar" type="MarginContainer" unique_id=698780172 node_paths=PackedStringArray("_relicContainer")]
 anchors_preset = 10

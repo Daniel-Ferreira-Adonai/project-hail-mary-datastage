@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ArmaduraDourada" format=3 uid="uid://boufihi2gp7p7"]
+
+[ext_resource type="Texture2D" uid="uid://biy7prjinim1n" path="res://Test/TestImagesSprites/art/shopkeeper_blink.png" id="1_4ykal"]
+[ext_resource type="Script" uid="uid://bnv6ym4gbg28u" path="res://src/Core/Relic/RelicScripts/ArmaduraDourada.cs" id="1_nrjp8"]
+
+[resource]
+script = ExtResource("1_nrjp8")
+RelicName = "Armadura Dourada"
+Description = "Você encontrou ao lado de uma fogueira e uma espada"
+Icon = ExtResource("1_4ykal")
+metadata/_custom_type_script = "uid://bnv6ym4gbg28u"
