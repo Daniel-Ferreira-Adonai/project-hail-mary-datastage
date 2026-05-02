@@ -132,7 +132,7 @@ public partial class Enemy : Node2D
 
     _collision.Position = Vector2.Zero;
 }
-    public void TakeDamage(int damage)
+public void TakeDamage(int damage)
 {
     CurrentHealth -= damage;
 
@@ -145,13 +145,16 @@ public partial class Enemy : Node2D
         void OnImpact()
         {
             player.AttackImpact -= OnImpact;
-            FlashDamage();
+            
+            // Verifica se o inimigo ainda existe
+            if (IsInstanceValid(this) && !IsQueuedForDeletion())
+                FlashDamage();
         }
     }
     else
     {
-        // Dano veio de outra fonte (veneno, etc), flash imediato
-        FlashDamage();
+        if (IsInstanceValid(this) && !IsQueuedForDeletion())
+            FlashDamage();
     }
 }
     

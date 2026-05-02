@@ -154,6 +154,11 @@ public partial class Player : Node2D
 		foreach (var relic in Relics)
 			hook(relic);
 	}
+	public void AddRelic(RelicData relic)
+{
+    Relics.Add(relic);
+    RelicBar.Instance?.LoadRelics(Relics);
+}
 	public void CalculateDamageTaken(int enemyDamage)
 	{	
 		TriggerRelics(r => r.OnTakeDamage(this, ref enemyDamage)); 

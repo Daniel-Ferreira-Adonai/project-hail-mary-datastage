@@ -88,6 +88,7 @@ src/Core/
   PlayerManager.cs
  Relic/
   RelicData.cs
+  RelicForShopOrChest.cs
   RelicScripts/
    AparagemPerfeita.cs
    ArmaduraDourada.cs
@@ -100,7 +101,9 @@ src/Core/
    SabedoriaDeBrigaRelic.cs
    XabuzadoRelic.cs
  Reward/
+  ChestButton.cs
   PickCardsReward/PickCardRewards.cs
+  RelicChestReward.cs
   RewardButton.cs
   RewardCard.cs
  Shop/

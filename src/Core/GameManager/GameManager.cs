@@ -6,6 +6,8 @@ public partial class GameManager : Node
     public static GameManager Instance { get; private set; }
     public EncounterData CurrentEncounter { get; private set; }
 
+    [Export] PackedScene chestRewardScene;
+
     [Export] private CombatManager _combatManager;
     [Export] private Map _map;
 
@@ -20,12 +22,29 @@ public partial class GameManager : Node
     }
     public void ShowMap()
     {
+        
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
         PlayerManager.Instance.Player.Visible = false; 
 
         _map.ShowMap();
         
+    }
+    public async void ShowMapFade()
+    {
+        PlayerManager.Instance.Player.Visible = false; 
+        _map.ShowMap();
+
+        await UI.Instance.FadeOut();
+
+        _combatManager.Visible = false;
+        _combatManager.ProcessMode = ProcessModeEnum.Disabled;
+        PlayerManager.Instance.Player.Visible = false; 
+
+        _map.ShowMap();
+        
+        UI.Instance.FadeIn();
+
     }
     public void OnMapRoomSelected(Room room)
     {
@@ -40,6 +59,7 @@ public partial class GameManager : Node
             case Room.RoomType.CampFire:
                 break;
             case Room.RoomType.Chest:
+                ChestRoom();
                 break;
         }
 
@@ -60,6 +80,15 @@ public partial class GameManager : Node
         
         UI.Instance.FadeIn();
 
+    }
+     public async void ChestRoom()
+    {
+        await UI.Instance.FadeOut();
+        var chest = chestRewardScene.Instantiate<RelicChestReward>();
+        UI.Instance.AddUI(chest); 
+        _map.HideMap();
+        PlayerManager.Instance.Player.Visible = true; 
+        UI.Instance.FadeIn();
     }
 
     public async void OnCombatVictory()

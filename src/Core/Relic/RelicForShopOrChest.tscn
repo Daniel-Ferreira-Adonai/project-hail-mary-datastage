@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b5erl8s8et0dd"]
+
+[ext_resource type="Script" uid="uid://b31lwle7rwdhb" path="res://src/Core/Relic/RelicForShopOrChest.cs" id="1_ktl8d"]
+
+[node name="RelicForShopOrChest" type="TextureButton" unique_id=1407055353]
+script = ExtResource("1_ktl8d")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

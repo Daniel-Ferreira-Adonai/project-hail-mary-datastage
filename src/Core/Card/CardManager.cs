@@ -171,7 +171,6 @@ public override void _Process(double delta)
         if (GodotObject.IsInstanceValid(_currentHoveredCard))
             HighlightCard(_currentHoveredCard, true);
     }
-	GD.Print(_deck.Count);
 }
 	private void HighlightCard(Card card, bool hovered)
 {

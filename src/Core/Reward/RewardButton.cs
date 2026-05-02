@@ -13,10 +13,7 @@ public partial class RewardButton : Button
 	{
     	MouseFilter = MouseFilterEnum.Pass;
 
-		if(RewardType == RewardType.Gold)
-		{
-			setGoldReward();
-		}
+		
 	}
 	public void _on_reward_button_pressed()
 	{

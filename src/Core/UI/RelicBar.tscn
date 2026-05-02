@@ -24,4 +24,4 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_r5242")
 
 [node name="relicContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1124166347]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 0

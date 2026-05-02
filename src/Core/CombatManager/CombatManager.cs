@@ -22,7 +22,8 @@ public partial class CombatManager : Node2D
 
     [Export] private PackedScene _rewardCardScene;
 
-    
+    private bool _combatEnded = false;
+
     private EncounterData _currentEncounterData;
 	public override void _Ready()
 	{
@@ -108,6 +109,7 @@ public partial class CombatManager : Node2D
 	}
 	public void InitializeCombat(EncounterData encounter)  
     {
+        _combatEnded = false;
         background.Texture = encounter.backgroundImage;
         _activeEnemies.Clear();
         _cardManager.SetProcessInput(true);
@@ -405,22 +407,25 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     
     return wave + sizeOffset + edgeOffset;
 }
-	  private void OnEnemyDied(Enemy enemy)
+	private void OnEnemyDied(Enemy enemy)
+{
+    GD.Print($"Inimigo {enemy.Name} morreu!");
+    GD.Print($"Ativos antes: {_activeEnemies.Count}");
+    
+    Player.TriggerRelics(r => r.OnKillEnemy(Player, enemy)); 
+
+    _activeEnemies.Remove(enemy);
+    
+    GD.Print($"Ativos depois: {_activeEnemies.Count}");
+    
+    if (_activeEnemies.Count == 0)
     {
-        GD.Print($"Inimigo {enemy.Name} morreu!");
-        
-        Player.TriggerRelics(r => r.OnKillEnemy(Player, enemy)); 
-
-        _activeEnemies.Remove(enemy);
-        
-        if (_activeEnemies.Count == 0)
-        {
-            EndCombat(victory: true);
-        }
+        EndCombat(victory: true);
     }
-
+}
     public bool IsCombatOver()
     {
+        if (_combatEnded) return true;
         if (Player.currentHp <= 0)
         {
             EndCombat(victory: false);
@@ -439,6 +444,8 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     private void EndCombat(bool victory)
     {
         GD.Print(victory ? "VITÓRIA!" : "DERROTA!");
+         if (_combatEnded) return; 
+         _combatEnded = true;
         PlayerManager.Instance.Player.UpdatePerCombatTemporaryValues();
         _cardManager.SetProcessInput(false);
 

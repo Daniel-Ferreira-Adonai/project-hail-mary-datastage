@@ -4,11 +4,15 @@ using System.Collections.Generic;
 
 public partial class RelicBar : MarginContainer
 {
+        public static RelicBar Instance { get; private set; }
+
 	    [Export] private HBoxContainer _relicContainer;
 
 	public override void _Ready()
-	{
-	}
+    {
+                Instance = this;
+
+    }
 
 	public override void _Process(double delta)
 	{

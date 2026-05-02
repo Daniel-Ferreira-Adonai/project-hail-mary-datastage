@@ -43,6 +43,7 @@ public Room Room
 {
     { Room.RoomType.NotAssigned, (null,                                                         Vector2.One * 3f) },
     { Room.RoomType.Combat,      (GD.Load<Texture2D>("res://Test/TestImagesSprites/art/tile_0103.png"), Vector2.One * 3f) },
+    { Room.RoomType.Event,      (GD.Load<Texture2D>("res://Test/TestImagesSprites/art/tile_0110.png"), Vector2.One * 3f) },
     { Room.RoomType.Chest,       (GD.Load<Texture2D>("res://Test/TestImagesSprites/art/tile_0089.png"), Vector2.One * 3f) },
     { Room.RoomType.CampFire,    (GD.Load<Texture2D>("res://Test/TestImagesSprites/art/player_heart.png"), Vector2.One * 2f) },
     { Room.RoomType.Shop,        (GD.Load<Texture2D>("res://Test/TestImagesSprites/art/gold.png"),         Vector2.One * 2f) },

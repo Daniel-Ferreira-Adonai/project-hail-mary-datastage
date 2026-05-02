@@ -12,8 +12,10 @@ public partial class MapGenerator : Node
     public const int PATHS = 6;
 
     public const float MONSTER_ROOM_WEIGHT = 10.0f;
-    public const float SHOP_ROOM_WEIGHT = 2.5f;
-    public const float CAMPFIRE_ROOM_WEIGHT = 4.0f;
+    public const float SHOP_ROOM_WEIGHT = 1.5f;
+    public const float CAMPFIRE_ROOM_WEIGHT = 6.0f;
+    public const float EVENT_ROOM_WEIGHT = 3.0f;
+
     [Export] public EncounterData[] EasyEncounters = new EncounterData[0];   
 	[Export] public EncounterData[] MediumEncounters = new EncounterData[0]; 
 	[Export] public EncounterData[] HardEncounters = new EncounterData[0];   
@@ -23,6 +25,8 @@ public partial class MapGenerator : Node
         { Room.RoomType.Combat, MONSTER_ROOM_WEIGHT },
         { Room.RoomType.Shop, SHOP_ROOM_WEIGHT },
         { Room.RoomType.CampFire, CAMPFIRE_ROOM_WEIGHT },
+        { Room.RoomType.Event, EVENT_ROOM_WEIGHT }, 
+
     };
 
     private float _randomRoomTypeTotalWeight = 0f;
@@ -212,11 +216,14 @@ private void _SetupBossRoom()
 
 private void _SetupRandomRoomWeights()
 {
-    _roomWeights[Room.RoomType.Combat]   = MONSTER_ROOM_WEIGHT;
-    _roomWeights[Room.RoomType.CampFire] = MONSTER_ROOM_WEIGHT + CAMPFIRE_ROOM_WEIGHT;
-    _roomWeights[Room.RoomType.Shop]     = MONSTER_ROOM_WEIGHT + CAMPFIRE_ROOM_WEIGHT + SHOP_ROOM_WEIGHT;
+    // Pesos INDIVIDUAIS, não cumulativos
+    _roomWeights[Room.RoomType.Combat]   = MONSTER_ROOM_WEIGHT;   // 10
+    _roomWeights[Room.RoomType.CampFire] = CAMPFIRE_ROOM_WEIGHT;  // 8
+    _roomWeights[Room.RoomType.Shop]     = SHOP_ROOM_WEIGHT;      // 1.5
 
-    _randomRoomTypeTotalWeight = _roomWeights[Room.RoomType.Shop];
+    _randomRoomTypeTotalWeight = 0f;
+    foreach (var kvp in _roomWeights)
+        _randomRoomTypeTotalWeight += kvp.Value; // 19.5
 }
 
 private void _SetupRoomTypes()
@@ -253,35 +260,33 @@ private void _SetupRoomTypes()
                     _SetRoomRandomly(nextRoom);
 }
 
-private void _SetRoomRandomly(Room roomToSet)
-{
-    bool campfireBelow4      = true;
-    bool consecutiveCampfire = true;
-    bool consecutiveShop     = true;
-    bool campfireOn13        = true;
-
-    Room.RoomType typeCandidate = Room.RoomType.NotAssigned;
-
-    while (campfireBelow4 || consecutiveCampfire || consecutiveShop || campfireOn13)
+    private void _SetRoomRandomly(Room roomToSet)
     {
-        typeCandidate = _GetRandomRoomTypeByWeight();
+        bool campfireBelow4      = true;
+        bool consecutiveCampfire = true;
+        bool consecutiveShop     = true;
 
-        bool isCampfire        = typeCandidate == Room.RoomType.CampFire;
-        bool hasCampfireParent = _RoomHasParentOfType(roomToSet, Room.RoomType.CampFire);
-        bool isShop            = typeCandidate == Room.RoomType.Shop;
-        bool hasShopParent     = _RoomHasParentOfType(roomToSet, Room.RoomType.Shop);
+        Room.RoomType typeCandidate = Room.RoomType.NotAssigned;
 
-        campfireBelow4      = isCampfire && roomToSet.Row < 3;
-        consecutiveCampfire = isCampfire && hasCampfireParent;
-        consecutiveShop     = isShop     && hasShopParent;
-        campfireOn13        = isCampfire && roomToSet.Row == 12;
+        while (campfireBelow4 || consecutiveCampfire || consecutiveShop)
+        {
+            typeCandidate = _GetRandomRoomTypeByWeight();
+
+            bool isCampfire        = typeCandidate == Room.RoomType.CampFire;
+            bool hasCampfireParent = _RoomHasParentOfType(roomToSet, Room.RoomType.CampFire);
+            bool isShop            = typeCandidate == Room.RoomType.Shop;
+            bool hasShopParent     = _RoomHasParentOfType(roomToSet, Room.RoomType.Shop);
+
+            campfireBelow4      = isCampfire && roomToSet.Row < 3;
+            consecutiveCampfire = isCampfire && hasCampfireParent;
+            consecutiveShop     = isShop     && hasShopParent;
+        }
+
+        roomToSet.EnumRoomType = typeCandidate;
+
+        if (typeCandidate == Room.RoomType.Combat)
+            roomToSet.Encounter = _GetRandomEncounterForRow(roomToSet.Row);
     }
-
-    roomToSet.EnumRoomType = typeCandidate;
-
-    if (typeCandidate == Room.RoomType.Combat) // <- faltava isso
-        roomToSet.Encounter = _GetRandomEncounterForRow(roomToSet.Row);
-}
 private bool _RoomHasParentOfType(Room room, Room.RoomType type)
 {
     var parents = new List<Room>();
@@ -317,10 +322,14 @@ private bool _RoomHasParentOfType(Room room, Room.RoomType type)
 private Room.RoomType _GetRandomRoomTypeByWeight()
 {
     float roll = (float)GD.RandRange(0.0, _randomRoomTypeTotalWeight);
+    float cumulative = 0f;
 
     foreach (var kvp in _roomWeights)
-        if (kvp.Value > roll)
+    {
+        cumulative += kvp.Value;
+        if (roll <= cumulative)
             return kvp.Key;
+    }
 
     return Room.RoomType.Combat;
 }
