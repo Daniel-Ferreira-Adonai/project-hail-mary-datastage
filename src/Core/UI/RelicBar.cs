@@ -17,9 +17,9 @@ public partial class RelicBar : MarginContainer
 {
     var icon = new TextureRect();
     icon.Texture = relic.Icon;
-    icon.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+    icon.ExpandMode = TextureRect.ExpandModeEnum.FitWidth;
     icon.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
-    icon.CustomMinimumSize = new Vector2(40, 40); 
+    icon.CustomMinimumSize = new Vector2(60, 60); 
     _relicContainer.AddChild(icon);
 }
 	 public void LoadRelics(List<RelicData> relics)

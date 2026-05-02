@@ -133,11 +133,27 @@ public partial class Enemy : Node2D
     _collision.Position = Vector2.Zero;
 }
     public void TakeDamage(int damage)
+{
+    CurrentHealth -= damage;
+
+    var player = PlayerManager.Instance.Player;
+    
+    if (player._isAttacking)
     {
-        CurrentHealth -= damage;
-        
+        player.AttackImpact += OnImpact;
+
+        void OnImpact()
+        {
+            player.AttackImpact -= OnImpact;
+            FlashDamage();
+        }
+    }
+    else
+    {
+        // Dano veio de outra fonte (veneno, etc), flash imediato
         FlashDamage();
     }
+}
     
     private void FlashDamage()
     {

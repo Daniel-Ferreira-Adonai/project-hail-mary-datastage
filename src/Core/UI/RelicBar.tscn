@@ -2,18 +2,26 @@
 
 [ext_resource type="Script" uid="uid://cx7avks4igok4" path="res://src/Core/UI/RelicBar.cs" id="1_xnb4m"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5242"]
+bg_color = Color(0, 0, 0, 0.6039216)
+border_color = Color(0.9098039, 0.7411765, 0.8627451, 0.54509807)
+
 [node name="RelicBar" type="MarginContainer" unique_id=698780172 node_paths=PackedStringArray("_relicContainer")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 8.0
 grow_horizontal = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 script = ExtResource("1_xnb4m")
-_relicContainer = NodePath("relicContainer")
+_relicContainer = NodePath("PanelContainer/relicContainer")
 
-[node name="relicContainer" type="HBoxContainer" parent="." unique_id=1124166347]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=266081924]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_styles/panel = SubResource("StyleBoxFlat_r5242")
+
+[node name="relicContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1124166347]
+layout_mode = 2
+theme_override_constants/separation = 4

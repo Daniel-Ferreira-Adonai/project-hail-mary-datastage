@@ -12,7 +12,7 @@ public partial class CardManager : Node2D
 	private Vector2 _lastCardPosition;
 	private float _maxCardRotation = 0.3f;
 	private float _hoverScale = 1.30f;
-	[Export] private float _playThresholdY = 0.6f; 
+	[Export] private float _playThresholdY = 0.7f; 
 
 	[Export] private PackedScene _cardScene;  
 	[Export] private Hand _handNode;  
@@ -306,7 +306,7 @@ public override void _Process(double delta)
 		IsHoveringOnCard = false;
 		_handNode.ArrangeFan();
 	}
-	public void TryToPlayCard(Card card)
+	public async void TryToPlayCard(Card card)
 	{
 		if (!IsInPlayZone() || CardBeingDraged is null)
 		{
@@ -315,10 +315,14 @@ public override void _Process(double delta)
 		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack
 		    || CardBeingDraged.Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
 		{
+
 			Enemy Enemy = _combatManager.getEnemy(CardBeingDraged);
 			GD.Print(Enemy);
 			if(Enemy is Enemy enemy)
 			{
+				PlayerManager.Instance.Player.PlayAttackAnimation();
+				
+
 				GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
 				_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
 				CardBeingDraged.Play(enemy,_combatManager.getPlayer());

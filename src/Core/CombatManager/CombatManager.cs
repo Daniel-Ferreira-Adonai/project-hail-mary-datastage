@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 
 public partial class CombatManager : Node2D
@@ -17,6 +18,7 @@ public partial class CombatManager : Node2D
 
 	public Player Player;
 	private List<Enemy> _activeEnemies = new();
+    [Export] Sprite2D background;
 
     [Export] private PackedScene _rewardCardScene;
 
@@ -47,7 +49,7 @@ public partial class CombatManager : Node2D
 	}
 	public void AjustBackground()
     {
-         var bg = GetNode<Sprite2D>("Sprite2D");
+    var bg = GetNode<Sprite2D>("Sprite2D");
     var screenSize = GetViewport().GetVisibleRect().Size;
     
     bg.Position = screenSize / 2;
@@ -64,8 +66,8 @@ public partial class CombatManager : Node2D
     
 
     Player.GlobalPosition = new Vector2(
-        screenSize.X * 0.2f, 
-        screenSize.Y * 0.45f 
+        screenSize.X * 0.25f, 
+        screenSize.Y * 0.6f 
     );
     
     
@@ -106,6 +108,7 @@ public partial class CombatManager : Node2D
 	}
 	public void InitializeCombat(EncounterData encounter)  
     {
+        background.Texture = encounter.backgroundImage;
         _activeEnemies.Clear();
         _cardManager.SetProcessInput(true);
         currentEnergy = maxEnergy;
@@ -294,7 +297,7 @@ private (Vector2[] positions, float scaleFactor) GenerateDefaultPositions(Encoun
 
     Vector2 screenSize = GetViewport().GetVisibleRect().Size;
 
-    float baseY = screenSize.Y * 0.45f;
+    float baseY = screenSize.Y * 0.6f;
 
     EnemySize largestSize = EnemySize.Medium;
     foreach (var enemyData in encounter.Enemies)
@@ -333,7 +336,7 @@ private (Vector2[] positions, float scaleFactor) GenerateDefaultPositions(Encoun
     }
     spacing *= scaleFactor;
 
-    float rightEdge = screenSize.X - 20f;
+    float rightEdge = screenSize.X - 150f;
 
     float totalScaledWidth = 0f;
     for (int i = 0; i < enemyCount; i++)
@@ -458,6 +461,31 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
        
 
     }
+    public List<CardData> GetRandomCards(int amount)
+{
+    var allCards = new List<CardData>();
+    
+    var files = DirAccess.GetFilesAt("res://Data/Cards/");
+    foreach (var file in files)
+    {
+        if (file.EndsWith(".tres"))
+        {
+            var card = GD.Load<CardData>($"res://Data/Cards/{file}");
+            if (card != null)
+                allCards.Add(card);
+        }
+    }
+
+    // Fisher-Yates shuffle
+    var rng = new Random();
+    for (int i = allCards.Count - 1; i > 0; i--)
+    {
+        int j = rng.Next(i + 1);
+        (allCards[i], allCards[j]) = (allCards[j], allCards[i]);
+    }
+
+    return allCards.Take(amount).ToList();
+}
    private async void InstantiateRewardCard()
 {
     if(_rewardCardScene == null)
@@ -467,6 +495,7 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     }
     
     var rewardCard = _rewardCardScene.Instantiate<RewardCard>();
+    rewardCard.PendingCards = GetRandomCards(3); // gera aqui
     UI.Instance.AddUI(rewardCard);
 
     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);

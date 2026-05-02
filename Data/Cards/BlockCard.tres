@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="BlockCard" format=3 uid="uid://bhw7sjm0edvt8"]
 
+[ext_resource type="Texture2D" uid="uid://bj26iqk62hp4f" path="res://Test/TestImagesSprites/Gemini_Generated_Image_w3f4tfw3f4tfw3f4.png" id="1_a2sty"]
 [ext_resource type="Script" uid="uid://dvihb1ucq6jns" path="res://src/Core/Card/CardsScripts/BlockCard.cs" id="1_rqnle"]
 
 [resource]
@@ -8,5 +9,6 @@ CardName = "Defesa"
 EnergyCost = 1
 Block = 10
 Description = "$b de defesa pratu cabron"
+Art = ExtResource("1_a2sty")
 tipoCarta = 1
 metadata/_custom_type_script = "uid://dvihb1ucq6jns"

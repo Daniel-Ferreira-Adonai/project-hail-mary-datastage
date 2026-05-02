@@ -1,11 +1,10 @@
 [gd_resource type="Resource" script_class="AparagemPerfeita" format=3 uid="uid://dd36wb0ucwhdl"]
 
-[ext_resource type="Texture2D" uid="uid://cqcal03735mv8" path="res://Test/TestImagesSprites/art/tile_0118.png" id="1_2uan8"]
+[ext_resource type="Texture2D" uid="uid://cmgc473qdrsbb" path="res://Test/TestImagesSprites/AparadaPerfeita.png" id="1_2uan8"]
 [ext_resource type="Script" uid="uid://b8rpxp4swhpq3" path="res://src/Core/Relic/RelicScripts/AparagemPerfeita.cs" id="1_gmkt0"]
 
 [resource]
 script = ExtResource("1_gmkt0")
 RelicName = "Aparagem Perfeita"
-Description = "Lets go justin"
 Icon = ExtResource("1_2uan8")
 metadata/_custom_type_script = "uid://b8rpxp4swhpq3"

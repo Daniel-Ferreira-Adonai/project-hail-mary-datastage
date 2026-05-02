@@ -42,17 +42,22 @@ public partial class Player : Node2D
 	[Export] Label healthLabel;
 
 	[Export] Label BlockLabel;
+	
 	private List<CardData> _BaseDeck = new List<CardData>();  
 
 	public List<RelicData> Relics { get; set; } = new();
 	public int BonusCardsToDraw { get; set; } = 0;
 	public bool NextDebuffDoubled { get; set; } = false;
 
+	public bool _isAttacking = false;
+	[Export] public int ImpactFrame = 4;
+
 
  	[Signal]
     public delegate void StatsChangedEventHandler();
 	private int _TemporaryDexterity = 0;
 
+	
 	[Export] public int TemporaryDexterity
     {
         get => _TemporaryDexterity;
@@ -116,6 +121,10 @@ public partial class Player : Node2D
     }
 	public bool IsWeak { get; set; } = false;
     public bool IsFrail { get; set; } = false;
+	[Export] public AnimatedSprite2D animation;
+	[Signal]
+	public delegate void AttackImpactEventHandler();
+
 	private bool isAlive;
 	
 
@@ -216,4 +225,29 @@ public partial class Player : Node2D
 		}
 		this.currentHp += healValue;
 	}
+
+
+public async void PlayAttackAnimation()
+{
+    if (_isAttacking) return;
+    _isAttacking = true;
+    
+    animation.Play("attack");
+    
+    animation.FrameChanged += OnAttackFrameChanged;
+    
+    await ToSignal(animation, AnimatedSprite2D.SignalName.AnimationFinished);
+    animation.FrameChanged -= OnAttackFrameChanged;
+    
+    animation.Play("idle");
+    _isAttacking = false;
+}
+
+private void OnAttackFrameChanged()
+{
+    if (animation.Animation == "attack" && animation.Frame == ImpactFrame)
+    {
+        EmitSignal(SignalName.AttackImpact);
+    }
+}
 }

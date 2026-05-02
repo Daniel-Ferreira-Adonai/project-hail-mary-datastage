@@ -3,16 +3,17 @@
 [ext_resource type="Script" uid="uid://dusp2hbsrm3jl" path="res://src/Core/CombatManager/CombatManager.cs" id="1_4c6rb"]
 [ext_resource type="PackedScene" uid="uid://ddgr4rnfn0peg" path="res://src/Core/Reward/RewardCard.tscn" id="2_ovfdv"]
 [ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="2_y1dpi"]
-[ext_resource type="Texture2D" uid="uid://brqt2knrqjsel" path="res://Test/TestImagesSprites/fe82e069-fe05-4971-b042-44b4324043e3_scaled.jpg" id="3_ni4mj"]
+[ext_resource type="Texture2D" uid="uid://cvjlcne6akki8" path="res://Test/TestImagesSprites/Gemini_Generated_Image_mrznromrznromrzn.png" id="3_418fw"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
 [ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="6_418fw"]
 
-[node name="CombatManager" type="Node2D" unique_id=1684369228]
+[node name="CombatManager" type="Node2D" unique_id=1684369228 node_paths=PackedStringArray("background")]
 script = ExtResource("1_4c6rb")
+background = NodePath("Sprite2D")
 _rewardCardScene = ExtResource("2_ovfdv")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=637661068]
-texture = ExtResource("3_ni4mj")
+texture = ExtResource("3_418fw")
 
 [node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=1953663898]
 position = Vector2(152.00002, 706)

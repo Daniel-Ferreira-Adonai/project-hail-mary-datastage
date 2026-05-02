@@ -92,9 +92,13 @@ public partial class Card : Node2D
 	public void Setup(CardData data)
 	{
 		Data = data;
+        GetNode<TextureRect>("ArteCarta").Texture = data.Art;
 		GetNode<Label>("Nome").Text = data.CardName;
 		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
-		GetNode<RichTextLabel>("Descricao").Text = data.Description;
+        string descricao = data.Description
+        .Replace("$d", data.Damage.ToString())
+        .Replace("$b", data.Block.ToString());
+		GetNode<RichTextLabel>("Descricao").Text = descricao;
 		}
         public void UnloadVisuals()
     {

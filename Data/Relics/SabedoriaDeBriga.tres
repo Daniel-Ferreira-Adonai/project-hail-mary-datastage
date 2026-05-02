@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SabedoriaDeBrigaRelic" format=3 uid="uid://bg477n1kewiv"]
 
 [ext_resource type="Script" uid="uid://b773nen07xc4q" path="res://src/Core/Relic/RelicScripts/SabedoriaDeBrigaRelic.cs" id="1_0namg"]
-[ext_resource type="Texture2D" uid="uid://csy0ohto3gt87" path="res://Test/TestImagesSprites/art/muscle.png" id="1_ydo4g"]
+[ext_resource type="Texture2D" uid="uid://d4klj55aktece" path="res://Test/TestImagesSprites/SabedoriaDeBriga.png" id="1_ydo4g"]
 
 [resource]
 script = ExtResource("1_0namg")

@@ -55,7 +55,6 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 .godot/mono/temp/obj/Debug/
  .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
  Project hail mary datastage.AssemblyInfo.cs
-Data/Relics/GritoDaMasculinidade.cs
 src/Core/Card/
  Card.cs
  CardData.cs
@@ -94,6 +93,7 @@ src/Core/
    ArmaduraDourada.cs
    BebidaSuspeita.cs
    BulletproofVestRelic.cs
+   GritoDaMasculinidade.cs
    OlhoDeSauron.cs
    OvoVermelho.cs
    PocaoDeVida.cs

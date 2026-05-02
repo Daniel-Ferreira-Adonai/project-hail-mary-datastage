@@ -9,6 +9,9 @@ public partial class EncounterData : Resource
     
     [ExportCategory("Enemies")]
     [Export] public Array<EnemyData> Enemies { get; set; } = new();
+
+    [Export] public Texture2D  backgroundImage { get; set; } 
+
     [Export] public Vector2[] EnemyPositions { get; set; }
     
     [ExportCategory("Rewards")]

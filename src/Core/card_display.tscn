@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cvbbmgcc3q5re" path="res://src/Core/CardDisplay.cs" id="1_g6h3j"]
 
 [node name="CardDisplay" type="SubViewportContainer" unique_id=785813886]
+texture_filter = 2
 custom_minimum_size = Vector2(180, 300)
 offset_left = -1.0
 offset_right = 199.0
@@ -15,6 +16,8 @@ script = ExtResource("1_g6h3j")
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
 size = Vector2i(200, 300)
 size_2d_override = Vector2i(200, 300)
 size_2d_override_stretch = true

@@ -1,20 +1,22 @@
 [gd_scene format=3 uid="uid://b0xkkm4laclqd"]
 
 [ext_resource type="Script" uid="uid://b8pibsxleq2d5" path="res://src/Core/UI/TopBar.cs" id="1_3my4i"]
-[ext_resource type="Texture2D" uid="uid://d0edy7thj8ce6" path="res://Test/TestImagesSprites/art/heart.png" id="2_fcoq8"]
-[ext_resource type="Texture2D" uid="uid://bc4dh0tlloo0l" path="res://Test/TestImagesSprites/art/gold.png" id="3_v7hgb"]
-[ext_resource type="Texture2D" uid="uid://dytq0eumwvky6" path="res://Test/TestImagesSprites/art/tile_0074.png" id="4_cumwx"]
+[ext_resource type="Texture2D" uid="uid://cjylwsv0ptah4" path="res://Test/TestImagesSprites/CoracaoHp.png" id="2_cumwx"]
+[ext_resource type="Texture2D" uid="uid://dt1ajffygpeuu" path="res://Test/TestImagesSprites/Gold.png" id="3_oajyg"]
+[ext_resource type="Texture2D" uid="uid://50bxvxma747q" path="res://Test/TestImagesSprites/Andar.png" id="4_754up"]
 [ext_resource type="Texture2D" uid="uid://d007n5sscvumv" path="res://Test/TestImagesSprites/art/tile_0090.png" id="5_cumwx"]
 [ext_resource type="Texture2D" uid="uid://dxg7y1wlh86kj" path="res://Test/TestImagesSprites/art/tile_0100.png" id="6_oajyg"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3my4i"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cumwx"]
+bg_color = Color(0, 0, 0, 0.6039216)
+border_color = Color(0.49803922, 0.92941177, 0, 0.8)
 
 [node name="TopBar" type="PanelContainer" unique_id=905095748 node_paths=PackedStringArray("_hpLabel", "_hpMaxLabel", "_goldLabel", "_floorLabel", "_deckCountLabel")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 83.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3my4i")
+theme_override_styles/panel = SubResource("StyleBoxFlat_cumwx")
 script = ExtResource("1_3my4i")
 _hpLabel = NodePath("MarginTopBar/HBoxContainer/HpContainer/hpLabel")
 _hpMaxLabel = NodePath("MarginTopBar/HBoxContainer/HpContainer/MaxHpLabel")
@@ -24,23 +26,23 @@ _deckCountLabel = NodePath("MarginTopBar/HBoxContainer/panelContainer/deckCountL
 
 [node name="MarginTopBar" type="MarginContainer" parent="." unique_id=39214866]
 layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginTopBar" unique_id=641661877]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 100
 
 [node name="HpContainer" type="HBoxContainer" parent="MarginTopBar/HBoxContainer" unique_id=989346230]
 layout_mode = 2
 
 [node name="heartRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1264800532]
 texture_filter = 1
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
-texture = ExtResource("2_fcoq8")
+texture = ExtResource("2_cumwx")
 expand_mode = 2
 
 [node name="hpLabel" type="Label" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1650084381]
@@ -59,9 +61,9 @@ theme_override_constants/separation = 5
 
 [node name="GoldRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/GoldContainer" unique_id=1779743159]
 texture_filter = 1
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
-texture = ExtResource("3_v7hgb")
+texture = ExtResource("3_oajyg")
 expand_mode = 2
 
 [node name="goldLabel" type="Label" parent="MarginTopBar/HBoxContainer/GoldContainer" unique_id=2124297618]
@@ -73,9 +75,9 @@ theme_override_constants/separation = 5
 
 [node name="floorRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/FloorContainer" unique_id=122766081]
 texture_filter = 1
-custom_minimum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
-texture = ExtResource("4_cumwx")
+texture = ExtResource("4_754up")
 expand_mode = 2
 
 [node name="floorLabel" type="Label" parent="MarginTopBar/HBoxContainer/FloorContainer" unique_id=9850812]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ArmaduraDourada" format=3 uid="uid://boufihi2gp7p7"]
 
-[ext_resource type="Texture2D" uid="uid://biy7prjinim1n" path="res://Test/TestImagesSprites/art/shopkeeper_blink.png" id="1_4ykal"]
+[ext_resource type="Texture2D" uid="uid://qd53mnks27me" path="res://Test/TestImagesSprites/ArmaduraDourada.png" id="1_4ykal"]
 [ext_resource type="Script" uid="uid://bnv6ym4gbg28u" path="res://src/Core/Relic/RelicScripts/ArmaduraDourada.cs" id="1_nrjp8"]
 
 [resource]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="XabuzadoRelic" format=3 uid="uid://d3n4ok8gk6u0a"]
 
-[ext_resource type="Texture2D" uid="uid://cgopx2ponr1qi" path="res://Test/TestImagesSprites/art/tile_0121.png" id="1_bnx6g"]
+[ext_resource type="Texture2D" uid="uid://c2tvjq64sq3uw" path="res://Test/TestImagesSprites/Xabuzada.png" id="1_bnx6g"]
 [ext_resource type="Script" uid="uid://dqodw6mfxdrgj" path="res://src/Core/Relic/RelicScripts/XabuzadoRelic.cs" id="1_fqgc3"]
 
 [resource]

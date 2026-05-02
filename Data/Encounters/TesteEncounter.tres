@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_3su1e"]
 [ext_resource type="Script" uid="uid://bis7fspfw1fbq" path="res://src/Core/CombatManager/EncounterData.cs" id="2_53j16"]
 [ext_resource type="Resource" uid="uid://qh5dk7kv8apj" path="res://Data/Enemy/BatEnemy.tres" id="2_sq38e"]
+[ext_resource type="Texture2D" uid="uid://dh0k1t6fakr2u" path="res://Test/TestImagesSprites/Gemini_Generated_Image_sipehssipehssipe.png" id="3_sq38e"]
 
 [resource]
 script = ExtResource("2_53j16")
 Enemies = Array[ExtResource("1_3su1e")]([ExtResource("2_sq38e"), ExtResource("2_sq38e")])
+backgroundImage = ExtResource("3_sq38e")
 metadata/_custom_type_script = "uid://bis7fspfw1fbq"

@@ -14,6 +14,7 @@ public partial class RewardCard : PanelContainer
 	[Export] PackedScene _rewardButtonScene;
 	[Export] VBoxContainer ButtonContainers;
 	[Export] PackedScene _pickCardRewardsScene;
+	public List<CardData> PendingCards { get; set; } = new();
 
 	public override void _Ready()
 	{
@@ -56,6 +57,8 @@ public partial class RewardCard : PanelContainer
 	public void OpenCardPicker(RewardButton rewardButton)
 {
     var picker = _pickCardRewardsScene.Instantiate<PickCardRewards>();
+	picker.CardsToDisplay = PendingCards; 
+
     UI.Instance.AddUI(picker);
     
     Visible = false;

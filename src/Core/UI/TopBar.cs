@@ -20,29 +20,24 @@ public partial class TopBar : PanelContainer
 {
     // fundo
     var style = new StyleBoxFlat();
-    style.BgColor = new Color("1a1410");
-    style.BorderColor = new Color("3d2e1e");
+  
     style.SetBorderWidthAll(0);
-    style.ContentMarginLeft   = 16;
-    style.ContentMarginRight  = 16;
-    style.ContentMarginTop    = 6;
-    style.ContentMarginBottom = 6;
-    AddThemeStyleboxOverride("panel", style);
+    
 
     var textColor   = new Color("e8d5b0");
     var mutedColor  = new Color("7a6a55");
 
     _hpLabel.AddThemeColorOverride("font_color", textColor);
-    _hpLabel.AddThemeFontSizeOverride("font_size", 14);
+    _hpLabel.AddThemeFontSizeOverride("font_size", 16);
 
     _hpMaxLabel.AddThemeColorOverride("font_color", mutedColor);
-    _hpMaxLabel.AddThemeFontSizeOverride("font_size", 13);
+    _hpMaxLabel.AddThemeFontSizeOverride("font_size", 16);
 
     _goldLabel.AddThemeColorOverride("font_color", textColor);
-    _goldLabel.AddThemeFontSizeOverride("font_size", 14);
+    _goldLabel.AddThemeFontSizeOverride("font_size", 16);
 
     _floorLabel.AddThemeColorOverride("font_color", mutedColor);
-    _floorLabel.AddThemeFontSizeOverride("font_size", 13);
+    _floorLabel.AddThemeFontSizeOverride("font_size", 16);
 }
 
     public void UpdateHP(int current, int max)
