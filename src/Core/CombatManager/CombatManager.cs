@@ -28,7 +28,8 @@ public partial class CombatManager : Node2D
 	public override void _Ready()
 	{
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
-		energyLabel = GetNode<Sprite2D>("MoedaEnergia").GetNode<Label>("ValorEnergia");
+		energyLabel = GetNode<Panel>("MoedaEnergia").GetNode<Label>("ValorEnergia");
+       
 		UpdateEnergy(maxEnergy);
 		_cardManager = GetNode<CardManager>("CardManager");
 		AjustBackground();
@@ -68,7 +69,7 @@ public partial class CombatManager : Node2D
 
     Player.GlobalPosition = new Vector2(
         screenSize.X * 0.25f, 
-        screenSize.Y * 0.6f 
+        screenSize.Y * 0.55f 
     );
     
     

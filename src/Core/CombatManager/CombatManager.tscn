@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dusp2hbsrm3jl" path="res://src/Core/CombatManager/CombatManager.cs" id="1_4c6rb"]
 [ext_resource type="PackedScene" uid="uid://ddgr4rnfn0peg" path="res://src/Core/Reward/RewardCard.tscn" id="2_ovfdv"]
-[ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="2_y1dpi"]
 [ext_resource type="Texture2D" uid="uid://cvjlcne6akki8" path="res://Test/TestImagesSprites/Gemini_Generated_Image_mrznromrznromrzn.png" id="3_418fw"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
 [ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="6_418fw"]
+[ext_resource type="PackedScene" uid="uid://bye8bitcysp35" path="res://Test/TestScenes/EnergyCoin.tscn" id="6_divk8"]
 
 [node name="CombatManager" type="Node2D" unique_id=1684369228 node_paths=PackedStringArray("background")]
 script = ExtResource("1_4c6rb")
@@ -14,19 +14,6 @@ _rewardCardScene = ExtResource("2_ovfdv")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=637661068]
 texture = ExtResource("3_418fw")
-
-[node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=1953663898]
-position = Vector2(278, 754.00006)
-scale = Vector2(0.39675295, 0.4003608)
-texture = ExtResource("2_y1dpi")
-
-[node name="ValorEnergia" type="Label" parent="MoedaEnergia" unique_id=1445174283]
-offset_left = -52.913414
-offset_top = -105.82684
-offset_right = 70.236275
-offset_bottom = 7.881897
-theme_override_font_sizes/font_size = 80
-text = "1"
 
 [node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]
 
@@ -38,5 +25,11 @@ offset_bottom = 664.00006
 scale = Vector2(0.7035611, 0.698996)
 text = "END TURN"
 script = ExtResource("6_418fw")
+
+[node name="MoedaEnergia" parent="." unique_id=1183537337 instance=ExtResource("6_divk8")]
+offset_left = 217.0
+offset_top = 739.0
+offset_right = 277.0
+offset_bottom = 799.0
 
 [connection signal="button_down" from="endTurn" to="endTurn" method="_on_button_down2"]

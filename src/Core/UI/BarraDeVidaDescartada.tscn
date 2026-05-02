@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://2migcukvlhtu"]
+
+[ext_resource type="Texture2D" uid="uid://ba2a2x6fnys8p" path="res://src/Core/UI/HpBarAssets/Untitled design (39).png" id="1_u0hed"]
+[ext_resource type="Texture2D" uid="uid://bnyubwr8trplp" path="res://src/Core/UI/HpBarAssets/Untitled design (40).png" id="2_3jxd7"]
+[ext_resource type="Texture2D" uid="uid://dgjmxwq3yth1q" path="res://src/Core/UI/HpBarAssets/Untitled design (38).png" id="3_rx8tx"]
+[ext_resource type="Texture2D" uid="uid://cxycm5s3uhfmi" path="res://src/Core/UI/HpBarAssets/Untitled design (42).png" id="4_1b0fs"]
+
+[node name="BarraDeVida" type="TextureProgressBar" unique_id=309832581]
+offset_top = 93.00001
+offset_right = 2816.0
+offset_bottom = 1629.0
+scale = Vector2(0.004367657, 0.0046075257)
+value = 100.0
+texture_under = ExtResource("1_u0hed")
+texture_over = ExtResource("2_3jxd7")
+texture_progress = ExtResource("3_rx8tx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1230745865]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -116.891235
+offset_bottom = 134.10876
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="healthLabel" type="Label" parent="HBoxContainer" unique_id=1618674083]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 180
+text = "46/80"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1748747414]
+layout_mode = 0
+offset_left = -686.8671
+offset_top = 217.03528
+offset_right = 1361.1328
+offset_bottom = 2265.0352
+scale = Vector2(0.45574528, 0.45264933)
+size_flags_horizontal = 8
+texture = ExtResource("4_1b0fs")
+
+[node name="BlockLabel" type="Label" parent="TextureRect" unique_id=1493026100]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -286.0
+offset_top = -348.95837
+offset_right = 286.0
+offset_bottom = 348.95837
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 500
+text = "40"

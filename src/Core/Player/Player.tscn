@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://yc166xjjkglb" path="res://Test/TestMcFrames/Idle/Untitled design (15).png" id="7_scflc"]
 [ext_resource type="Texture2D" uid="uid://8r3tys8qy0bq" path="res://Test/TestMcFrames/Idle/Untitled design (16).png" id="8_1404v"]
 [ext_resource type="Texture2D" uid="uid://c4x3eygtv088n" path="res://Test/TestMcFrames/Idle/Untitled design (18).png" id="9_jupfw"]
-[ext_resource type="PackedScene" uid="uid://2migcukvlhtu" path="res://src/Core/UI/BarraDeVida.tscn" id="10_hig2i"]
+[ext_resource type="PackedScene" uid="uid://da5mcnljqamdr" path="res://Test/TestScenes/BarraDeVida.tscn" id="11_xmvw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
 size = Vector2(58, 54)
@@ -59,7 +59,7 @@ scale = Vector2(3.830325, 3.5672452)
 script = ExtResource("1_honyp")
 MaxHp = 50
 currentHp = 50
-_hpBar = NodePath("BarraDeVida")
+_hpBar = NodePath("TesteBar")
 animation = NodePath("AnimatedSprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
@@ -84,9 +84,9 @@ autoplay = "idle"
 frame = 5
 frame_progress = 1.0
 
-[node name="BarraDeVida" parent="." unique_id=309832581 instance=ExtResource("10_hig2i")]
-offset_left = -40.466545
-offset_top = 31.396776
-offset_right = 2775.5334
-offset_bottom = 1567.3967
-scale = Vector2(0.02678732, 0.025743404)
+[node name="TesteBar" parent="." unique_id=835286226 instance=ExtResource("11_xmvw8")]
+offset_left = -35.7672
+offset_top = 45.693516
+offset_right = 121.2328
+offset_bottom = 65.69352
+scale = Vector2(0.4321996, 0.4340491)

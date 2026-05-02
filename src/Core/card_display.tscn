@@ -19,10 +19,10 @@ handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
 size = Vector2i(200, 300)
-size_2d_override = Vector2i(200, 300)
+size_2d_override = Vector2i(1024, 1536)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="Card" parent="SubViewport" unique_id=536318436 instance=ExtResource("1_7xc0b")]
-position = Vector2(99, 134.00002)
-scale = Vector2(0.21541794, 0.20030627)
+position = Vector2(501.76007, 650.24)
+scale = Vector2(1.075, 1)

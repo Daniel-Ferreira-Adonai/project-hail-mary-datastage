@@ -58,7 +58,7 @@ public partial class Player : Node2D
 	public List<RelicData> Relics { get; set; } = new();
 	public int BonusCardsToDraw { get; set; } = 0;
 	public bool NextDebuffDoubled { get; set; } = false;
-	[Export] BarraDeVida _hpBar;
+	[Export] public BarraDeVida _hpBar;
 
 	public bool _isAttacking = false;
 	[Export] public int ImpactFrame = 4;

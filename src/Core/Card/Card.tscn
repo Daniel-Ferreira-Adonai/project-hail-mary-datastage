@@ -77,6 +77,7 @@ scale = Vector2(1.7695906, 0.8939462)
 shape = SubResource("RectangleShape2D_sxv2k")
 
 [node name="Custo" type="Label" parent="." unique_id=427992970]
+texture_filter = 2
 offset_left = -371.85605
 offset_top = -646.93994
 offset_right = -331.85605
@@ -86,6 +87,7 @@ text = "1"
 autowrap_mode = 2
 
 [node name="Nome" type="Label" parent="." unique_id=1769307325]
+texture_filter = 2
 offset_left = -207.91072
 offset_top = -572.1406
 offset_right = -44.91072
@@ -96,6 +98,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="Descricao" type="RichTextLabel" parent="." unique_id=2106512951]
+texture_filter = 2
 offset_left = -278.6888
 offset_top = 220.41486
 offset_right = 282.1315
