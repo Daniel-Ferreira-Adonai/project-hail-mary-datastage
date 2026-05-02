@@ -110,6 +110,7 @@ src/Core/
   Shop.cs
   ShopDebugOpener.cs
  UI/
+  BarraDeVida.cs
   RelicBar.cs
   TopBar.cs
   TopHud.cs

@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://yc166xjjkglb" path="res://Test/TestMcFrames/Idle/Untitled design (15).png" id="7_scflc"]
 [ext_resource type="Texture2D" uid="uid://8r3tys8qy0bq" path="res://Test/TestMcFrames/Idle/Untitled design (16).png" id="8_1404v"]
 [ext_resource type="Texture2D" uid="uid://c4x3eygtv088n" path="res://Test/TestMcFrames/Idle/Untitled design (18).png" id="9_jupfw"]
+[ext_resource type="PackedScene" uid="uid://2migcukvlhtu" path="res://src/Core/UI/BarraDeVida.tscn" id="10_hig2i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
 size = Vector2(58, 54)
@@ -53,13 +54,12 @@ animations = [{
 "speed": 2.0
 }]
 
-[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("healthLabel", "BlockLabel", "animation")]
+[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("_hpBar", "animation")]
 scale = Vector2(3.830325, 3.5672452)
 script = ExtResource("1_honyp")
 MaxHp = 50
 currentHp = 50
-healthLabel = NodePath("PlayerHealth")
-BlockLabel = NodePath("BlockLabel")
+_hpBar = NodePath("BarraDeVida")
 animation = NodePath("AnimatedSprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
@@ -76,19 +76,6 @@ collision_layer = 4
 position = Vector2(1, -5)
 shape = SubResource("RectangleShape2D_honyp")
 
-[node name="PlayerHealth" type="Label" parent="." unique_id=1078069633]
-offset_left = -10.965127
-offset_top = 20.183641
-offset_right = 29.034874
-offset_bottom = 43.18364
-text = "50"
-
-[node name="BlockLabel" type="Label" parent="." unique_id=326739502]
-offset_left = -18.536285
-offset_top = -63.63453
-offset_right = 21.463715
-offset_bottom = -40.63453
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1836107771]
 scale = Vector2(0.06, 0.06)
 sprite_frames = SubResource("SpriteFrames_gyxix")
@@ -96,3 +83,10 @@ animation = &"attack"
 autoplay = "idle"
 frame = 5
 frame_progress = 1.0
+
+[node name="BarraDeVida" parent="." unique_id=309832581 instance=ExtResource("10_hig2i")]
+offset_left = -40.466545
+offset_top = 31.396776
+offset_right = 2775.5334
+offset_bottom = 1567.3967
+scale = Vector2(0.02678732, 0.025743404)

@@ -16,7 +16,7 @@ _rewardCardScene = ExtResource("2_ovfdv")
 texture = ExtResource("3_418fw")
 
 [node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=1953663898]
-position = Vector2(369, 779.00006)
+position = Vector2(278, 754.00006)
 scale = Vector2(0.39675295, 0.4003608)
 texture = ExtResource("2_y1dpi")
 

@@ -14,6 +14,7 @@ public partial class Player : Node2D
 		{
 			_maxHp = value;
 			GameManager.Instance?.UpdateTopBar();
+			UpdateLabelValues();
 		}
 	}
 	private int _currentHp;
@@ -24,6 +25,7 @@ public partial class Player : Node2D
 		{
 			_currentHp = value;
 			GameManager.Instance?.UpdateTopBar();
+			UpdateLabelValues();
 		}
 	}
 
@@ -37,17 +39,26 @@ public partial class Player : Node2D
 			GameManager.Instance?.UpdateTopBar();
 		}
 	}
-	[Export] public int BlockValue;
+	[Export] private int _BlockValue;
+	[Export] public int BlockValue
+	{
+		get => _BlockValue;
+		set
+		{
+			_BlockValue = value;
+			UpdateLabelValues();
+		}
+	}
 
-	[Export] Label healthLabel;
 
-	[Export] Label BlockLabel;
+	
 	
 	private List<CardData> _BaseDeck = new List<CardData>();  
 
 	public List<RelicData> Relics { get; set; } = new();
 	public int BonusCardsToDraw { get; set; } = 0;
 	public bool NextDebuffDoubled { get; set; } = false;
+	[Export] BarraDeVida _hpBar;
 
 	public bool _isAttacking = false;
 	[Export] public int ImpactFrame = 4;
@@ -132,6 +143,7 @@ public partial class Player : Node2D
 	{
 		setupBasicDeck();
 		PlayerManager.Instance.Player = this;
+		SetupHpBar();
 		UpdateLabelValues();
 
 		 var relicFiles = DirAccess.GetFilesAt("res://Data/Relics/");
@@ -146,6 +158,12 @@ public partial class Player : Node2D
     }
 	}
 
+private void SetupHpBar()
+{
+    if (_hpBar == null) return;
+    
+    _hpBar.Setup(MaxHp, currentHp);
+}	
 	public override void _Process(double delta)
 	{
 	}
@@ -175,10 +193,11 @@ public partial class Player : Node2D
 		UpdateLabelValues();
 	}
 	public void UpdateLabelValues()
-	{
-		healthLabel.Text = currentHp.ToString();
-		BlockLabel.Text = BlockValue.ToString();
-	}
+{
+    
+    _hpBar?.Setup(MaxHp, currentHp);
+    _hpBar?.updateLabels(currentHp, MaxHp, BlockValue);
+}
 	public void UpdateTemporaryValues()
 	{
 		_temporaryStrength = 0;
