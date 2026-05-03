@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dcpswho2s7p1n"]
+
+[ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="1_l3kx0"]
+
+[node name="endTurn" type="Button" unique_id=66432168]
+offset_left = 1305.0
+offset_top = 551.0
+offset_right = 1730.0
+offset_bottom = 664.0
+scale = Vector2(0.7035611, 0.698996)
+text = "END TURN"
+script = ExtResource("1_l3kx0")
+
+[connection signal="button_down" from="." to="." method="_on_button_down2"]

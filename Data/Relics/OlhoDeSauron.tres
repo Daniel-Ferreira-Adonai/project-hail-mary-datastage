@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="OlhoDeSauron" format=3 uid="uid://dw0ivlq2r101a"]
+
+[ext_resource type="Script" uid="uid://b63vs1i1p5mha" path="res://src/Core/Relic/RelicScripts/OlhoDeSauron.cs" id="1_g0m5o"]
+[ext_resource type="Texture2D" uid="uid://blr8drtctyrtp" path="res://Test/TestImagesSprites/OlhoDeSauron.png" id="1_jevsu"]
+
+[resource]
+script = ExtResource("1_g0m5o")
+RelicName = "Olho do mauron"
+Description = "Um novo olho sempre é uma vantagem"
+Icon = ExtResource("1_jevsu")
+metadata/_custom_type_script = "uid://b63vs1i1p5mha"

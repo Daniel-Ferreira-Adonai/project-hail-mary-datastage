@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dwyhfk5ns0ms7"]
+
+[ext_resource type="Script" uid="uid://b7xhbxyxxx5pe" path="res://src/Core/Card/Hand.cs" id="1_spqeo"]
+[ext_resource type="Curve" uid="uid://ddkrtjb47exba" path="res://Cuvers/hand_y_curve.tres" id="2_1vc7e"]
+[ext_resource type="Curve" uid="uid://br4j87ycmxy7y" path="res://Cuvers/RotationCurve.tres" id="3_21hs7"]
+
+[node name="Hand" type="Node2D" unique_id=175438194]
+rotation = -0.0022091488
+script = ExtResource("1_spqeo")
+_handCurve = ExtResource("2_1vc7e")
+_rotationCurve = ExtResource("3_21hs7")

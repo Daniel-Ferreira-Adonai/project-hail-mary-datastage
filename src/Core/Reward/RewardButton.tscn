@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cb2nww2hpuaqo"]
+
+[ext_resource type="Script" uid="uid://cf30wdwefurpu" path="res://src/Core/Reward/RewardButton.cs" id="1_3jcfk"]
+[ext_resource type="Texture2D" uid="uid://dferan3ggnaom" path="res://Test/TestImagesSprites/Financial-Freedom-Money-Bag-Emoji-PNG.png" id="1_w30gm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w30gm"]
+
+[node name="RewardButton" type="Button" unique_id=992532631]
+custom_minimum_size = Vector2(250, 50)
+offset_right = 250.0
+offset_bottom = 50.0
+scale = Vector2(1, 1.0363896)
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_w30gm")
+script = ExtResource("1_3jcfk")
+RewardType = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=612704281]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1012348222]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1543629503]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=434867709]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_w30gm")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=754980177]
+layout_mode = 2
+text = "REWARD THING TEXT"
+
+[connection signal="pressed" from="." to="." method="_on_reward_button_pressed"]

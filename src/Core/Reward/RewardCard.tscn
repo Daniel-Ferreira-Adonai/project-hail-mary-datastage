@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://ddgr4rnfn0peg"]
+
+[ext_resource type="Script" uid="uid://8hdw5dj3mwg" path="res://src/Core/Reward/RewardCard.cs" id="1_5fjfp"]
+[ext_resource type="PackedScene" uid="uid://cb2nww2hpuaqo" path="res://src/Core/Reward/RewardButton.tscn" id="1_042u2"]
+[ext_resource type="PackedScene" uid="uid://c6sxiorcbifm5" path="res://src/Core/Reward/PickCardsReward/PickCardRewards.tscn" id="3_aeyrn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aeyrn"]
+bg_color = Color(0.6423587, 0.17047846, 9.62615e-08, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="RewardCard" type="PanelContainer" unique_id=2014685902 node_paths=PackedStringArray("ButtonContainers")]
+z_index = 5
+custom_minimum_size = Vector2(400, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0022883, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_aeyrn")
+script = ExtResource("1_5fjfp")
+_rewardButtonScene = ExtResource("1_042u2")
+ButtonContainers = NodePath("MarginContainer/VBoxContainer/VBoxContainer")
+_pickCardRewardsScene = ExtResource("3_aeyrn")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=846571168]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1571087365]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1536025728]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Escolha sua recompensa!"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=931027725]
+layout_mode = 2
+theme_override_constants/separation = 8

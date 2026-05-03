@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://qh5dk7kv8apj"]
+
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_7uoef"]
+[ext_resource type="Texture2D" uid="uid://byvlphp7441k2" path="res://Test/TestImagesSprites/Cultist.png" id="1_74ikc"]
+[ext_resource type="Resource" uid="uid://5mtebsyl8ngl" path="res://Data/EnemyTurns/TestEnemyTurns.tres" id="2_eowqw"]
+
+[resource]
+script = ExtResource("1_7uoef")
+Sprite = ExtResource("1_74ikc")
+MaxHealth = 20
+Strength = 10
+TurnPatterns = Array[Object]([ExtResource("2_eowqw")])
+metadata/_custom_type_script = "uid://b2o7r58snev8f"

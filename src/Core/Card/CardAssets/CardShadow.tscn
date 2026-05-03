@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://0ggv3w4mrawt"]
+
+[ext_resource type="Texture2D" uid="uid://cvnbw4byg2bvg" path="res://SombraCartaUnificada.png" id="1_1nkp6"]
+
+[node name="CardShadow" type="Node2D" unique_id=1760655952]
+modulate = Color(0, 0, 0, 0.21176471)
+scale = Vector2(0.9519672, 0.9170396)
+
+[node name="SombraCartaUnificada" type="Sprite2D" parent="." unique_id=74605322]
+texture = ExtResource("1_1nkp6")

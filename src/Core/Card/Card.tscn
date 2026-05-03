@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://gxjift2bhc36"]
+
+[ext_resource type="Texture2D" uid="uid://cj5r1c10po7bu" path="res://src/Core/Card/CardAssets/FundoCarta.png" id="2_1smdy"]
+[ext_resource type="Script" uid="uid://cf2kgclc80lmy" path="res://src/Core/Card/Card.cs" id="2_5dnpl"]
+[ext_resource type="PackedScene" uid="uid://0ggv3w4mrawt" path="res://src/Core/Card/CardAssets/CardShadow.tscn" id="2_p5als"]
+[ext_resource type="Texture2D" uid="uid://bey8hdox8hdpc" path="res://src/Core/Card/CardAssets/MolduraCard.png" id="2_s4x6c"]
+[ext_resource type="Texture2D" uid="uid://rxds2uax3olp" path="res://src/Core/Card/CardAssets/MolduraFotoCard.png" id="3_33phg"]
+[ext_resource type="Texture2D" uid="uid://dr7ehnna52xoc" path="res://src/Core/Card/CardAssets/FundoTexto.png" id="3_p5als"]
+[ext_resource type="Texture2D" uid="uid://crp38367m8ae2" path="res://src/Core/Card/CardAssets/parteDebAIXO.png" id="4_bf88h"]
+[ext_resource type="Texture2D" uid="uid://b0f0qhwptkatv" path="res://src/Core/Card/CardAssets/TopCARD.png" id="5_1smdy"]
+[ext_resource type="Texture2D" uid="uid://dh0k1t6fakr2u" path="res://Test/TestImagesSprites/Gemini_Generated_Image_sipehssipehssipe.png" id="6_dedhd"]
+[ext_resource type="Texture2D" uid="uid://bbi4ni8wpn4oa" path="res://src/Core/Card/CardAssets/MoedaEnergia.png" id="8_dedhd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sxv2k"]
+size = Vector2(1827.5469, 6679.701)
+
+[node name="Card" type="Node2D" unique_id=536318436]
+scale = Vector2(0.22605857, 0.21323428)
+script = ExtResource("2_5dnpl")
+
+[node name="CardShadow" parent="." unique_id=1760655952 instance=ExtResource("2_p5als")]
+position = Vector2(5, 5)
+scale = Vector2(1.1049827, 1.0775162)
+
+[node name="FundoCarta" type="Sprite2D" parent="." unique_id=1214044650]
+position = Vector2(1.9073486e-06, -14.069031)
+scale = Vector2(0.714029, 0.81987095)
+texture = ExtResource("2_1smdy")
+
+[node name="FundoTexto" type="Sprite2D" parent="." unique_id=1892115497]
+position = Vector2(23.546608, 286.2549)
+scale = Vector2(0.91261214, 0.7507025)
+texture = ExtResource("3_p5als")
+
+[node name="BordaCard" type="Sprite2D" parent="." unique_id=135902449]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(0, -7.000001)
+scale = Vector2(0.9852859, 0.8238112)
+texture = ExtResource("2_s4x6c")
+
+[node name="ArteCarta" type="TextureRect" parent="." unique_id=231719027]
+offset_left = -305.23065
+offset_top = -440.82968
+offset_right = 336.19598
+offset_bottom = 131.31094
+texture = ExtResource("6_dedhd")
+expand_mode = 2
+
+[node name="MolduraFotoCard" type="Sprite2D" parent="." unique_id=1932032565]
+position = Vector2(29.433252, -180.46506)
+scale = Vector2(0.9362555, 1.1280184)
+texture = ExtResource("3_33phg")
+
+[node name="FinalCarta" type="Sprite2D" parent="." unique_id=1016256403]
+position = Vector2(17.694529, 290.76)
+scale = Vector2(0.88660324, 0.82571256)
+texture = ExtResource("4_bf88h")
+
+[node name="TopCard" type="Sprite2D" parent="." unique_id=1356597111]
+position = Vector2(32.996346, -494.24734)
+scale = Vector2(0.9999999, 1)
+texture = ExtResource("5_1smdy")
+
+[node name="MoedaEnergia" type="Sprite2D" parent="." unique_id=454289713]
+position = Vector2(-296.06662, -502.10907)
+scale = Vector2(0.9999999, 1)
+texture = ExtResource("8_dedhd")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2009067737]
+position = Vector2(0, -0.99999994)
+scale = Vector2(0.22295915, 0.20969391)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1276301791]
+position = Vector2(9.920257, -28.777695)
+scale = Vector2(1.7695906, 0.8939462)
+shape = SubResource("RectangleShape2D_sxv2k")
+
+[node name="Custo" type="Label" parent="." unique_id=427992970]
+texture_filter = 2
+offset_left = -371.85605
+offset_top = -646.93994
+offset_right = -331.85605
+offset_bottom = -623.93994
+scale = Vector2(9.714022, 7.3665743)
+text = "1"
+autowrap_mode = 2
+
+[node name="Nome" type="Label" parent="." unique_id=1769307325]
+texture_filter = 2
+offset_left = -207.91072
+offset_top = -572.1406
+offset_right = -44.91072
+offset_bottom = -549.1406
+scale = Vector2(2.7640736, 3.8945355)
+text = "Lorde Bumbum mole"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Descricao" type="RichTextLabel" parent="." unique_id=2106512951]
+texture_filter = 2
+offset_left = -278.6888
+offset_top = 220.41486
+offset_right = 282.1315
+offset_bottom = 431.4503
+scale = Vector2(1.0017493, 1.0058365)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "Testando Texto
+"
+horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

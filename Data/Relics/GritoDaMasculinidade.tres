@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="GritoDaMasculinidade" format=3 uid="uid://c44xrc84np7od"]
+
+[ext_resource type="Texture2D" uid="uid://vbigtjvtdlrt" path="res://Test/TestImagesSprites/GritoDeMasculinidade.png" id="1_85l1e"]
+[ext_resource type="Script" uid="uid://dynxd3qja4vs3" path="res://src/Core/Relic/RelicScripts/GritoDaMasculinidade.cs" id="1_v74y4"]
+
+[resource]
+script = ExtResource("1_v74y4")
+RelicName = "Grito Da Masculinidade"
+Description = "Você grita e eles retribuiem com a masculinidade"
+Icon = ExtResource("1_85l1e")
+metadata/_custom_type_script = "uid://dynxd3qja4vs3"
