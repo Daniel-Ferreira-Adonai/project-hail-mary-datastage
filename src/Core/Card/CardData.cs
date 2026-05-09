@@ -14,6 +14,14 @@ public partial class CardData : Resource
 
     [Export] public CardType tipoCarta {get; set;}
 
+    [Export] public bool IsCardUpgraded {get; set;}
+
+
     public virtual void Execute(object target = null, object aux = null) { }
+
+    public virtual void UpgradeCard()
+    {
+        
+    }
 
 }

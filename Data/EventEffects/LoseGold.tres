@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EventEffect" format=3 uid="uid://bc7c0wg3wfnn3"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_sokre"]
+
+[resource]
+script = ExtResource("1_sokre")
+Type = 1
+Value = 40
+metadata/_custom_type_script = "uid://bw54hv2smagm2"

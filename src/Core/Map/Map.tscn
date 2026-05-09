@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cwq2hshdf0jlu" path="res://src/Core/Map/MapGenerator.cs" id="1_fu1mf"]
 [ext_resource type="Script" uid="uid://bib05hvin31w" path="res://src/Core/Map/Map.cs" id="1_q6b4c"]
 [ext_resource type="Resource" uid="uid://7bvg37q7dth4" path="res://Data/Encounters/TesteEncounter.tres" id="3_14n3b"]
+[ext_resource type="Resource" uid="uid://dl5vqhe3glk3m" path="res://Data/Events/MercadorSuspeitoEvento.tres" id="3_of231"]
 
 [sub_resource type="Gradient" id="Gradient_fu1mf"]
 colors = PackedColorArray(0.24840015, 0.24840018, 0.24840015, 1, 0.4, 0.21960784, 0.20392157, 1)
@@ -27,6 +28,7 @@ offset = Vector2(960, 540)
 
 [node name="MapGenerator" type="Node" parent="." unique_id=1635660364]
 script = ExtResource("1_fu1mf")
+Events = [ExtResource("3_of231")]
 EasyEncounters = [ExtResource("3_14n3b"), ExtResource("3_14n3b"), ExtResource("3_14n3b")]
 MediumEncounters = [ExtResource("3_14n3b")]
 

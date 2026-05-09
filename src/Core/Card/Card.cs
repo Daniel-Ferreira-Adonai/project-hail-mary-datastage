@@ -93,7 +93,14 @@ public partial class Card : Node2D
 	{
 		Data = data;
         GetNode<TextureRect>("ArteCarta").Texture = data.Art;
-		GetNode<Label>("Nome").Text = data.CardName;
+		var nomeLabel = GetNode<Label>("Nome");
+        nomeLabel.Text = data.CardName;
+
+        if (this.Data.IsCardUpgraded)
+                nomeLabel.AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f));
+            else
+                nomeLabel.RemoveThemeColorOverride("font_color");
+
 		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
         string descricao = data.Description
         .Replace("$d", data.Damage.ToString())

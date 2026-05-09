@@ -15,6 +15,7 @@ public partial class MapGenerator : Node
     public const float SHOP_ROOM_WEIGHT = 1.5f;
     public const float CAMPFIRE_ROOM_WEIGHT = 6.0f;
     public const float EVENT_ROOM_WEIGHT = 3.0f;
+    [Export] public EventData[] Events = new EventData[0];
 
     [Export] public EncounterData[] EasyEncounters = new EncounterData[0];   
 	[Export] public EncounterData[] MediumEncounters = new EncounterData[0]; 
@@ -286,7 +287,15 @@ private void _SetupRoomTypes()
 
         if (typeCandidate == Room.RoomType.Combat)
             roomToSet.Encounter = _GetRandomEncounterForRow(roomToSet.Row);
+
+            if (typeCandidate == Room.RoomType.Event)
+                roomToSet.Event = _GetRandomEvent();
     }
+    private EventData _GetRandomEvent()
+{
+    if (Events.Length == 0) return null;
+    return Events[(int)GD.RandRange(0, Events.Length - 1)];
+}
 private bool _RoomHasParentOfType(Room room, Room.RoomType type)
 {
     var parents = new List<Room>();

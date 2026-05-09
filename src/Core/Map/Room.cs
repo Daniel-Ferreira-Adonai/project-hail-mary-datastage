@@ -20,6 +20,7 @@ public partial class Room : Resource
     [Export] public Vector2 Position {get; set;}
     [Export] public Room[] NextRooms = new Room[0];
     [Export] public EncounterData Encounter { get; set; } 
+    [Export] public EventData Event { get; set; }
     [Export] public bool Select {get; set;} = false;
 
     public override string ToString()

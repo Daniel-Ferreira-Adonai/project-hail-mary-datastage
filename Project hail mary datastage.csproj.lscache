@@ -55,16 +55,17 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 .godot/mono/temp/obj/Debug/
  .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
  Project hail mary datastage.AssemblyInfo.cs
-src/Core/Card/
- Card.cs
- CardData.cs
- CardManager.cs
- CardsScripts/
-  BlockCard.cs
-  BlockVunarable.cs
-  StrikeCard.cs
- Hand.cs
 src/Core/
+ CampFire/CampFire.cs
+ Card/
+  Card.cs
+  CardData.cs
+  CardManager.cs
+  CardsScripts/
+   BlockCard.cs
+   BlockVunarable.cs
+   StrikeCard.cs
+  Hand.cs
  CardDisplay.cs
  CombatManager/
   CombatManager.cs
@@ -76,6 +77,12 @@ src/Core/
   EnemyTurn.cs
   IntentData.cs
   IntentScripts/AttackIntent.cs
+ Events/
+  EventChoice.cs
+  EventChoiceButton.cs
+  EventData.cs
+  EventEffect.cs
+  EventUi.cs
  GameManager/GameManager.cs
  Map/
   Map.cs

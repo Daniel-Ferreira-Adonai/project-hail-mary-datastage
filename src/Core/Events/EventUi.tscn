@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://c6nkrwqxmmg8a"]
+
+[ext_resource type="Script" uid="uid://dd125mgpq7dwe" path="res://src/Core/Events/EventUi.cs" id="1_343uv"]
+[ext_resource type="PackedScene" uid="uid://crsvemxfc2ric" path="res://src/Core/Events/EventChoiceButton.tscn" id="2_qvy54"]
+
+[node name="EventUI" type="Control" unique_id=1837335494 node_paths=PackedStringArray("_background", "_title", "_description", "_choicesContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_343uv")
+_background = NodePath("Background")
+_title = NodePath("ContentContainer/VBoxContainer/EventTitle")
+_description = NodePath("ContentContainer/VBoxContainer/RichTextLabel")
+_choicesContainer = NodePath("ContentContainer/ChoicesContainer")
+_choiceButtonScene = ExtResource("2_qvy54")
+
+[node name="Background" type="TextureRect" parent="." unique_id=110246284]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 6
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1209564617]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.54901963)
+
+[node name="ContentContainer" type="VBoxContainer" parent="." unique_id=1528319132]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 84.0
+offset_top = -200.0
+offset_right = 789.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentContainer" unique_id=26275889]
+layout_mode = 2
+
+[node name="EventTitle" type="Label" parent="ContentContainer/VBoxContainer" unique_id=1928716103]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "DSADAS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ContentContainer/VBoxContainer" unique_id=774515270]
+layout_mode = 2
+bbcode_enabled = true
+text = "dasdasdas"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="ContentContainer" unique_id=703376027]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme_override_constants/separation = 8

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://dl5vqhe3glk3m"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_7gk7o"]
+[ext_resource type="Resource" uid="uid://jo3e8x6vdwgl" path="res://Data/EventChoices/MercadorSuspeitoEvento/ComprarPocao.tres" id="1_ec631"]
+[ext_resource type="Texture2D" uid="uid://c0oc4fv1ygu6" path="res://Test/TestImagesSprites/Gemini_Generated_Image_hfmprvhfmprvhfmp (1).png" id="1_vigji"]
+[ext_resource type="Resource" uid="uid://tvb1n36e7dxy" path="res://Data/EventChoices/MercadorSuspeitoEvento/VenderSangue.tres" id="2_vigji"]
+
+[resource]
+script = ExtResource("1_7gk7o")
+EventName = "Mercador Suspeito"
+Description = "Um mercador de aparência duvidosa oferece seus serviços. Suas mãos tremem enquanto segura um frasco borbulhante."
+Art = ExtResource("1_vigji")
+Choices = Array[Object]([ExtResource("1_ec631"), ExtResource("2_vigji")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

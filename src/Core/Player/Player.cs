@@ -197,6 +197,18 @@ private void SetupHpBar()
 		}
 		UpdateLabelValues();
 	}
+	public void TakeDamage(int damage)
+{
+    currentHp -= damage;
+    
+    if (currentHp <= 0)
+    {
+        currentHp = 0;
+        isAlive = false;
+    }
+    
+    UpdateLabelValues();
+}
 	public void UpdateLabelValues()
 {
     
@@ -237,9 +249,9 @@ private void SetupHpBar()
         CardData blockVunarable = GD.Load<CardData>("res://Data/Cards/BlockVunarable.tres");
 		for(int i = 0; i < 5; i++)
 		{
-			AddCardToDeck(strikeData);
-			AddCardToDeck(defendData);
-			AddCardToDeck(blockVunarable);
+			AddCardToDeck((CardData)strikeData.Duplicate());
+			AddCardToDeck((CardData)defendData.Duplicate());
+			AddCardToDeck((CardData)blockVunarable.Duplicate());
 		}
 	}
 	public void TryToHeal(int healValue)

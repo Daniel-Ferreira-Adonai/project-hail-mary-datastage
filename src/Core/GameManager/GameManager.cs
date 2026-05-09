@@ -12,7 +12,7 @@ public partial class GameManager : Node
 
     [Export] private CombatManager _combatManager;
     [Export] private Map _map;
-
+    [Export] private PackedScene _eventScene;
     public TopHud _topHud;
     public override void _Ready()
     {
@@ -65,6 +65,9 @@ public partial class GameManager : Node
             case Room.RoomType.Chest:
                 ChestRoom();
                 break;
+            case Room.RoomType.Event:
+                ShowEvent(room.Event);
+                break;
         }
 
         _map.UnlockNextRooms();
@@ -103,7 +106,24 @@ public partial class GameManager : Node
             ShowMapFade();
         };
     }
+public async void ShowEvent(EventData eventData)
+{
+    await UI.Instance.FadeOut();
 
+    var eventUI = _eventScene.Instantiate<EventUi>();
+    UI.Instance.AddUI(eventUI);
+    _map.HideMap();
+
+    UI.Instance.FadeIn();
+    eventUI.LoadEvent(eventData);
+
+    eventUI.ExitRequested += async () =>
+{
+    await UI.Instance.FadeOut();
+    eventUI.QueueFree();
+    ShowMapFade();
+};
+}
     public async void ShowCampFire()
     {
         _campFireScene ??= GD.Load<PackedScene>("res://src/Core/CampFire/CampFire.tscn");
