@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://0qxb6dn1xf2t"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_5lev3"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_g8xkx"]
+
+[sub_resource type="Resource" id="Resource_03ww1"]
+script = ExtResource("1_5lev3")
+Type = 11
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_g8xkx")
+ChoiceText = "Recusar e seguir"
+ResultText = "Você vira as costas. A balança continua flutuando, impassível."
+Effects = Array[Object]([SubResource("Resource_03ww1")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://c11sqaxx2ihhu" path="res://Data/Events/EventoTulipa.tres" id="5_xbaaq"]
 [ext_resource type="Resource" uid="uid://cttqfcqp4t80k" path="res://Data/Events/ArvoreDourada.tres" id="6_i58sm"]
 [ext_resource type="Resource" uid="uid://8cxmr4dhbfh6" path="res://Data/Events/AventureirosMortos.tres" id="7_5a600"]
+[ext_resource type="Resource" uid="uid://bnbqpcj1sftt8" path="res://Data/Events/EquilibroPerfeito.tres" id="8_m05g2"]
 
 [sub_resource type="Gradient" id="Gradient_fu1mf"]
 colors = PackedColorArray(0.24840015, 0.24840018, 0.24840015, 1, 0.4, 0.21960784, 0.20392157, 1)
@@ -32,7 +33,7 @@ offset = Vector2(960, 540)
 
 [node name="MapGenerator" type="Node" parent="." unique_id=1635660364]
 script = ExtResource("1_fu1mf")
-Events = [ExtResource("3_of231"), ExtResource("4_wyjav"), ExtResource("5_xbaaq"), ExtResource("6_i58sm"), ExtResource("7_5a600")]
+Events = [ExtResource("3_of231"), ExtResource("4_wyjav"), ExtResource("5_xbaaq"), ExtResource("6_i58sm"), ExtResource("7_5a600"), ExtResource("8_m05g2")]
 EasyEncounters = [ExtResource("3_14n3b"), ExtResource("3_14n3b"), ExtResource("3_14n3b")]
 MediumEncounters = [ExtResource("3_14n3b")]
 

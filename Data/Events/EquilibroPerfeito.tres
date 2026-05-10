@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bnbqpcj1sftt8"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_by1ao"]
+[ext_resource type="Texture2D" uid="uid://626kl7srdq7r" path="res://Test/TestImagesSprites/Gemini_Generated_Image_86l2lw86l2lw86l2.png" id="1_ewfod"]
+[ext_resource type="Resource" uid="uid://cbxtvcgk3g2l7" path="res://Data/EventChoices/EquilibrioPerfeitoEvento/aceitarJulgamento.tres" id="1_rbpjo"]
+[ext_resource type="Resource" uid="uid://0qxb6dn1xf2t" path="res://Data/EventChoices/EquilibrioPerfeitoEvento/RecusarESeguir.tres" id="2_ewfod"]
+
+[resource]
+script = ExtResource("1_by1ao")
+EventName = "A Balança do Destino"
+Description = "Uma balança antiga flutua no ar, imóvel. Nenhuma corda a sustenta, nenhuma mão a segura. Ela simplesmente existe, esperando. Você sente que ela já tomou sua decisão antes mesmo de você se aproximar."
+Art = ExtResource("1_ewfod")
+Choices = Array[Object]([ExtResource("1_rbpjo"), ExtResource("2_ewfod")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

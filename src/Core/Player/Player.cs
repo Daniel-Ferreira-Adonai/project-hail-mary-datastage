@@ -270,6 +270,15 @@ private void SpawnDamageLabel(int damage)
 	cardData.IsCardUpgraded = true;
     return cardData;
 }
+public CardData RemoveRandomCard()
+{
+    if (_BaseDeck.Count == 0) return null;
+    
+    int random = GD.RandRange(0, _BaseDeck.Count - 1);
+    CardData cardData = _BaseDeck[random];
+    _BaseDeck.RemoveAt(random); 
+    return cardData;
+}
 	public void setupBasicDeck()
 	{
 		CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");

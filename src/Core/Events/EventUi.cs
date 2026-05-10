@@ -91,6 +91,14 @@ private async void OnChoiceSelected(EventChoice choice)
 				case EffectType.RandomGoldSwing:
 					GoldSwingEvent(effect, choice);
 					break;
+				case EffectType.RemoveRandomCard:
+				var removedData = PlayerManager.Instance.Player.RemoveRandomCard();
+				if (removedData != null)
+					await ShowRemoveAnimation(removedData);
+				break;
+				case EffectType.RandomCardSwing:
+					await CardSwingEvent(effect, choice);
+					break;
                 case EffectType.GainCard:
                     break;
 
@@ -178,4 +186,54 @@ private async Task ShowUpgradeAnimation(CardData data)
         var rng = new Random();
         return allRelics[rng.Next(allRelics.Count)];
     }
+	private async Task CardSwingEvent(EventEffect effect, EventChoice choice)
+{
+    bool isGood = GD.Randf() > 0.5f;
+    string[] texts = choice.ResultText.Split("|");
+
+    if (isGood)
+    {
+        var upgradedData = PlayerManager.Instance.Player.UpgradeRandomCard();
+        if (upgradedData != null)
+        {
+            _description.Text = texts[0];
+            await ShowUpgradeAnimation(upgradedData);
+        }
+    }
+    else
+    {
+        var removedData = PlayerManager.Instance.Player.RemoveRandomCard();
+        if (removedData != null)
+        {
+            _description.Text = texts.Length > 1 ? texts[1] : texts[0];
+            await ShowRemoveAnimation(removedData);
+        }
+    }
+}
+	private async Task ShowRemoveAnimation(CardData data)
+{
+    var cardScene = GD.Load<PackedScene>("res://src/Core/Card/Card.tscn");
+    var card = cardScene.Instantiate<Card>();
+    
+    var container = new Control();
+    container.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+    
+    UI.Instance.AddUI(container);
+    container.AddChild(card);
+    
+    card.Setup(data);
+    
+    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+    
+    var viewportSize = GetViewport().GetVisibleRect().Size;
+    card.GlobalPosition = new Vector2(
+        viewportSize.X / 2,
+        viewportSize.Y / 2
+    );
+    card.ZIndex = 100;
+    
+    await card.PlayRemoveAnimation();
+    
+    container.QueueFree();
+}
 }

@@ -98,6 +98,13 @@ public partial class Card : Node2D
         
         GetNode<Label>("Nome").AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f));
     }
+    public async Task PlayRemoveAnimation()
+{
+    var animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    animPlayer.Play("Remove");
+    
+    await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
+}
 	public void Setup(CardData data)
 	{
 		Data = data;
