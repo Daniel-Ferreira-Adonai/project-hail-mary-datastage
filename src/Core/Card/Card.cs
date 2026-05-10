@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Card : Node2D
 {
@@ -88,7 +89,15 @@ public partial class Card : Node2D
     else
         descricaoLabel.RemoveThemeColorOverride("font_color");
 }
-
+    public async Task PlayUpgradeAnimation()
+    {
+        var animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animPlayer.Play("UpgradeCard");
+        
+        await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
+        
+        GetNode<Label>("Nome").AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f));
+    }
 	public void Setup(CardData data)
 	{
 		Data = data;

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://byyha1vh0bfqc"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_bsiut"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_xhojs"]
+
+[sub_resource type="Resource" id="Resource_eu4xt"]
+script = ExtResource("1_bsiut")
+Type = 13
+Value = 75
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_xhojs")
+ChoiceText = "Tocar o tronco dourado"
+ResultText = "Suas mãos afundam no metal macio. Ouro líquido escorre por seus dedos e se solidifica em moedas. A árvore sussurra aprovação.|Suas mãos afundam no metal macio. Ouro líquido escorre por seus dedos e desaparece no ar. A árvore treme — você sente algo sendo drenado de você."
+Effects = Array[Object]([SubResource("Resource_eu4xt")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

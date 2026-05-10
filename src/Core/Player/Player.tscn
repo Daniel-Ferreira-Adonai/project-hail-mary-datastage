@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://yc166xjjkglb" path="res://Test/TestMcFrames/Idle/Untitled design (15).png" id="7_scflc"]
 [ext_resource type="Texture2D" uid="uid://8r3tys8qy0bq" path="res://Test/TestMcFrames/Idle/Untitled design (16).png" id="8_1404v"]
 [ext_resource type="Texture2D" uid="uid://c4x3eygtv088n" path="res://Test/TestMcFrames/Idle/Untitled design (18).png" id="9_jupfw"]
+[ext_resource type="PackedScene" uid="uid://crevm2e6yqhwv" path="res://src/Core/UI/DamageLabel.tscn" id="11_scflc"]
 [ext_resource type="PackedScene" uid="uid://da5mcnljqamdr" path="res://Test/TestScenes/BarraDeVida.tscn" id="11_xmvw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
@@ -60,7 +61,9 @@ script = ExtResource("1_honyp")
 MaxHp = 50
 currentHp = 50
 _hpBar = NodePath("TesteBar")
+PerCombatTemporaryStrength = 15
 animation = NodePath("AnimatedSprite2D")
+_damageLabelScene = ExtResource("11_scflc")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
 visible = false

@@ -118,6 +118,7 @@ src/Core/
   ShopDebugOpener.cs
  UI/
   BarraDeVida.cs
+  DamageLabel.cs
   RelicBar.cs
   TopBar.cs
   TopHud.cs

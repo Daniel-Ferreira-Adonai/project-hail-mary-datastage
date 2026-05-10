@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://chccm5da6mj4q"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_4eamt"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_77nc4"]
+
+[sub_resource type="Resource" id="Resource_2n0jl"]
+script = ExtResource("1_4eamt")
+Type = 1
+Value = 1
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_n53j4"]
+script = ExtResource("1_4eamt")
+Type = 11
+secret = true
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_77nc4")
+ChoiceText = "Pedir conhecimento da torre"
+ResultText = "Ele apenas te aconselha: Nunca olhe diretamente para uma tulipa"
+Effects = Array[Object]([SubResource("Resource_2n0jl"), SubResource("Resource_n53j4")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

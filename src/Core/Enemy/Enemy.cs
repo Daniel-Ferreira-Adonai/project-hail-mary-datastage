@@ -5,7 +5,8 @@ using Godot.Collections;
 public partial class Enemy : Node2D
 {
     [Export] public EnemyData Data { get; set; }
-    
+    [Export] private PackedScene _damageLabelScene;
+
     private int _currentHealth;
     public int CurrentHealth
     {
@@ -132,9 +133,24 @@ public partial class Enemy : Node2D
 
     _collision.Position = Vector2.Zero;
 }
+private void SpawnDamageLabel(int damage)
+{
+    if (_damageLabelScene == null) return;
+    
+    var label = _damageLabelScene.Instantiate<DamageLabel>();
+    AddChild(label);
+    label.Scale = new Vector2(3f, 3f) / Scale;
+    label.Visible = true;
+    label.ZIndex = 100 + GetChildCount();
+    label.Position = new Vector2(0, -50);
+        
+    label.Setup(damage);
+}
+
 public void TakeDamage(int damage)
 {
     CurrentHealth -= damage;
+    SpawnDamageLabel(damage);
 
     var player = PlayerManager.Instance.Player;
     
@@ -146,7 +162,6 @@ public void TakeDamage(int damage)
         {
             player.AttackImpact -= OnImpact;
             
-            // Verifica se o inimigo ainda existe
             if (IsInstanceValid(this) && !IsQueuedForDeletion())
                 FlashDamage();
         }

@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://jb2kvmuhw0l2"]
 
 [ext_resource type="Script" uid="uid://bfvhik4w2dn1f" path="res://src/Core/Enemy/Enemy.cs" id="1_1qhr4"]
+[ext_resource type="PackedScene" uid="uid://crevm2e6yqhwv" path="res://src/Core/UI/DamageLabel.tscn" id="2_1qhr4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d5873"]
 size = Vector2(163, 151)
 
 [node name="Enemy" type="Node2D" unique_id=186659099]
 script = ExtResource("1_1qhr4")
+_damageLabelScene = ExtResource("2_1qhr4")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1568294413]
 

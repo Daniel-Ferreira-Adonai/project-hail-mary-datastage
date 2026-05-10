@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://qnwwpv2758wp"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_fndxk"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_s6let"]
+
+[sub_resource type="Resource" id="Resource_ypnmt"]
+script = ExtResource("1_s6let")
+Value = 20
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_fndxk")
+ChoiceText = "Arrancar uma folha de ouro"
+ResultText = "A folha se desprende facilmente e se solidifica em sua mão. Ouro puro. é pouco mas é alguma coisa."
+Effects = Array[Object]([SubResource("Resource_ypnmt")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -14,9 +14,14 @@ Type = 3
 Value = 5
 metadata/_custom_type_script = "uid://bw54hv2smagm2"
 
+[sub_resource type="Resource" id="Resource_psbi1"]
+script = ExtResource("1_psbi1")
+Type = 9
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
 [resource]
 script = ExtResource("1_j30ij")
 ChoiceText = "Oferecer seu sangue por ouro"
 ResultText = "O mercador sorri e enche um frasco com seu sangue. Você se sente mais fraco, mas rico."
-Effects = Array[Object]([SubResource("Resource_o1npn"), SubResource("Resource_s0uuo")])
+Effects = Array[Object]([SubResource("Resource_o1npn"), SubResource("Resource_s0uuo"), SubResource("Resource_psbi1")])
 metadata/_custom_type_script = "uid://d1a0u6167j7x1"

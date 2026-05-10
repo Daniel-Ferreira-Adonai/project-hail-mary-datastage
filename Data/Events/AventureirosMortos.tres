@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://8cxmr4dhbfh6"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_h2y81"]
+[ext_resource type="Texture2D" uid="uid://bhcmxq3fj20c5" path="res://Test/TestImagesSprites/Gemini_Generated_Image_egpt7degpt7degpt.png" id="1_w1f2b"]
+[ext_resource type="Resource" uid="uid://ip0jo0ehk1th" path="res://Data/EventChoices/AventureirosMortos/F.tres" id="2_subwr"]
+[ext_resource type="Resource" uid="uid://ba6r5dys0h7xa" path="res://Data/EventChoices/AventureirosMortos/RecolherMoedas.tres" id="3_l3mfp"]
+[ext_resource type="Resource" uid="uid://cv434us0umlyo" path="res://Data/EventChoices/AventureirosMortos/Vasculhar.tres" id="4_ucl21"]
+
+[resource]
+script = ExtResource("1_h2y81")
+EventName = "Aventureiros Caídos"
+Description = "Corpos espalhados pelo chão. Armaduras amassadas, armas quebradas, mochilas rasgadas. Eles não conseguiram passar daqui. Entre os destroços, algo brilha — equipamentos que não servirão mais a ninguém... exceto você."
+Art = ExtResource("1_w1f2b")
+Choices = Array[Object]([ExtResource("2_subwr"), ExtResource("3_l3mfp"), ExtResource("4_ucl21")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

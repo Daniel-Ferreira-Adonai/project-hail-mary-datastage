@@ -43,13 +43,28 @@ public partial class EventChoiceButton : PanelContainer
         string result = "";
         foreach (var effect in effects)
         {
+			 if (effect.secret == true)
+			{
+				result += "[color=#FFD700]???[/color] ";
+				continue;
+			}
             result += effect.Type switch
             {
-                EffectType.GainGold => $"[color=#FFD700]Gain {effect.Value} Gold[/color] ",
-                EffectType.LoseGold => $"[color=#FF4444]Lose {effect.Value} Gold[/color] ",
-                EffectType.LoseHP   => $"[color=#FF4444]Lose {effect.Value} HP[/color] ",
-                EffectType.GainHP   => $"[color=#44FF44]Gain {effect.Value} HP[/color] ",
-                _ => ""
+                EffectType.GainGold => $"[color=#FFD700]Ganhe {effect.Value} Gold[/color] ",
+				EffectType.LoseGold => $"[color=#FF4444]Perca {effect.Value} Gold[/color] ",
+				EffectType.GainHP => $"[color=#44FF44]Ganhe {effect.Value} HP[/color] ",
+				EffectType.LoseHP => $"[color=#FF4444]Perca {effect.Value} HP[/color] ",
+				EffectType.GainCard => $"[color=#44FF44]Ganhe uma carta[/color] ",
+				EffectType.RemoveCard => $"[color=#FFAA44]Remova uma carta[/color] ",
+				EffectType.GainRelic => $"[color=#AA44FF]Ganhe uma relíquia[/color] ",
+				EffectType.GainRandomCard => $"[color=#44FF44]Ganhe uma carta aleatória[/color] ",
+				EffectType.UpgradeCard => $"[color=#44FF44]Melhore uma carta[/color] ",
+				EffectType.UpgradeRandomCard => $"[color=#44FF44]Melhore uma carta aleatória[/color] ",
+				EffectType.RemoveRandomCard => $"[color=#FF4444]Remova uma carta aleatória[/color] ",
+				EffectType.RandomHpSwing => $"[color=#FFAA44]Ganhe ou Perca {effect.Value} HP (50/50)[/color] ",
+				EffectType.RandomGoldSwing => $"[color=#FFAA44]Ganhe ou Perca {effect.Value} Gold (50/50)[/color] ",
+				EffectType.nothing => "",
+				_ => ""
             };
         }
         return result;

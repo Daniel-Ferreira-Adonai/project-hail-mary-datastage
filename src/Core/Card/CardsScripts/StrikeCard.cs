@@ -12,4 +12,9 @@ public partial class StrikeCard : CardData
         enemy.TakeDamage(damage);
 		}
 	}
+    public override void UpgradeCard()
+    {
+        this.Damage += 3;
+    }
+
   }

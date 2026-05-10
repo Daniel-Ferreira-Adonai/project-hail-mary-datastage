@@ -135,6 +135,8 @@ public partial class Player : Node2D
 	public bool IsWeak { get; set; } = false;
     public bool IsFrail { get; set; } = false;
 	[Export] public AnimatedSprite2D animation;
+	[Export] private PackedScene _damageLabelScene;
+
 	[Signal]
 	public delegate void AttackImpactEventHandler();
 
@@ -196,6 +198,8 @@ private void SetupHpBar()
 			return;
 		}
 		UpdateLabelValues();
+		SpawnDamageLabel(damageToHp);
+
 	}
 	public void TakeDamage(int damage)
 {
@@ -207,7 +211,20 @@ private void SetupHpBar()
         isAlive = false;
     }
     
+    SpawnDamageLabel(damage);
     UpdateLabelValues();
+}
+
+private void SpawnDamageLabel(int damage)
+{
+    if (_damageLabelScene == null) return;
+    
+    var label = _damageLabelScene.Instantiate<DamageLabel>();
+    AddChild(label); // ← filho do Player
+    label.Visible = true;
+    label.ZIndex = 100;
+    label.Position = new Vector2(0, -50); 
+    label.Setup(damage);
 }
 	public void UpdateLabelValues()
 {
@@ -242,6 +259,17 @@ private void SetupHpBar()
 	{
 		_BaseDeck.Add(cardData);
 	}
+	public CardData UpgradeRandomCard()
+{
+    var nonUpgraded = _BaseDeck.FindAll(cardData => !cardData.IsCardUpgraded);
+    
+    if (nonUpgraded.Count == 0) return null;
+    
+    int random = (int)GD.RandRange(0, nonUpgraded.Count - 1);
+	CardData cardData = nonUpgraded[random]; 
+	cardData.IsCardUpgraded = true;
+    return cardData;
+}
 	public void setupBasicDeck()
 	{
 		CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");

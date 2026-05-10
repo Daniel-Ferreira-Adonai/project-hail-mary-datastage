@@ -106,24 +106,24 @@ public partial class GameManager : Node
             ShowMapFade();
         };
     }
-public async void ShowEvent(EventData eventData)
-{
-    await UI.Instance.FadeOut();
+    public async void ShowEvent(EventData eventData)
+    {
+        await UI.Instance.FadeOut();
 
-    var eventUI = _eventScene.Instantiate<EventUi>();
-    UI.Instance.AddUI(eventUI);
-    _map.HideMap();
+        var eventUI = _eventScene.Instantiate<EventUi>();
+        UI.Instance.AddUI(eventUI);
+        _map.HideMap();
 
-    UI.Instance.FadeIn();
-    eventUI.LoadEvent(eventData);
+        UI.Instance.FadeIn();
+        eventUI.LoadEvent(eventData);
 
-    eventUI.ExitRequested += async () =>
-{
-    await UI.Instance.FadeOut();
-    eventUI.QueueFree();
-    ShowMapFade();
-};
-}
+        eventUI.ExitRequested += async () =>
+    {
+        await UI.Instance.FadeOut();
+        eventUI.QueueFree();
+        ShowMapFade();
+    };
+    }
     public async void ShowCampFire()
     {
         _campFireScene ??= GD.Load<PackedScene>("res://src/Core/CampFire/CampFire.tscn");

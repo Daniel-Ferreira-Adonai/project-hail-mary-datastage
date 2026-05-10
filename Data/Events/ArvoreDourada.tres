@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://cttqfcqp4t80k"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_6vhg2"]
+[ext_resource type="Texture2D" uid="uid://dbtcy3sqyc83e" path="res://Test/TestImagesSprites/Gemini_Generated_Image_ucfxbducfxbducfx.png" id="1_ctque"]
+[ext_resource type="Resource" uid="uid://qnwwpv2758wp" path="res://Data/EventChoices/ArvoreDourada/ColherUmaFolha.tres" id="2_xoxsk"]
+[ext_resource type="Resource" uid="uid://byyha1vh0bfqc" path="res://Data/EventChoices/ArvoreDourada/TocarAArvore.tres" id="3_rumtm"]
+
+[resource]
+script = ExtResource("1_6vhg2")
+EventName = "A Árvore da Ganância"
+Description = "ma árvore colossal de tronco dourado se ergue entre a devastação. Suas folhas metálicas tilintam como moedas ao vento. Galhos retorcidos parecem convidar... ou avisar. Ouro escorre lentamente pelo tronco como seiva líquida."
+Art = ExtResource("1_ctque")
+Choices = Array[Object]([ExtResource("2_xoxsk"), ExtResource("3_rumtm")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

@@ -68,7 +68,7 @@ public async void DrawCard(int count)
         _handNode.AddCard(card);
         _originalScales[card] = card.Scale;
 
-        await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
     }
 
     _handNode.ArrangeFan();
@@ -101,18 +101,20 @@ public async void DrawCard(int count)
 		_originalScales.Clear();
 }
 	public override void _Input(InputEvent @event)
-	{
-		if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left)
-		{
-			if (mb.Pressed)
-			{
-				Card card = RaycastCheckForCard();
-				if (card is not null)
-					StartDragging(card);
-			}
-			else FinishDrag();
-		}
-	}
+{
+    if (@event is InputEventMouseButton mb && mb.ButtonIndex == MouseButton.Left && mb.Pressed)
+    {
+        if (CardBeingDraged != null)
+        {
+            FinishDrag();
+            return;
+        }
+
+        Card card = RaycastCheckForCard();
+        if (card is not null)
+            StartDragging(card);
+    }
+}
 
 	// public void ConnectCardSignals(Card card)
 	// {

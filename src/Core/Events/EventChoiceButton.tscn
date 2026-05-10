@@ -32,6 +32,7 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1631734760]
+texture_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5372849, 0.79369235, 0.99476665, 1)
 theme_override_font_sizes/font_size = 20
@@ -39,6 +40,7 @@ text = "dasdsadas"
 autowrap_mode = 3
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1961881844]
+texture_filter = 2
 layout_mode = 2
 bbcode_enabled = true
 fit_content = true

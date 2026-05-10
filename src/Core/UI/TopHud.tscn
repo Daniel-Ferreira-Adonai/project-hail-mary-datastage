@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://crk40rl1ibmgu" path="res://src/Core/UI/RelicBar.tscn" id="3_og3ew"]
 
 [node name="TopHud" type="VBoxContainer" unique_id=313315863 node_paths=PackedStringArray("_topBar", "_relicBar")]
+z_index = 1000
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 45.0
