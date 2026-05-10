@@ -81,6 +81,11 @@ public partial class CombatManager : Node2D
 		_cardManager.DiscardHand();
         
         Player.TriggerRelics(r => r.OnTurnEnd(Player)); 
+foreach (var enemy in _activeEnemies)
+    {
+        if (enemy != null && IsInstanceValid(enemy))
+            enemy.ClearIntent();
+    }
 
 		ExecuteEnemyTurns();
         updateEnemyDebuffs();
@@ -102,6 +107,8 @@ public partial class CombatManager : Node2D
 	public void StartTurn()
 	{
         Player.TriggerRelics(r => r.OnTurnStart(Player)); 
+            ShowEnemyIntents();
+
         int cardsToDraw = _cardManager.cardsDrawedPerTurn + Player.BonusCardsToDraw;
         Player.BonusCardsToDraw = 0;
 		_cardManager.DrawCard(cardsToDraw);
@@ -129,6 +136,9 @@ public partial class CombatManager : Node2D
 	{
         _cardManager.ResetDeck();
 		_cardManager.StartDeck();
+        
+        ShowEnemyIntents();
+
 		
 	}
 	public override void _Process(double delta)
@@ -508,5 +518,19 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
 
     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
     rewardCard.SetAnchorsPreset(Control.LayoutPreset.Center);
+}
+private void ShowEnemyIntents()
+{
+    GD.Print("=== ShowEnemyIntents chamado ===");
+    
+    foreach (var enemy in _activeEnemies)
+    {
+        if (enemy != null && IsInstanceValid(enemy))
+        {
+            var intents = enemy.GetNextTurnIntents();
+            GD.Print($"Inimigo {enemy.Name}: {intents.Count} intents");
+            enemy.ShowIntent(intents);
+        }
+    }
 }
 }

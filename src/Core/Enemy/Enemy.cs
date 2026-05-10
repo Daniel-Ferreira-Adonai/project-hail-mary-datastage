@@ -6,6 +6,15 @@ public partial class Enemy : Node2D
 {
     [Export] public EnemyData Data { get; set; }
     [Export] private PackedScene _damageLabelScene;
+    [Export] private HBoxContainer _intentContainer;
+    
+    [Export] private Texture2D _attackIcon;
+    [Export] private Texture2D _defenseIcon;
+    [Export] private Texture2D _buffIcon;
+    [Export] private Texture2D _debuffIcon;
+    [Export] private Texture2D _unknownIcon;
+    
+    [Export] private float _intentOffsetY = -160f;
 
     private int _currentHealth;
     public int CurrentHealth
@@ -53,11 +62,26 @@ public partial class Enemy : Node2D
     
     public override void _Ready()
     {
-        _healthLabel = GetNode<Label>("health");
-        _sprite = GetNodeOrNull<Sprite2D>("Sprite");
-        _collision = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
+       _healthLabel = GetNode<Label>("health");
+    _sprite = GetNodeOrNull<Sprite2D>("Sprite");
+    _collision = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
+    _intentContainer = GetNodeOrNull<HBoxContainer>("HBoxContainer");
 
-        
+if (_intentContainer != null)
+{
+    _intentContainer.Position = new Vector2(-60, _intentOffsetY); // ← centraliza mais
+    _intentContainer.CustomMinimumSize = new Vector2(120, 56);
+    _intentContainer.AddThemeConstantOverride("separation", 4);
+    _intentContainer.Alignment = BoxContainer.AlignmentMode.Center;
+    _intentContainer.AnchorLeft = 0.5f;
+    _intentContainer.AnchorRight = 0.5f;
+    _intentContainer.OffsetLeft = -100;
+    _intentContainer.OffsetRight = 60;
+}
+    else
+    {
+        GD.PrintErr($"❌ Intent container NÃO encontrado em {Name}!");
+    }
         AddToGroup("enemies");
         
         if (Data != null)
@@ -72,7 +96,7 @@ public partial class Enemy : Node2D
     }
     
   
-   public void Setup(EnemyData data)
+    public void Setup(EnemyData data)
     {
         Data = data;
         Name = data.EnemyName;
@@ -105,6 +129,20 @@ public partial class Enemy : Node2D
         return EnemyScaler.CalculateDisplayWidth(Data.Sprite, Data.Size);
     }
     
+    // Pega os intents do turno atual SEM avançar o índice (para preview)
+    public Array<IntentData> GetNextTurnIntents()
+    {
+        if (_turnPatterns == null || _turnPatterns.Count == 0)
+        {
+            GD.PrintErr($"{Name} não tem padrões de turno definidos!");
+            return new Array<IntentData>();
+        }
+        
+        var currentTurn = _turnPatterns[_currentTurnIndex % _turnPatterns.Count];
+        return currentTurn.Actions;
+    }
+    
+    // Pega os intents e AVANÇA o índice (para execução)
     public Array<IntentData> getTurnIntents()
     {
         if (_turnPatterns == null || _turnPatterns.Count == 0)
@@ -119,59 +157,126 @@ public partial class Enemy : Node2D
         
         return currentTurn.Actions;
     }
-    private void UpdateHitbox()
+
+public void ShowIntent(Array<IntentData> intents)
 {
-    if (_sprite?.Texture == null || _collision == null)
-        return;
+    if (_intentContainer == null || intents == null) return;
 
-    Vector2 size = _sprite.Texture.GetSize() * _sprite.Scale;
+    ClearIntent();
 
-    var shape = new RectangleShape2D();
-    shape.Size = size;
-
-    _collision.Shape = shape;
-
-    _collision.Position = Vector2.Zero;
-}
-private void SpawnDamageLabel(int damage)
-{
-    if (_damageLabelScene == null) return;
-    
-    var label = _damageLabelScene.Instantiate<DamageLabel>();
-    AddChild(label);
-    label.Scale = new Vector2(3f, 3f) / Scale;
-    label.Visible = true;
-    label.ZIndex = 100 + GetChildCount();
-    label.Position = new Vector2(0, -50);
-        
-    label.Setup(damage);
-}
-
-public void TakeDamage(int damage)
-{
-    CurrentHealth -= damage;
-    SpawnDamageLabel(damage);
-
-    var player = PlayerManager.Instance.Player;
-    
-    if (player._isAttacking)
+    bool first = true;
+    foreach (var intent in intents)
     {
-        player.AttackImpact += OnImpact;
-
-        void OnImpact()
+        if (!first)
         {
-            player.AttackImpact -= OnImpact;
+            var separator = new Label();
+            separator.Text = "|";
+            separator.AddThemeColorOverride("font_color", new Color(1f, 1f, 1f, 0.8f));
+            separator.AddThemeFontSizeOverride("font_size", 28);
+            separator.VerticalAlignment = VerticalAlignment.Center;
+            _intentContainer.AddChild(separator);
+        }
+        first = false;
+
+        var iconTexture = new TextureRect();
+        iconTexture.Texture = GetIconForIntent(intent.Type);
+        iconTexture.CustomMinimumSize = new Vector2(56, 56);
+        iconTexture.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+        iconTexture.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+        _intentContainer.AddChild(iconTexture);
+
+        if (intent.Type == IntentData.IntentType.Attack && intent.Value > 0)
+        {
+            int finalDamage = CalculateFinalDamage(intent.Value);
             
+            var label = new Label();
+            label.Text = finalDamage.ToString();
+            label.AddThemeColorOverride("font_color", new Color(1f, 1f, 1f));
+            label.AddThemeColorOverride("font_outline_color", new Color(0f, 0f, 0f));
+            label.AddThemeConstantOverride("outline_size", 8);
+            label.AddThemeFontSizeOverride("font_size", 32);
+            label.VerticalAlignment = VerticalAlignment.Center;
+            _intentContainer.AddChild(label);
+        }
+    }
+}
+
+    public void ClearIntent()
+    {
+        if (_intentContainer == null) return;
+
+        foreach (Node child in _intentContainer.GetChildren())
+        {
+            child.QueueFree();
+        }
+    }
+
+   private Texture2D GetIconForIntent(IntentData.IntentType intent)
+{
+    return intent switch
+    {
+        IntentData.IntentType.Attack => _attackIcon,
+        IntentData.IntentType.Defend => _defenseIcon,
+        IntentData.IntentType.Buff => _buffIcon,
+        IntentData.IntentType.Debuff => _debuffIcon,
+        _ => _unknownIcon
+    };
+}
+
+    private void UpdateHitbox()
+    {
+        if (_sprite?.Texture == null || _collision == null)
+            return;
+
+        Vector2 size = _sprite.Texture.GetSize() * _sprite.Scale;
+
+        var shape = new RectangleShape2D();
+        shape.Size = size;
+
+        _collision.Shape = shape;
+
+        _collision.Position = Vector2.Zero;
+    }
+
+    private void SpawnDamageLabel(int damage)
+    {
+        if (_damageLabelScene == null) return;
+        
+        var label = _damageLabelScene.Instantiate<DamageLabel>();
+        AddChild(label);
+        label.Scale = new Vector2(3f, 3f) / Scale;
+        label.Visible = true;
+        label.ZIndex = 100 + GetChildCount();
+        label.Position = new Vector2(0, -50);
+            
+        label.Setup(damage);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth -= damage;
+        SpawnDamageLabel(damage);
+
+        var player = PlayerManager.Instance.Player;
+        
+        if (player._isAttacking)
+        {
+            player.AttackImpact += OnImpact;
+
+            void OnImpact()
+            {
+                player.AttackImpact -= OnImpact;
+                
+                if (IsInstanceValid(this) && !IsQueuedForDeletion())
+                    FlashDamage();
+            }
+        }
+        else
+        {
             if (IsInstanceValid(this) && !IsQueuedForDeletion())
                 FlashDamage();
         }
     }
-    else
-    {
-        if (IsInstanceValid(this) && !IsQueuedForDeletion())
-            FlashDamage();
-    }
-}
     
     private void FlashDamage()
     {
@@ -193,7 +298,8 @@ public void TakeDamage(int damage)
         tween.TweenProperty(this, "scale", Vector2.Zero, 0.5f).SetTrans(Tween.TransitionType.Back);
         tween.TweenCallback(Callable.From(QueueFree));
     }
-        public void ApplyDebuff(string debuff, int value)
+
+    public void ApplyDebuff(string debuff, int value)
     {
         if (!Debuffs.ContainsKey(debuff))
             Debuffs[debuff] = 0;
@@ -205,6 +311,7 @@ public void TakeDamage(int damage)
         var combatManager = GetTree().GetFirstNodeInGroup("combat_manager") as CombatManager;
         combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff));
     }
+
     private void UpdateHealthLabel()
     {
         if (_healthLabel != null)
@@ -213,7 +320,7 @@ public void TakeDamage(int damage)
         }
     }
     
-        public void UpdateTemporaryEffects()
+    public void UpdateTemporaryEffects()
     {
         var keys = new List<string>(Debuffs.Keys);
         foreach (var key in keys)
@@ -226,5 +333,22 @@ public void TakeDamage(int damage)
 
         BuffedStrength = 0;
     }
-
+    private int CalculateFinalDamage(int baseDamage)
+{
+    float damage = baseDamage;
+    
+    // Adiciona a força do inimigo
+    damage += Strength;
+    damage += BuffedStrength;
+    
+    // Aplica Weak (enfraquecido) - reduz 25%
+    if (Weak > 0)
+        damage *= 0.75f;
+    
+    // Vulnerável é aplicado no PLAYER, não no inimigo
+    // Então não calculamos aqui, pois o inimigo não sabe se o player está vulnerável
+    // Isso seria calculado quando o ataque realmente acontece
+    
+    return Mathf.Max(0, Mathf.FloorToInt(damage));
+}
 }

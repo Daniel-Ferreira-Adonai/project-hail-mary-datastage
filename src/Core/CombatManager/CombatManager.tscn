@@ -18,10 +18,10 @@ texture = ExtResource("3_418fw")
 [node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]
 
 [node name="endTurn" type="Button" parent="." unique_id=1071846408]
-offset_left = 1305.0
-offset_top = 551.00006
-offset_right = 1730.0
-offset_bottom = 664.00006
+offset_left = 1458.0
+offset_top = 800.0
+offset_right = 1883.0
+offset_bottom = 913.0
 scale = Vector2(0.7035611, 0.698996)
 text = "END TURN"
 script = ExtResource("6_418fw")
