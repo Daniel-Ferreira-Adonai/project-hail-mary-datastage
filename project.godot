@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Project hail mary datastage"
-run/main_scene="res://src/Core/Menu/MainMenu.tscn"
+run/main_scene="uid://dr02j4rn2wvb3"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

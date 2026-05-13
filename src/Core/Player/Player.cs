@@ -150,6 +150,17 @@ public partial class Player : Node2D
 		PlayerManager.Instance.Player = this;
 		SetupHpBar();
 		UpdateLabelValues();
+
+		var relicFiles = DirAccess.GetFilesAt("res://Data/Relics/");
+		foreach (var file in relicFiles)
+		{
+			if (file.EndsWith(".tres"))
+			{
+				var relic = GD.Load<RelicData>($"res://Data/Relics/{file}");
+				if (relic != null)
+					Relics.Add(relic);
+			}
+		}
 	}
 
 	private void ApplyCharacterData()
