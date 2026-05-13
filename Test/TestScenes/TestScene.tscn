@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://ck06lmn0lest7"]
+
+[ext_resource type="Script" uid="uid://cvajufsv6y372" path="res://Test/TestScripts/TestLabel.cs" id="1_dracy"]
+[ext_resource type="PackedScene" uid="uid://4h0xrpwrcvts" path="res://src/Core/Player/Player.tscn" id="2_kmu3i"]
+[ext_resource type="PackedScene" uid="uid://cso48pa1xu8vm" path="res://src/Core/CombatManager/CombatManager.tscn" id="2_wb8t6"]
+[ext_resource type="Script" uid="uid://b77s43wmxq2h1" path="res://Test/TestScripts/Button.cs" id="5_p77mi"]
+[ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="7_bwyxq"]
+[ext_resource type="PackedScene" uid="uid://b8h3yi4y8k457" path="res://src/Core/UI/UI.tscn" id="9_kmu3i"]
+[ext_resource type="Script" uid="uid://no6nqsisuhx3" path="res://src/Core/Shop/ShopDebugOpener.cs" id="10_shop"]
+
+[node name="TestScene" type="Node2D" unique_id=1599094848]
+script = ExtResource("10_shop")
+
+[node name="CombatManager" parent="." unique_id=1684369228 instance=ExtResource("2_wb8t6")]
+
+[node name="Label" type="Label" parent="." unique_id=422891216]
+offset_left = 188.0
+offset_top = 97.0
+offset_right = 228.0
+offset_bottom = 120.0
+script = ExtResource("1_dracy")
+
+[node name="Button" type="Button" parent="." unique_id=131207061]
+visible = false
+offset_left = 150.0
+offset_top = 60.0
+offset_right = 408.0
+offset_bottom = 187.0
+text = "DrawCardTestButton
+"
+script = ExtResource("5_p77mi")
+
+[node name="endTurn" type="Button" parent="." unique_id=1234448758]
+offset_left = 1305.0
+offset_top = 551.0
+offset_right = 1730.0
+offset_bottom = 664.0
+scale = Vector2(0.7035611, 0.698996)
+text = "END TURN"
+script = ExtResource("7_bwyxq")
+
+[node name="UI" parent="." unique_id=2146334214 instance=ExtResource("9_kmu3i")]
+
+[node name="Player" parent="." unique_id=1708444179 instance=ExtResource("2_kmu3i")]
+position = Vector2(399, 423.99997)
+MaxHp = 40
+currentHp = 40
+
+[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
+[connection signal="button_down" from="endTurn" to="endTurn" method="_on_button_down2"]

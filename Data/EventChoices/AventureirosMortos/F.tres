@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://ip0jo0ehk1th"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_5l0h1"]
+
+[resource]
+script = ExtResource("1_5l0h1")
+ChoiceText = "Fazer uma prece e seguir em frente"
+ResultText = "Você fecha os olhos dos caídos e murmura palavras silenciosas. Nenhum tesouro vale carregar essa maldição. Você segue em paz. PRESS F FOR RESPECT"
+Effects = null
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

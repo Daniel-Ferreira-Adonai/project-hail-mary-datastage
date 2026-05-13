@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://domj7cnfv0uua"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_34ny1"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_aigda"]
+
+[sub_resource type="Resource" id="Resource_3vsi6"]
+script = ExtResource("1_aigda")
+Type = 6
+Value = 1
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_3r5wu"]
+script = ExtResource("1_aigda")
+Type = 3
+Value = 10
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_34ny1")
+ChoiceText = "Me ve 1 chefe"
+ResultText = "\"Excelente escolha!\" ele coaxa, entregando algo brilhante. Você sente a vida drenar enquanto segura o item."
+Effects = Array[Object]([SubResource("Resource_3vsi6"), SubResource("Resource_3r5wu")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

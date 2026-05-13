@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://eg8erewyudam"]
+
+[ext_resource type="Script" uid="uid://bcmugiqmqkkgn" path="res://src/Core/Menu/MainMenu.cs" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://csv66461yt4fo" path="res://BackgroundMenu.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://bk5qqbqpdyfx1" path="res://BotãoJogar.png" id="3_btn_play"]
+[ext_resource type="Texture2D" path="res://Configurações.png" id="4_btn_cfg"]
+[ext_resource type="Texture2D" path="res://Sair.png" id="5_btn_sair"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.05, 0.02, 0.1, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.2, 0.6, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="MainMenu" type="Control" unique_id=149446269]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1353045184]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="LoginPanel" type="PanelContainer" parent="Background" unique_id=1712253323]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -260.0
+offset_right = 250.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBox" type="VBoxContainer" parent="Background/LoginPanel" unique_id=1926742660]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="GameTitle" type="Label" parent="Background/LoginPanel/VBox" unique_id=454119666]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "PROJECT HAIL MARY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Background/LoginPanel/VBox" unique_id=220265141]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.5, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "DATASTAGE"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="TextureButton" parent="Background/LoginPanel/VBox" unique_id=2129924181]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_btn_play")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="SettingsButton" type="TextureButton" parent="Background/LoginPanel/VBox"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_cfg")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="QuitButton" type="TextureButton" parent="Background/LoginPanel/VBox"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("5_btn_sair")
+ignore_texture_size = true
+stretch_mode = 6
+
+[connection signal="pressed" from="Background/LoginPanel/VBox/PlayButton" to="." method="OnPlayPressed"]
+[connection signal="pressed" from="Background/LoginPanel/VBox/SettingsButton" to="." method="OnSettingsPressed"]
+[connection signal="pressed" from="Background/LoginPanel/VBox/QuitButton" to="." method="OnQuitPressed"]

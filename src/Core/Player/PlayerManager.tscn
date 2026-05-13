@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dokwxw2mhvd16"]
+
+[ext_resource type="PackedScene" uid="uid://4h0xrpwrcvts" path="res://src/Core/Player/Player.tscn" id="1_p6tbc"]
+[ext_resource type="Script" uid="uid://dasvrt836gvrb" path="res://src/Core/Player/PlayerManager.cs" id="1_qwqbo"]
+
+[node name="PlayerManager" type="Node2D" unique_id=693151172]
+script = ExtResource("1_qwqbo")
+
+[node name="Player" parent="." unique_id=1708444179 instance=ExtResource("1_p6tbc")]

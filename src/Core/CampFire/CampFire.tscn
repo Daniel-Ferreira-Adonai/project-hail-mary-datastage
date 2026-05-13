@@ -1,0 +1,212 @@
+[gd_scene format=3 uid="uid://ck4w23j6campf"]
+
+[ext_resource type="Script" uid="uid://d2042qvtjpb5f" path="res://src/Core/CampFire/CampFire.cs" id="1_camp"]
+[ext_resource type="Texture2D" uid="uid://c6gxgbebytdu0" path="res://Background_Fogueira.png" id="2_a6osl"]
+[ext_resource type="Texture2D" uid="uid://c2gd5jn3jw1ym" path="res://Test/TestMcFrames/Idle/Untitled design (9).png" id="3_player"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.88, 0.86, 0.8, 0.78)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.51, 0.44, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.38, 0.36, 0.34, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.68, 0.6, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+bg_color = Color(0.09, 0.08, 0.075, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.2, 0.17, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_proceed"]
+bg_color = Color(0.49, 0.08, 0.065, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.88, 0.46, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="CampFire" type="Control" unique_id=1593628960]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_camp")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1393863707]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_a6osl")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=981774519]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.28)
+
+[node name="PlayerArt" type="TextureRect" parent="." unique_id=1834690406]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -847.0
+offset_top = -824.0
+offset_right = -67.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_player")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ActionPanel" type="PanelContainer" parent="." unique_id=1195493804]
+custom_minimum_size = Vector2(560, 250)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -280.0
+offset_top = 120.0
+offset_right = 280.0
+offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="ActionPanel" unique_id=1911890419]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ActionPanel/MarginContainer" unique_id=926802050]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="ActionPanel/MarginContainer/VBoxContainer" unique_id=1695942978]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.19, 0.17, 1)
+theme_override_font_sizes/font_size = 34
+text = "Fogueira"
+horizontal_alignment = 1
+
+[node name="ChoicesContainer" type="HBoxContainer" parent="ActionPanel/MarginContainer/VBoxContainer" unique_id=1761720993]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 34
+alignment = 1
+
+[node name="RestChoice" type="VBoxContainer" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer" unique_id=110742781]
+custom_minimum_size = Vector2(170, 112)
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="RestButton" type="Button" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/RestChoice" unique_id=671457154]
+custom_minimum_size = Vector2(170, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Zzz..."
+
+[node name="RestLabel" type="Label" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/RestChoice" unique_id=469803078]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.19, 0.17, 1)
+theme_override_font_sizes/font_size = 18
+text = "Descansar"
+horizontal_alignment = 1
+
+[node name="UpgradeChoice" type="VBoxContainer" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer" unique_id=1987502348]
+custom_minimum_size = Vector2(170, 112)
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeButton" type="Button" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/UpgradeChoice" unique_id=944297762]
+custom_minimum_size = Vector2(170, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+text = "Carta"
+
+[node name="UpgradeLabel" type="Label" parent="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/UpgradeChoice" unique_id=200815739]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.19, 0.17, 1)
+theme_override_font_sizes/font_size = 18
+text = "Upar carta"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="ActionPanel/MarginContainer/VBoxContainer" unique_id=2086476864]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.21, 0.19, 0.17, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ProceedButton" type="Button" parent="." unique_id=404811099]
+visible = false
+custom_minimum_size = Vector2(190, 58)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 612.0
+offset_top = 168.0
+offset_right = 802.0
+offset_bottom = 226.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_proceed")
+text = "Prosseguir"
+
+[connection signal="pressed" from="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/RestChoice/RestButton" to="." method="OnRestPressed"]
+[connection signal="pressed" from="ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/UpgradeChoice/UpgradeButton" to="." method="OnUpgradePressed"]
+[connection signal="pressed" from="ProceedButton" to="." method="OnExitPressed"]

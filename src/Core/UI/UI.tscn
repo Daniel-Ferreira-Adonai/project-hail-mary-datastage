@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b8h3yi4y8k457"]
+
+[ext_resource type="Script" uid="uid://cr1qcdwrfv10i" path="res://src/Core/UI/UI.cs" id="1_f5ktt"]
+[ext_resource type="PackedScene" uid="uid://nv8ngfi0a4h4" path="res://src/Core/UI/TopHud.tscn" id="2_a6dur"]
+
+[node name="UI" type="CanvasLayer" unique_id=2146334214 node_paths=PackedStringArray("_fadeRect")]
+layer = 10
+follow_viewport_enabled = true
+script = ExtResource("1_f5ktt")
+_fadeRect = NodePath("ColorRect")
+
+[node name="TopHud" parent="." unique_id=313315863 instance=ExtResource("2_a6dur")]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=509520]
+z_index = 20
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)

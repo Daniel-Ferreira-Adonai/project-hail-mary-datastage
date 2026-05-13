@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PocaoDeVida" format=3 uid="uid://bulusda5n38fv"]
+
+[ext_resource type="Script" uid="uid://bud1j5hljd4mt" path="res://src/Core/Relic/RelicScripts/PocaoDeVida.cs" id="1_axw6d"]
+[ext_resource type="Texture2D" uid="uid://duqjbn6ycw6pi" path="res://Test/TestImagesSprites/PocaoDeVida.png" id="1_wwbiw"]
+
+[resource]
+script = ExtResource("1_axw6d")
+RelicName = "Poção De Vida"
+Description = "Simples mas efetiva"
+Icon = ExtResource("1_wwbiw")
+metadata/_custom_type_script = "uid://bud1j5hljd4mt"

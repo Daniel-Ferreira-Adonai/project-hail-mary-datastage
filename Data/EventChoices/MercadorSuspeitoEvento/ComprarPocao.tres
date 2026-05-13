@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://jo3e8x6vdwgl"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_pgrjy"]
+[ext_resource type="Resource" uid="uid://bvvvecuv6msnv" path="res://Data/EventEffects/GainHp.tres" id="1_qpoyq"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="2_xhhi5"]
+
+[sub_resource type="Resource" id="Resource_i21km"]
+script = ExtResource("2_xhhi5")
+Type = 1
+Value = 30
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_pgrjy")
+ChoiceText = "Comprar a poção (30 Gold)"
+ResultText = "O líquido tem gosto horrível, mas você sente suas feridas fecharem."
+Effects = Array[Resource]([ExtResource("1_qpoyq"), SubResource("Resource_i21km")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://ba6r5dys0h7xa"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_6bymd"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_10cqk"]
+
+[sub_resource type="Resource" id="Resource_b8dfq"]
+script = ExtResource("1_10cqk")
+Value = 67
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_6bymd")
+ChoiceText = "Recolher as moedas espalhadas"
+ResultText = "Ouro manchado de sangue ainda é ouro. Você enche os bolsos enquanto evita olhar para os rostos. Eles não precisam mais disso."
+Effects = Array[Object]([SubResource("Resource_b8dfq")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

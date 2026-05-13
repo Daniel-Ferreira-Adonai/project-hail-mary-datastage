@@ -1,0 +1,172 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/Core/CharacterSelect/CharacterSelect.cs" id="1_character_select"]
+[ext_resource type="Texture2D" path="res://BackgroundMenu.png" id="2_background"]
+[ext_resource type="Texture2D" path="res://Test/TestImagesSprites/Untitled design (9).png" id="3_portrait"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.08, 0.07, 0.86)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.46, 0.24, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+bg_color = Color(0.06, 0.045, 0.04, 0.72)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.58, 0.38, 0.22, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.36, 0.12, 0.08, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.56, 0.24, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="CharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_character_select")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="PanelContainer" parent="Background"]
+custom_minimum_size = Vector2(1400, 760)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -700.0
+offset_top = -380.0
+offset_right = 700.0
+offset_bottom = 380.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Background/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PanelTitle" type="Label" parent="Background/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Escolha seu Personagem"
+horizontal_alignment = 1
+
+[node name="CharactersContainer" type="HBoxContainer" parent="Background/Panel/VBox"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="InfoPanel" type="PanelContainer" parent="Background/Panel/VBox"]
+custom_minimum_size = Vector2(1100, 280)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="InfoHBox" type="HBoxContainer" parent="Background/Panel/VBox/InfoPanel"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Portrait" type="TextureRect" parent="Background/Panel/VBox/InfoPanel/InfoHBox"]
+custom_minimum_size = Vector2(160, 240)
+layout_mode = 2
+texture = ExtResource("3_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextContent" type="VBoxContainer" parent="Background/Panel/VBox/InfoPanel/InfoHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Name" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "—"
+horizontal_alignment = 0
+
+[node name="Description" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Selecione um personagem para ver suas informações."
+horizontal_alignment = 0
+autowrap_mode = 3
+
+[node name="Stats" type="HBoxContainer" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="HP" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "Vida: —"
+
+[node name="Energy" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Energia: —"
+
+[node name="Gold" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 20
+text = "Ouro: —"
+
+[node name="ConfirmButton" type="Button" parent="Background/Panel/VBox"]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+text = "CONFIRMAR"
+
+[node name="BackButton" type="Button" parent="Background/Panel/VBox"]
+custom_minimum_size = Vector2(260, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "VOLTAR"
+
+[connection signal="pressed" from="Background/Panel/VBox/ConfirmButton" to="." method="OnConfirmPressed"]
+[connection signal="pressed" from="Background/Panel/VBox/BackButton" to="." method="OnBackPressed"]

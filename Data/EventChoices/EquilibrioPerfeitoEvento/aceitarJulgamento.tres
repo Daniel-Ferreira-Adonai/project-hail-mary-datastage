@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://cbxtvcgk3g2l7"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_4udkl"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_drg5q"]
+
+[sub_resource type="Resource" id="Resource_vdcyw"]
+script = ExtResource("1_4udkl")
+Type = 14
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_drg5q")
+ChoiceText = "Aceitar o julgamento"
+ResultText = "A balança sorri. Uma carta foi fortalecida pelo destino.|A balança decide. Uma carta foi consumida pelo equilíbrio."
+Effects = Array[Object]([SubResource("Resource_vdcyw")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://b0xkkm4laclqd"]
+
+[ext_resource type="Script" uid="uid://b8pibsxleq2d5" path="res://src/Core/UI/TopBar.cs" id="1_3my4i"]
+[ext_resource type="Texture2D" uid="uid://cjylwsv0ptah4" path="res://Test/TestImagesSprites/CoracaoHp.png" id="2_cumwx"]
+[ext_resource type="Texture2D" uid="uid://dt1ajffygpeuu" path="res://Test/TestImagesSprites/Gold.png" id="3_oajyg"]
+[ext_resource type="Texture2D" uid="uid://50bxvxma747q" path="res://Test/TestImagesSprites/Andar.png" id="4_754up"]
+[ext_resource type="Texture2D" uid="uid://d007n5sscvumv" path="res://Test/TestImagesSprites/art/tile_0090.png" id="5_cumwx"]
+[ext_resource type="Texture2D" uid="uid://dxg7y1wlh86kj" path="res://Test/TestImagesSprites/art/tile_0100.png" id="6_oajyg"]
+[ext_resource type="Texture2D" path="res://Test/TestImagesSprites/art/deck.png" id="7_deck"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cumwx"]
+bg_color = Color(0, 0, 0, 0.6039216)
+border_color = Color(0.49803922, 0.92941177, 0, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_deck"]
+bg_color = Color(0.15, 0.1, 0.05, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.46, 0.24, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_deck_hover"]
+bg_color = Color(0.28, 0.18, 0.06, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 0.72, 0.3, 1.0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="TopBar" type="PanelContainer" unique_id=905095748 node_paths=PackedStringArray("_hpLabel", "_hpMaxLabel", "_goldLabel", "_floorLabel", "_deckCountLabel")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cumwx")
+script = ExtResource("1_3my4i")
+_hpLabel = NodePath("MarginTopBar/HBoxContainer/HpContainer/hpLabel")
+_hpMaxLabel = NodePath("MarginTopBar/HBoxContainer/HpContainer/MaxHpLabel")
+_goldLabel = NodePath("MarginTopBar/HBoxContainer/GoldContainer/goldLabel")
+_floorLabel = NodePath("MarginTopBar/HBoxContainer/FloorContainer/floorLabel")
+_deckCountLabel = NodePath("MarginTopBar/HBoxContainer/DeckPanel/panelContainer/DeckVBox/deckCountLabel")
+
+[node name="MarginTopBar" type="MarginContainer" parent="." unique_id=39214866]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginTopBar" unique_id=641661877]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="HpContainer" type="HBoxContainer" parent="MarginTopBar/HBoxContainer" unique_id=989346230]
+layout_mode = 2
+
+[node name="heartRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1264800532]
+texture_filter = 1
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("2_cumwx")
+expand_mode = 2
+
+[node name="hpLabel" type="Label" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1650084381]
+layout_mode = 2
+
+[node name="barLabel" type="Label" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1663064721]
+layout_mode = 2
+text = "/"
+
+[node name="MaxHpLabel" type="Label" parent="MarginTopBar/HBoxContainer/HpContainer" unique_id=1941542448]
+layout_mode = 2
+
+[node name="GoldContainer" type="HBoxContainer" parent="MarginTopBar/HBoxContainer" unique_id=1534649258]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="GoldRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/GoldContainer" unique_id=1779743159]
+texture_filter = 1
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("3_oajyg")
+expand_mode = 2
+
+[node name="goldLabel" type="Label" parent="MarginTopBar/HBoxContainer/GoldContainer" unique_id=2124297618]
+layout_mode = 2
+
+[node name="FloorContainer" type="HBoxContainer" parent="MarginTopBar/HBoxContainer" unique_id=1519760197]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="floorRect" type="TextureRect" parent="MarginTopBar/HBoxContainer/FloorContainer" unique_id=122766081]
+texture_filter = 1
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("4_754up")
+expand_mode = 2
+
+[node name="floorLabel" type="Label" parent="MarginTopBar/HBoxContainer/FloorContainer" unique_id=9850812]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginTopBar/HBoxContainer" unique_id=1361174542]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeckPanel" type="PanelContainer" parent="MarginTopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_deck")
+
+[node name="panelContainer" type="HBoxContainer" parent="MarginTopBar/HBoxContainer/DeckPanel" unique_id=1321849803]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="deckButton" type="TextureButton" parent="MarginTopBar/HBoxContainer/DeckPanel/panelContainer" unique_id=1849688713]
+texture_filter = 1
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture_normal = ExtResource("7_deck")
+ignore_texture_size = true
+stretch_mode = 2
+
+[node name="DeckVBox" type="VBoxContainer" parent="MarginTopBar/HBoxContainer/DeckPanel/panelContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="DeckLabel" type="Label" parent="MarginTopBar/HBoxContainer/DeckPanel/panelContainer/DeckVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.46, 0.24, 1)
+theme_override_font_sizes/font_size = 12
+text = "BARALHO"
+
+[node name="deckCountLabel" type="Label" parent="MarginTopBar/HBoxContainer/DeckPanel/panelContainer/DeckVBox" unique_id=1905221915]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.93, 0.85, 0.65, 1)
+theme_override_font_sizes/font_size = 20
+text = "0"
+
+[node name="settingsButton" type="TextureButton" parent="MarginTopBar/HBoxContainer" unique_id=485449107]
+texture_filter = 1
+layout_mode = 2
+texture_normal = ExtResource("6_oajyg")

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://4fnmlsg45hft"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_7ha3g"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_vjw16"]
+
+[sub_resource type="Resource" id="Resource_ucadv"]
+script = ExtResource("1_vjw16")
+Type = 11
+secret = true
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_7ha3g")
+ChoiceText = "Desviar o olhar e seguir"
+ResultText = "Você passa sem olhar. Por um instante, jura ter ouvido um sussurro. Mas segue em frente, intacto. Nada acontece"
+Effects = Array[Object]([SubResource("Resource_ucadv")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://nx4cn3ru15i6"]
+
+[ext_resource type="Texture2D" uid="uid://bltdh47d7jboo" path="res://Test/TestImagesSprites/Gemini_Generated_Image_si8icxsi8icxsi8i.png" id="1_c1dyt"]
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_f86e5"]
+[ext_resource type="Resource" uid="uid://b17c4dhrvc43p" path="res://Data/EventChoices/ApostaGold.tres" id="2_4t3nj"]
+[ext_resource type="Resource" uid="uid://bxt78uqsy6b0c" path="res://Data/EventChoices/ApostarNasCartas.tres" id="3_s4qcb"]
+[ext_resource type="Resource" uid="uid://bf7axgjj18jv4" path="res://Data/EventChoices/ApostarVida.tres" id="4_5lqsp"]
+
+[resource]
+script = ExtResource("1_f86e5")
+EventName = "O Covil das Apostas"
+Description = "Vozes animadas ecoam de uma sala iluminada por velas. Criaturas estranhas jogam dados feitos de ossos, apostam moedas em mesas cobertas de runas. Um homem de capuz aponta para uma cadeira vazia. \"Jogador novo? Sente-se. A sorte favorece os ousados... ou os destrói.\""
+Art = ExtResource("1_c1dyt")
+Choices = Array[Object]([ExtResource("2_4t3nj"), ExtResource("3_s4qcb"), ExtResource("4_5lqsp")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

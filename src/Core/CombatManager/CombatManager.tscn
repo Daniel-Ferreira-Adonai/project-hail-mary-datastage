@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cso48pa1xu8vm"]
+
+[ext_resource type="Script" uid="uid://dusp2hbsrm3jl" path="res://src/Core/CombatManager/CombatManager.cs" id="1_4c6rb"]
+[ext_resource type="PackedScene" uid="uid://ddgr4rnfn0peg" path="res://src/Core/Reward/RewardCard.tscn" id="2_ovfdv"]
+[ext_resource type="Texture2D" uid="uid://cvjlcne6akki8" path="res://Test/TestImagesSprites/Gemini_Generated_Image_mrznromrznromrzn.png" id="3_418fw"]
+[ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
+[ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="6_418fw"]
+[ext_resource type="PackedScene" uid="uid://bye8bitcysp35" path="res://Test/TestScenes/EnergyCoin.tscn" id="6_divk8"]
+
+[node name="CombatManager" type="Node2D" unique_id=1684369228 node_paths=PackedStringArray("background")]
+script = ExtResource("1_4c6rb")
+background = NodePath("Sprite2D")
+_rewardCardScene = ExtResource("2_ovfdv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=637661068]
+texture = ExtResource("3_418fw")
+
+[node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]
+
+[node name="endTurn" type="Button" parent="." unique_id=1071846408]
+offset_left = 1458.0
+offset_top = 800.0
+offset_right = 1883.0
+offset_bottom = 913.0
+scale = Vector2(0.7035611, 0.698996)
+text = "END TURN"
+script = ExtResource("6_418fw")
+
+[node name="MoedaEnergia" parent="." unique_id=1183537337 instance=ExtResource("6_divk8")]
+offset_left = 217.0
+offset_top = 739.0
+offset_right = 277.0
+offset_bottom = 799.0
+
+[connection signal="button_down" from="endTurn" to="endTurn" method="_on_button_down2"]

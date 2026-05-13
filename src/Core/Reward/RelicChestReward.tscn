@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://cejr4gllr3fd8"]
+
+[ext_resource type="Script" uid="uid://d053d4ssg6d1p" path="res://src/Core/Reward/RelicChestReward.cs" id="1_amamd"]
+[ext_resource type="Texture2D" uid="uid://cuqwn7dx0j7mm" path="res://Test/TestImagesSprites/Gemini_Generated_Image_64p25j64p25j64p2.png" id="1_ga3yq"]
+[ext_resource type="Texture2D" uid="uid://73mjnpx4jnfm" path="res://Test/TestImagesSprites/Untitled design (36).png" id="2_4w8a0"]
+[ext_resource type="Texture2D" uid="uid://bhi68fqs0w32b" path="res://Test/TestImagesSprites/Untitled design (37).png" id="3_l0r4s"]
+[ext_resource type="Script" uid="uid://dbeloe623k87q" path="res://src/Core/Reward/ChestButton.cs" id="4_0nkqn"]
+[ext_resource type="PackedScene" uid="uid://b5erl8s8et0dd" path="res://src/Core/Relic/RelicForShopOrChest.tscn" id="5_wxis1"]
+[ext_resource type="Texture2D" uid="uid://qd53mnks27me" path="res://Test/TestImagesSprites/ArmaduraDourada.png" id="6_amamd"]
+
+[sub_resource type="Animation" id="Animation_wxis1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RelicForShopOrChest:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RelicForShopOrChest:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RelicForShopOrChest:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(772, 577.99994)]
+}
+
+[sub_resource type="Animation" id="Animation_amamd"]
+resource_name = "relic_appear"
+length = 1.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RelicForShopOrChest:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.29, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.33333334), Color(1, 1, 1, 0.38039216), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RelicForShopOrChest:disabled")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RelicForShopOrChest:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.29, 0.6, 1, 1.34),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(772, 577.99994), Vector2(781, 480), Vector2(779.99994, 385), Vector2(779.99994, 338.99997), Vector2(779.99994, 298)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uelr5"]
+_data = {
+&"RESET": SubResource("Animation_wxis1"),
+&"relic_appear": SubResource("Animation_amamd")
+}
+
+[node name="RelicChestReward" type="Control" unique_id=1194310657]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_amamd")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1264111449]
+layout_mode = 0
+offset_right = 2653.0
+offset_bottom = 1603.0
+scale = Vector2(0.7227241, 0.67068547)
+texture = ExtResource("1_ga3yq")
+expand_mode = 2
+stretch_mode = 3
+
+[node name="ChestButton" type="TextureButton" parent="." unique_id=1382467412 node_paths=PackedStringArray("_animationPlayer", "_relic")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.99994
+offset_top = -63.0
+offset_right = 2407.0
+offset_bottom = 1537.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.19899118, 0.23378709)
+texture_normal = ExtResource("2_4w8a0")
+texture_pressed = ExtResource("3_l0r4s")
+script = ExtResource("4_0nkqn")
+_animationPlayer = NodePath("../AnimationPlayer")
+_relic = NodePath("../RelicForShopOrChest")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=580367361]
+libraries/ = SubResource("AnimationLibrary_uelr5")
+
+[node name="RelicForShopOrChest" parent="." unique_id=1407055353 instance=ExtResource("5_wxis1")]
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+layout_mode = 0
+offset_left = 772.0
+offset_top = 577.99994
+offset_right = 2820.0
+offset_bottom = 2626.0
+scale = Vector2(0.14690542, 0.13596234)
+disabled = true
+texture_normal = ExtResource("6_amamd")
+
+[connection signal="pressed" from="ChestButton" to="ChestButton" method="_on_pressed"]

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://j2ikgj44sxp6"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_oysrb"]
+[ext_resource type="Texture2D" uid="uid://dxi62rh64270b" path="res://Test/TestImagesSprites/Gemini_Generated_Image_fopk29fopk29fopk.png" id="1_qrjty"]
+[ext_resource type="Resource" uid="uid://dns20q0dlcre0" path="res://Data/EventChoices/AmigoSapoEvento/AmigoSapoTranquilo.tres" id="2_jkdy5"]
+[ext_resource type="Resource" uid="uid://chccm5da6mj4q" path="res://Data/EventChoices/AmigoSapoEvento/PedirConhecimentoDaTorre.tres" id="3_g7hu4"]
+
+[resource]
+script = ExtResource("1_oysrb")
+EventName = "O Viajante Esquecido"
+Description = "Um sapinho de aparência jovem e olhos cansados repousa encostado na parede de pedra. Sua capa de viajante está puída pelo tempo. \"Ah, outro aventureiro!\" ele coaxa com entusiasmo genuíno. \"Quantos anos faz... oitenta? Noventa? Perdi a conta.\" Apesar do tempo, seu sorriso não mudou."
+Art = ExtResource("1_qrjty")
+Choices = Array[Object]([ExtResource("2_jkdy5"), ExtResource("3_g7hu4")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

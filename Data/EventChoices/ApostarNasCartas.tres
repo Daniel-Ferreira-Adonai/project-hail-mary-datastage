@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://bxt78uqsy6b0c"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_2v5hs"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_opc2s"]
+
+[sub_resource type="Resource" id="Resource_3f318"]
+script = ExtResource("1_2v5hs")
+Type = 14
+secret = true
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_opc2s")
+ChoiceText = "Girar a roda arcana"
+ResultText = "A roda gira, luzes piscam, e para em símbolos brilhantes! Uma de suas cartas pulsa com nova energia, evoluindo.|A roda gira, range, e para em chamas negras. Uma de suas cartas se desintegra no ar. \"Azar,\" alguém comenta."
+Effects = Array[Object]([SubResource("Resource_3f318")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

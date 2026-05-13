@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://4h0xrpwrcvts"]
+
+[ext_resource type="Script" uid="uid://cd8yq1331mvhx" path="res://src/Core/Player/Player.cs" id="1_honyp"]
+[ext_resource type="Texture2D" uid="uid://bje114i20sd85" path="res://Test/TestImagesSprites/Untitled design (9).png" id="2_honyp"]
+[ext_resource type="Texture2D" uid="uid://c2gd5jn3jw1ym" path="res://Test/TestMcFrames/Idle/Untitled design (9).png" id="3_e3vna"]
+[ext_resource type="Texture2D" uid="uid://gxtoa8d2718" path="res://Test/TestMcFrames/Idle/Untitled design (10).png" id="4_jupfw"]
+[ext_resource type="Texture2D" uid="uid://bh8khtv83qcpd" path="res://Test/TestMcFrames/Idle/Untitled design (11).png" id="5_hig2i"]
+[ext_resource type="Texture2D" uid="uid://c3r6uwfdgoqee" path="res://Test/TestMcFrames/Idle/Untitled design (12).png" id="6_xmvw8"]
+[ext_resource type="Texture2D" uid="uid://yc166xjjkglb" path="res://Test/TestMcFrames/Idle/Untitled design (15).png" id="7_scflc"]
+[ext_resource type="Texture2D" uid="uid://8r3tys8qy0bq" path="res://Test/TestMcFrames/Idle/Untitled design (16).png" id="8_1404v"]
+[ext_resource type="Texture2D" uid="uid://c4x3eygtv088n" path="res://Test/TestMcFrames/Idle/Untitled design (18).png" id="9_jupfw"]
+[ext_resource type="PackedScene" uid="uid://crevm2e6yqhwv" path="res://src/Core/UI/DamageLabel.tscn" id="11_scflc"]
+[ext_resource type="PackedScene" uid="uid://da5mcnljqamdr" path="res://Test/TestScenes/BarraDeVida.tscn" id="11_xmvw8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
+size = Vector2(58, 54)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gyxix"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_e3vna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_e3vna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jupfw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hig2i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_xmvw8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_scflc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_1404v")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_e3vna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jupfw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}]
+
+[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("_hpBar", "animation")]
+scale = Vector2(3.830325, 3.5672452)
+script = ExtResource("1_honyp")
+MaxHp = 50
+currentHp = 50
+_hpBar = NodePath("TesteBar")
+PerCombatTemporaryStrength = 15
+animation = NodePath("AnimatedSprite2D")
+_damageLabelScene = ExtResource("11_scflc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1811445640]
+visible = false
+texture_filter = 2
+position = Vector2(0.7832234, -5.886896)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("2_honyp")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2040385468]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=678420500]
+position = Vector2(1, -5)
+shape = SubResource("RectangleShape2D_honyp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1836107771]
+scale = Vector2(0.06, 0.06)
+sprite_frames = SubResource("SpriteFrames_gyxix")
+animation = &"attack"
+autoplay = "idle"
+frame = 5
+frame_progress = 1.0
+
+[node name="TesteBar" parent="." unique_id=835286226 instance=ExtResource("11_xmvw8")]
+offset_left = -35.7672
+offset_top = 45.693516
+offset_right = 121.2328
+offset_bottom = 65.69352
+scale = Vector2(0.4321996, 0.4340491)

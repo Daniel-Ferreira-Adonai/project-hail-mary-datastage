@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://c11sqaxx2ihhu"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_ctkj7"]
+[ext_resource type="Texture2D" uid="uid://bowhcjm0bje3a" path="res://Test/TestImagesSprites/Gemini_Generated_Image_tknkrxtknkrxtknk.png" id="1_fhqso"]
+[ext_resource type="Resource" uid="uid://4fnmlsg45hft" path="res://Data/EventChoices/TulipaEvento/DesviarOOlhar.tres" id="2_oqnm7"]
+[ext_resource type="Resource" uid="uid://bbbecugo4y6bt" path="res://Data/EventChoices/TulipaEvento/Contemplar.tres" id="3_lo1ql"]
+
+[resource]
+script = ExtResource("1_ctkj7")
+EventName = "A Tulipa"
+Description = "Em meio a um campo de cinzas e plantas mortas, uma única tulipa floresce com uma beleza perturbadora. Suas pétalas roxas e vermelhas pulsam com uma luz suave. Algo nela parece errado... mas impossível de ignorar."
+Art = ExtResource("1_fhqso")
+Choices = Array[Object]([ExtResource("2_oqnm7"), ExtResource("3_lo1ql")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

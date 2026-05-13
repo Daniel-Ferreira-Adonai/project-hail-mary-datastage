@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://dns20q0dlcre0"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_2do6k"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_udoy6"]
+
+[sub_resource type="Resource" id="Resource_q16uf"]
+script = ExtResource("1_udoy6")
+Type = 9
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_2do6k")
+ChoiceText = "Oferecer comida e ouro"
+ResultText = "\"Obrigado por aceitar meu presente, talvez seja útil para você chegar ao fim da torre e derrotá-lo.\" O sapinho sorri misteriosamente enquanto pressiona algo em sua mão."
+Effects = Array[Object]([SubResource("Resource_q16uf")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

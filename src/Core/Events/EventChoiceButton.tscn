@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://crsvemxfc2ric"]
+
+[ext_resource type="Script" uid="uid://flh22od8ovil" path="res://src/Core/Events/EventChoiceButton.cs" id="1_re8nu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_re8nu"]
+bg_color = Color(0, 0, 0, 0.5294118)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="EventChoiceButton" type="PanelContainer" unique_id=639928245 node_paths=PackedStringArray("_choiceText", "_effectText")]
+offset_right = 138.0
+offset_bottom = 26.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_re8nu")
+script = ExtResource("1_re8nu")
+_choiceText = NodePath("MarginContainer/VBoxContainer/Label")
+_effectText = NodePath("MarginContainer/VBoxContainer/RichTextLabel")
+
+[node name="EventChoiceButton" type="Button" parent="." unique_id=684804879]
+layout_mode = 2
+flat = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1285006695]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=885348944]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1631734760]
+texture_filter = 2
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5372849, 0.79369235, 0.99476665, 1)
+theme_override_font_sizes/font_size = 20
+text = "dasdsadas"
+autowrap_mode = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1961881844]
+texture_filter = 2
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true

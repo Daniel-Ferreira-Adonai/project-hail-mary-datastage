@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dr02j4rn2wvb3"]
+
+[ext_resource type="Script" uid="uid://dapilgxniqvdx" path="res://src/Core/GameManager/GameManager.cs" id="1_ijvuh"]
+[ext_resource type="PackedScene" uid="uid://cejr4gllr3fd8" path="res://src/Core/Reward/RelicChestReward.tscn" id="2_0dpyg"]
+[ext_resource type="PackedScene" uid="uid://4h0xrpwrcvts" path="res://src/Core/Player/Player.tscn" id="2_2yajh"]
+[ext_resource type="PackedScene" uid="uid://cso48pa1xu8vm" path="res://src/Core/CombatManager/CombatManager.tscn" id="3_3djrt"]
+[ext_resource type="PackedScene" uid="uid://c6nkrwqxmmg8a" path="res://src/Core/Events/EventUi.tscn" id="4_3djrt"]
+[ext_resource type="PackedScene" uid="uid://ck4w23j6campf" path="res://src/Core/CampFire/CampFire.tscn" id="4_camp"]
+[ext_resource type="PackedScene" uid="uid://casxrx3xyel7r" path="res://src/Core/Map/Map.tscn" id="5_36iva"]
+[ext_resource type="PackedScene" uid="uid://b8h3yi4y8k457" path="res://src/Core/UI/UI.tscn" id="7_sne5l"]
+
+[node name="GameManager" type="Node2D" unique_id=2066897483 node_paths=PackedStringArray("_combatManager", "_map")]
+script = ExtResource("1_ijvuh")
+chestRewardScene = ExtResource("2_0dpyg")
+_campFireScene = ExtResource("4_camp")
+_combatManager = NodePath("CombatManager")
+_map = NodePath("Map")
+_eventScene = ExtResource("4_3djrt")
+
+[node name="Map" parent="." unique_id=190838099 instance=ExtResource("5_36iva")]
+
+[node name="CombatManager" parent="." unique_id=1684369228 instance=ExtResource("3_3djrt")]
+
+[node name="Player" parent="." unique_id=1708444179 instance=ExtResource("2_2yajh")]
+PerCombatTemporaryStrength = 0
+
+[node name="UI" parent="." unique_id=2146334214 instance=ExtResource("7_sne5l")]

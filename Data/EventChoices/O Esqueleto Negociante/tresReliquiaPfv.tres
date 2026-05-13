@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://c6u3hnfl7ehsb"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_ndjr2"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="2_v51r1"]
+
+[sub_resource type="Resource" id="Resource_3vsi6"]
+script = ExtResource("1_ndjr2")
+Type = 6
+Value = 3
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_3r5wu"]
+script = ExtResource("1_ndjr2")
+Type = 3
+Value = 25
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("2_v51r1")
+ChoiceText = "Me ve 3 "
+ResultText = "\"Haha! Gosto de você!\" ele gargalha. Três relíquias aparecem. Você se pergunta se sobreviverá para usá-las."
+Effects = Array[Object]([SubResource("Resource_3vsi6"), SubResource("Resource_3r5wu")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"
