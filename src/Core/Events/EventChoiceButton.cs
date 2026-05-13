@@ -56,7 +56,7 @@ public partial class EventChoiceButton : PanelContainer
 				EffectType.LoseHP => $"[color=#FF4444]Perca {effect.Value} HP[/color] ",
 				EffectType.GainCard => $"[color=#44FF44]Ganhe uma carta[/color] ",
 				EffectType.RemoveCard => $"[color=#FFAA44]Remova uma carta[/color] ",
-				EffectType.GainRelic => $"[color=#AA44FF]Ganhe uma relíquia[/color] ",
+				EffectType.GainRelic => $"[color=#AA44FF]Ganhe {effect.Value} relíquia(s)[/color] ",
 				EffectType.GainRandomCard => $"[color=#44FF44]Ganhe uma carta aleatória[/color] ",
 				EffectType.UpgradeCard => $"[color=#44FF44]Melhore uma carta[/color] ",
 				EffectType.UpgradeRandomCard => $"[color=#44FF44]Melhore uma carta aleatória[/color] ",

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://b17c4dhrvc43p"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_6mvsp"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_6qmel"]
+
+[sub_resource type="Resource" id="Resource_olf2e"]
+script = ExtResource("1_6mvsp")
+Type = 13
+Value = 75
+secret = true
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_6qmel")
+ChoiceText = "Apostar nas cartas"
+ResultText = "Você vira a carta final... Ás de Ouro! Moedas deslizam pela mesa em sua direção. A casa perdeu.|Você vira a carta final... Valete de Espadas. O crupiê sorri e recolhe suas moedas. \"Mais sorte da próxima vez.\""
+Effects = Array[Object]([SubResource("Resource_olf2e")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

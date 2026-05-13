@@ -14,7 +14,7 @@ public partial class MapGenerator : Node
     public const float MONSTER_ROOM_WEIGHT = 10.0f;
     public const float SHOP_ROOM_WEIGHT = 1.5f;
     public const float CAMPFIRE_ROOM_WEIGHT = 6.0f;
-    public const float EVENT_ROOM_WEIGHT = 300.0f;
+    public const float EVENT_ROOM_WEIGHT = 3.0f;
     [Export] public EventData[] Events = new EventData[0];
 
     [Export] public EncounterData[] EasyEncounters = new EncounterData[0];   

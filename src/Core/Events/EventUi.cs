@@ -79,10 +79,13 @@ private async void OnChoiceSelected(EventChoice choice)
 					}
                     break;
 				 case EffectType.GainRelic:
+                    for(int i = 0; i < effect.Value; i++)
+                    {
                     var relic = GetRandomRelic();
                     if (relic != null)
                     {
                         PlayerManager.Instance.Player.AddRelic(relic);
+                    }
                     }
                     break;
 				case EffectType.RandomHpSwing:

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://cwclebisiqsp4"]
+
+[ext_resource type="Resource" uid="uid://cixvac83t2ww8" path="res://Data/EventChoices/O Esqueleto Negociante/duasReliquiaPfv.tres" id="1_1g5ja"]
+[ext_resource type="Texture2D" uid="uid://4pdwb4b5potw" path="res://Test/TestImagesSprites/Gemini_Generated_Image_xfu3uoxfu3uoxfu3.png" id="1_pa73o"]
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_rtxyw"]
+[ext_resource type="Resource" uid="uid://c6u3hnfl7ehsb" path="res://Data/EventChoices/O Esqueleto Negociante/tresReliquiaPfv.tres" id="2_pa73o"]
+[ext_resource type="Resource" uid="uid://domj7cnfv0uua" path="res://Data/EventChoices/O Esqueleto Negociante/umaReliquiaPfv.tres" id="3_u5c52"]
+
+[resource]
+script = ExtResource("1_rtxyw")
+EventName = "O Esqueleto Negociante"
+Description = "Um esqueleto encostado na parede te faz um aceno com o dedo. \"Psst. Ei, você aí.\" Ele sorri — ou pelo menos tenta, considerando que não tem lábios. \"Tenho algumas coisinhas que podem te ajudar lá em cima. Claro... nada é de graça.\""
+Art = ExtResource("1_pa73o")
+Choices = Array[Object]([ExtResource("3_u5c52"), ExtResource("1_1g5ja"), ExtResource("2_pa73o")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"
