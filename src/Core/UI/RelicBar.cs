@@ -10,10 +10,10 @@ public partial class RelicBar : MarginContainer
     public override void _Ready()
     {
         Instance = this;
-        EnsureTooltipExists();
+        CallDeferred(nameof(InitTooltip));
     }
 
-    private static void EnsureTooltipExists()
+    private void InitTooltip()
     {
         if (RelicTooltip.Instance is not null) return;
 

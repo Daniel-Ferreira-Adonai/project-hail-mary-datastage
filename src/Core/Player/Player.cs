@@ -108,7 +108,7 @@ public partial class Player : Node2D
         get => _perCombatTemporarydexterity;
         set
         {
-            _dexterity = value;
+            _perCombatTemporarydexterity = value;
             EmitSignal(SignalName.StatsChanged);
         }
     }
