@@ -46,48 +46,72 @@ public partial class Card : Node2D
         Data.Execute(player);
     }
 }
-	public void UpdateDamagePreview(Player player, Enemy target = null)
+public void UpdateDamagePreview(Player player, Enemy target = null)
 {
-    if (Data.tipoCarta != CardData.CardType.Attack) 
+    if (Data.tipoCarta != CardData.CardType.Attack && Data.tipoCarta != CardData.CardType.SkillWithEnemyEffect) 
         return;
-
-    int previewDamage = CombatManager.Calculate(Data.Damage, player, target);
+    
+    int previewDamage = CombatManager.Calculate(Data.Damage, player, target, this.Data);
+    int previewBlock = CombatManager.CalculateBlock(Data.Block, player, this.Data);
 
     var descricaoLabel = GetNode<RichTextLabel>("Descricao");
 
-    string texto = Data.Description
-        .Replace("$d", previewDamage.ToString());
+    string damageColor = "white"; 
 
-    descricaoLabel.Text = texto;
+    string effectColor = "#c3e213"; 
 
+    string loseHpColor = "#ff4d4d"; 
     if (previewDamage > Data.Damage)
-        descricaoLabel.AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f)); 
+        damageColor = "#4dff4d"; 
     else if (previewDamage < Data.Damage)
-        descricaoLabel.AddThemeColorOverride("font_color", new Color(1f, 0.3f, 0.3f)); 
-    else
-        descricaoLabel.RemoveThemeColorOverride("font_color"); 
+        damageColor = "#ff4d4d"; 
+    
+    // if (this.Data.IsCardUpgraded)
+    //     effectColor = "#4dff4d"; 
+    
+    
+    string texto = Data.Description
+    .Replace("$d", $"[color={damageColor}]{previewDamage}[/color]")
+    .Replace("$b", $"[color=white]{previewBlock}[/color]")
+    .Replace("$ef", $"[color={effectColor}]{this.Data.EffectValue}[/color]")
+    .Replace("$lshp", $"[color={loseHpColor}]{this.Data.EffectValue}[/color]")
+    .Replace("$sef", $"[color={effectColor}]{this.Data.SecondaryEffectValue}[/color]");
+    
+    descricaoLabel.Text = texto;
+    
+    descricaoLabel.RemoveThemeColorOverride("font_color");
 }
     
-    public void UpdateBlockPreview(Player player)
+  public void UpdateBlockPreview(Player player)
 {
     if (Data.tipoCarta != CardData.CardType.Skill) 
-        return;
+    return;
 
-    int previewBlock = CombatManager.CalculateBlock(Data.Block, player);
+    int previewBlock = CombatManager.CalculateBlock(Data.Block, player, this.Data);
 
     var descricaoLabel = GetNode<RichTextLabel>("Descricao");
 
-    string texto = Data.Description
-        .Replace("$b", previewBlock.ToString());
+    string blockColor = "white";
 
-    descricaoLabel.Text = texto;
+
+    string effectColor = "#c3e213"; 
+    
+    string loseHpColor = "#ff4d4d"; 
+
 
     if (previewBlock > Data.Block)
-        descricaoLabel.AddThemeColorOverride("font_color", new Color(0.3f, 1f, 0.3f));
+        blockColor = "#4dff4d";
     else if (previewBlock < Data.Block)
-        descricaoLabel.AddThemeColorOverride("font_color", new Color(1f, 0.3f, 0.3f));
-    else
-        descricaoLabel.RemoveThemeColorOverride("font_color");
+        blockColor = "#ff4d4d";
+
+    string texto = Data.Description
+        .Replace("$b", $"[color={blockColor}]{previewBlock}[/color]")
+        .Replace("$ef", $"[color={effectColor}]{this.Data.EffectValue}[/color]")
+        .Replace("$lshp", $"[color={loseHpColor}]{this.Data.EffectValue}[/color]")
+        .Replace("$sef", $"[color={effectColor}]{this.Data.SecondaryEffectValue}[/color]");
+
+    descricaoLabel.Text = texto;
+    descricaoLabel.RemoveThemeColorOverride("font_color");
 }
     public async Task PlayUpgradeAnimation()
     {
@@ -120,8 +144,11 @@ public partial class Card : Node2D
 		GetNode<Label>("Custo").Text = data.EnergyCost.ToString();
         string descricao = data.Description
         .Replace("$d", data.Damage.ToString())
-        .Replace("$b", data.Block.ToString());
-		GetNode<RichTextLabel>("Descricao").Text = descricao;
+        .Replace("$b", data.Block.ToString())
+        .Replace("$ef", data.EffectValue.ToString())
+        .Replace("$lshp", data.EffectValue.ToString())
+        .Replace("$sef", data.SecondaryEffectValue.ToString());
+        GetNode<RichTextLabel>("Descricao").Text = descricao;
 		}
         public void UnloadVisuals()
     {

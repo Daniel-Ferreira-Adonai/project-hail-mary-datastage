@@ -69,7 +69,7 @@ public partial class Enemy : Node2D
 
 if (_intentContainer != null)
 {
-    _intentContainer.Position = new Vector2(-60, _intentOffsetY); // ← centraliza mais
+    _intentContainer.Position = new Vector2(-60, _intentOffsetY); 
     _intentContainer.CustomMinimumSize = new Vector2(120, 56);
     _intentContainer.AddThemeConstantOverride("separation", 4);
     _intentContainer.Alignment = BoxContainer.AlignmentMode.Center;
@@ -185,19 +185,22 @@ public void ShowIntent(Array<IntentData> intents)
         iconTexture.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
         _intentContainer.AddChild(iconTexture);
 
-        if (intent.Type == IntentData.IntentType.Attack && intent.Value > 0)
-        {
-            int finalDamage = CalculateFinalDamage(intent.Value);
-            
-            var label = new Label();
-            label.Text = finalDamage.ToString();
-            label.AddThemeColorOverride("font_color", new Color(1f, 1f, 1f));
-            label.AddThemeColorOverride("font_outline_color", new Color(0f, 0f, 0f));
-            label.AddThemeConstantOverride("outline_size", 8);
-            label.AddThemeFontSizeOverride("font_size", 32);
-            label.VerticalAlignment = VerticalAlignment.Center;
-            _intentContainer.AddChild(label);
-        }
+        if (intent.Type == IntentData.IntentType.Attack) // removeu o && intent.Value > 0
+{
+    int finalDamage = CalculateFinalDamage(intent.Value);
+    
+    if (finalDamage > 0)
+    {
+        var label = new Label();
+        label.Text = finalDamage.ToString();
+        label.AddThemeColorOverride("font_color", new Color(1f, 1f, 1f));
+        label.AddThemeColorOverride("font_outline_color", new Color(0f, 0f, 0f));
+        label.AddThemeConstantOverride("outline_size", 8);
+        label.AddThemeFontSizeOverride("font_size", 32);
+        label.VerticalAlignment = VerticalAlignment.Center;
+        _intentContainer.AddChild(label);
+    }
+}
     }
 }
 
@@ -309,7 +312,16 @@ public void ShowIntent(Array<IntentData> intents)
         Debuffs[debuff] += finalValue;
 
         var combatManager = GetTree().GetFirstNodeInGroup("combat_manager") as CombatManager;
+        GD.Print("combatManager: " + combatManager);
+        GD.Print("ActivePowers: " + combatManager?.Player.ActivePowers.Count);
         combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff));
+        combatManager?.Player.TriggerPowers(p => p.OnDebuffApplied(combatManager.Player, debuff, finalValue, this)); 
+
+    }
+     public int GetDebuffValue(string debuff)
+    {
+        return Debuffs.TryGetValue(debuff, out int value) ? value : 0;
+
     }
 
     private void UpdateHealthLabel()
@@ -325,6 +337,19 @@ public void ShowIntent(Array<IntentData> intents)
         var keys = new List<string>(Debuffs.Keys);
         foreach (var key in keys)
         {
+            
+            if (key == "Sangria" && Debuffs[key] > 0)
+        {
+            int sangriaDamage = Debuffs[key]; 
+            TakeDamage(sangriaDamage);
+            
+            var player = PlayerManager.Instance.Player;
+            if (player != null)
+            {
+                player.TryToHeal(sangriaDamage); 
+            }
+        }
+
             if (Debuffs[key] > 0)
                 Debuffs[key]--;
             if (Debuffs[key] <= 0)

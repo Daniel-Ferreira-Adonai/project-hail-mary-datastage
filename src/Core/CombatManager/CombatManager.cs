@@ -9,7 +9,7 @@ public partial class CombatManager : Node2D
 {
 	MouseInputTracker _mouse;
 
-	CardManager _cardManager;
+	public CardManager _cardManager;
 	public int maxEnergy = 3;
 
 	public int currentEnergy = 3;
@@ -23,10 +23,13 @@ public partial class CombatManager : Node2D
     [Export] private PackedScene _rewardCardScene;
 
     private bool _combatEnded = false;
-
+    public static CombatManager Instance { get; private set; }
     private EncounterData _currentEncounterData;
 	public override void _Ready()
 	{
+        Instance = this;
+        AddToGroup("combat_manager"); 
+
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 		energyLabel = GetNode<Panel>("MoedaEnergia").GetNode<Label>("ValorEnergia");
        
@@ -79,7 +82,9 @@ public partial class CombatManager : Node2D
 		GD.Print("Cheguei aqui");
 		currentEnergy = maxEnergy;
 		_cardManager.DiscardHand();
-        
+           
+        Player.TriggerPowers(p => p.OnTurnEnd(Player));
+
         Player.TriggerRelics(r => r.OnTurnEnd(Player)); 
 foreach (var enemy in _activeEnemies)
     {
@@ -107,7 +112,9 @@ foreach (var enemy in _activeEnemies)
 	public void StartTurn()
 	{
         Player.TriggerRelics(r => r.OnTurnStart(Player)); 
-            ShowEnemyIntents();
+        Player.TriggerPowers(p => p.OnTurnStart(Player));
+
+        ShowEnemyIntents();
 
         int cardsToDraw = _cardManager.cardsDrawedPerTurn + Player.BonusCardsToDraw;
         Player.BonusCardsToDraw = 0;
@@ -215,27 +222,33 @@ foreach (var enemy in _activeEnemies)
 	{
 		return Player;
 	}
-    public static int Calculate(int baseDamage, Player player, Enemy target = null, Card card = null)
-    {
-        float damage = baseDamage;
-        
-        damage += player.Strength;
-		damage += player.TemporaryStrength;
-        damage += player.PerCombatTemporaryStrength;
+  public static int Calculate(int baseDamage, Player player, Enemy target = null, CardData cardData = null)
+{
+    float damage = baseDamage;
+    
+    damage += player.Strength;
+    damage += player.TemporaryStrength;
+    damage += player.PerCombatTemporaryStrength;
 
-        
-		if(card != null)
-		{
-			
-		}
-        if (target != null && target.Vulnerable > 0)
-            damage *= 1.5f;
-        
-        if (player.IsWeak)
-            damage *= 0.75f;
-        
-        return Mathf.Max(0, Mathf.FloorToInt(damage));
+    if(cardData != null)
+    {
+        damage += cardData.GetSpecialModifierValue(target, player);
+        int relicBonus = 0;
+        foreach (var relic in player.Relics)
+        {
+            relicBonus += relic.GetDamageBonus(player, cardData);
+        }
+        damage += relicBonus;
     }
+
+    if (target != null && target.Vulnerable > 0)
+        damage *= 1.5f;
+    
+    if (player.Weak > 0)
+        damage *= 0.75f;
+    
+    return Mathf.Max(0, Mathf.FloorToInt(damage));
+}
      public static int CalculateEnemieAttack(Enemy enemy)
     {
         float damage = enemy.Strength + enemy.BuffedStrength;
@@ -248,11 +261,20 @@ foreach (var enemy in _activeEnemies)
         
         return Mathf.Max(0, Mathf.FloorToInt(damage));
     }
-    public static int CalculateBlock(int baseBlock, Player player)
+    public static int CalculateBlock(int baseBlock, Player player, CardData cardData = null)
     {
         float block = baseBlock + player.Dexterity + player.TemporaryDexterity + player.PerCombatTemporaryDexterity;
-        
-        if (player.IsFrail)
+         if(cardData != null)
+    {
+        block += cardData.GetSpecialModifierValue(null, player);
+        int relicBonus = 0;
+        foreach (var relic in player.Relics)
+        {
+            relicBonus += relic.GetBonusBlock(player, cardData);
+        }
+        block += relicBonus;
+    }
+        if (player.Frail > 0)
             block *= 0.75f;
         
         return Mathf.Max(0, Mathf.FloorToInt(block));
@@ -504,6 +526,10 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     }
 
     return allCards.Take(amount).ToList();
+}
+public Enemy GetFirstEnemy()
+{
+    return _activeEnemies.Count > 0 ? _activeEnemies[0] : null;
 }
    private async void InstantiateRewardCard()
 {

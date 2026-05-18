@@ -8,7 +8,7 @@ public partial class StrikeCard : CardData
 	{
 		if (target is Enemy enemy && aux is Player player)
 		{
-        int damage = CombatManager.Calculate(this.Damage, player, enemy);
+        int damage = CombatManager.Calculate(this.Damage, player, enemy, this);
         enemy.TakeDamage(damage);
 		}
 	}

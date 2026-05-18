@@ -7,6 +7,6 @@
 
 [resource]
 script = ExtResource("2_53j16")
-Enemies = Array[ExtResource("1_3su1e")]([ExtResource("2_sq38e"), ExtResource("2_sq38e")])
+Enemies = Array[ExtResource("1_3su1e")]([ExtResource("2_sq38e"), ExtResource("2_sq38e"), ExtResource("2_sq38e")])
 backgroundImage = ExtResource("3_sq38e")
 metadata/_custom_type_script = "uid://bis7fspfw1fbq"

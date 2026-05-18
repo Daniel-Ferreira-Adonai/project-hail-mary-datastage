@@ -8,7 +8,7 @@ public partial class BlockCard : CardData
 	{
 		if (target is Player player)
 		{
-			player.BlockValue += CombatManager.CalculateBlock(this.Block,player);
+			player.BlockValue += CombatManager.CalculateBlock(this.Block,player,this);
 			player.UpdateLabelValues();
 
 		}

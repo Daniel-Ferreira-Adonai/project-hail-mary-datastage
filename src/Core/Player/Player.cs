@@ -29,7 +29,7 @@ public partial class Player : Node2D
 			UpdateLabelValues();
 		}
 	}
-
+	public List<PowerData> ActivePowers { get; set; } = new List<PowerData>();
 	[Export] private int _startingGold = 100;
 	private int _gold;
 	public int Gold
@@ -132,8 +132,8 @@ public partial class Player : Node2D
             EmitSignal(SignalName.StatsChanged);
         }
     }
-	public bool IsWeak { get; set; } = false;
-    public bool IsFrail { get; set; } = false;
+	public int Weak { get; set; } = 0;
+    public int Frail { get; set; } = 0;
 	[Export] public AnimatedSprite2D animation;
 	[Export] private PackedScene _damageLabelScene;
 
@@ -188,6 +188,7 @@ private void SetupHpBar()
 }	
 	public override void _Process(double delta)
 	{
+		
 	}
 		public void TriggerRelics(Action<RelicData> hook)
 	{
@@ -229,7 +230,11 @@ private void SetupHpBar()
     SpawnDamageLabel(damage);
     UpdateLabelValues();
 }
-
+public void TriggerPowers(Action<PowerData> trigger)
+{
+    foreach (var power in ActivePowers)
+        trigger(power);
+}
 private void SpawnDamageLabel(int damage)
 {
     if (_damageLabelScene == null) return;
@@ -248,12 +253,13 @@ private void SpawnDamageLabel(int damage)
     _hpBar?.updateLabels(currentHp, MaxHp, BlockValue);
 }
 	public void UpdateTemporaryValues()
-	{
-		_temporaryStrength = 0;
-		_TemporaryDexterity = 0;
-		BlockValue = 0;
-
-	}
+{
+    _temporaryStrength = 0;
+    _TemporaryDexterity = 0;
+    BlockValue = 0;
+    if (Weak > 0) Weak--;
+    if (Frail > 0) Frail--;
+}
 	public void UpdatePerCombatTemporaryValues()
 	{
 		_perCombatTemporarydexterity = 0;
@@ -300,11 +306,27 @@ public CardData RemoveRandomCard()
 		CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
         CardData defendData = GD.Load<CardData>("res://Data/Cards/BlockCard.tres");
         CardData blockVunarable = GD.Load<CardData>("res://Data/Cards/BlockVunarable.tres");
-		for(int i = 0; i < 5; i++)
+		CardData SangriaCard = GD.Load<CardData>("res://Data/Cards/SangriaCard.tres");
+		CardData CorteHemolitico = GD.Load<CardData>("res://Data/Cards/CorteHemoliticoCard.tres");
+		CardData DefesaSangue = GD.Load<CardData>("res://Data/Cards/DefesaSanguessugaCard.tres");
+		CardData Hemorragia = GD.Load<CardData>("res://Data/Cards/Hemorragia.tres");
+		CardData PactoDeSangue = GD.Load<CardData>("res://Data/Cards/PactoDeSangueCard.tres");
+		CardData sedeDeSangue = GD.Load<CardData>("res://Data/Cards/SedeDeSangueCard.tres");
+		CardData coagualcao = GD.Load<CardData>("res://Data/Cards/CoagulacaoCard.tres");
+
+
+		for(int i = 0; i < 3; i++)
 		{
 			AddCardToDeck((CardData)strikeData.Duplicate());
 			AddCardToDeck((CardData)defendData.Duplicate());
 			AddCardToDeck((CardData)blockVunarable.Duplicate());
+			AddCardToDeck((CardData)SangriaCard.Duplicate());
+			AddCardToDeck((CardData)CorteHemolitico.Duplicate());
+			AddCardToDeck((CardData)sedeDeSangue.Duplicate());
+			AddCardToDeck((CardData)DefesaSangue.Duplicate());
+			AddCardToDeck((CardData)Hemorragia.Duplicate());
+			AddCardToDeck((CardData)PactoDeSangue.Duplicate());
+			AddCardToDeck((CardData)coagualcao.Duplicate());
 		}
 	}
 	public void TryToHeal(int healValue)

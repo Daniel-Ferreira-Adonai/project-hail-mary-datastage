@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CoagulacaoCard" format=3 uid="uid://cfy4muoswcao1"]
+
+[ext_resource type="Texture2D" uid="uid://dw6hnpr33jwcr" path="res://Test/TestImagesSprites/Coagulacao.png" id="1_ehxlh"]
+[ext_resource type="Script" uid="uid://bp6fgqirj8vj0" path="res://src/Core/Card/CardsScripts/CoagulacaoCard.cs" id="1_fue7y"]
+
+[resource]
+script = ExtResource("1_fue7y")
+CardName = "Coagulação"
+EnergyCost = 2
+Damage = 5
+Block = 8
+Description = "Causa $d de dano a todos os inimigos, mais 1 por Sangria. Ganhe $b de defesa."
+Art = ExtResource("1_ehxlh")
+tipoCarta = 2
+IsAoe = true
+metadata/_custom_type_script = "uid://bp6fgqirj8vj0"

@@ -14,14 +14,18 @@ public partial class ArmaduraDourada : RelicData
             if (_UsedThisCombat) return;
             if (card.Block == 0) return;
 
-            card.Block = card.Block * 2;
         }
     public override void OnCardPlayed(Player player, CardData card)
      {
          if (_UsedThisCombat) return;
          if (card.Block == 0) return;
 
-        card.Block = card.Block / 2;
          _UsedThisCombat = true;
      }
+         public override int GetBonusBlock(Player player, CardData card)
+{
+    if (_UsedThisCombat) return 0;
+    if (card.tipoCarta == CardData.CardType.Attack) return 0;
+    return card.Block;
+}
 }

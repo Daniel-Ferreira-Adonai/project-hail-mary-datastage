@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ct3ybqrail6jp"]
+
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_dabiq"]
+[ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="2_37whd"]
+[ext_resource type="Script" uid="uid://bkfgne38lx35i" path="res://src/Core/Enemy/IntentScripts/BuffForcaIntent.cs" id="3_fn8yx"]
+[ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="3_kqqna"]
+[ext_resource type="Script" uid="uid://cierbh5kwpggb" path="res://src/Core/Enemy/EnemyTurn.cs" id="4_3lo4k"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v43ov"]
+load_path = "res://.godot/imported/HumanAgain.png-c40b3428a6a4a51052a8718a4b7f0190.ctex"
+
+[sub_resource type="Resource" id="Resource_m0vj4"]
+script = ExtResource("3_kqqna")
+Value = 8
+metadata/_custom_type_script = "uid://bccl3286c7bxr"
+
+[sub_resource type="Resource" id="Resource_37whd"]
+script = ExtResource("3_fn8yx")
+Type = 2
+Value = 5
+metadata/_custom_type_script = "uid://bkfgne38lx35i"
+
+[sub_resource type="Resource" id="Resource_as1vh"]
+script = ExtResource("4_3lo4k")
+Actions = Array[ExtResource("2_37whd")]([SubResource("Resource_m0vj4"), SubResource("Resource_37whd")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[resource]
+script = ExtResource("1_dabiq")
+Sprite = SubResource("CompressedTexture2D_v43ov")
+MaxHealth = 30
+Strength = 5
+TurnPatterns = Array[Object]([SubResource("Resource_as1vh")])
+Size = 3
+metadata/_custom_type_script = "uid://b2o7r58snev8f"

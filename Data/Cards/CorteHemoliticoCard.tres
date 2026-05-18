@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CorteHemoliticoCard" format=3 uid="uid://b76q3g4ap1mxq"]
+
+[ext_resource type="Script" uid="uid://da7nk6gaitvsx" path="res://src/Core/Card/CardsScripts/CorteHemoliticoCard.cs" id="1_0bnpk"]
+[ext_resource type="Texture2D" uid="uid://bjs4ibqbnq0jl" path="res://Test/TestImagesSprites/CorteHemolitico.png" id="1_tfs2o"]
+
+[resource]
+script = ExtResource("1_0bnpk")
+CardName = "Corte Hemolitico"
+EnergyCost = 2
+Damage = 18
+EffectValue = 4
+Description = "Cause $d e receba $lshp de dano, 2 de dado a mais a cada Sangria"
+Art = ExtResource("1_tfs2o")
+metadata/_custom_type_script = "uid://bi0qbtumjtxbh"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SangriaCard" format=3 uid="uid://cb3fl0fj8ypn4"]
+
+[ext_resource type="Script" uid="uid://bi0qbtumjtxbh" path="res://src/Core/Card/CardsScripts/SangriaCard.cs" id="1_0iq3n"]
+[ext_resource type="Texture2D" uid="uid://d1vwsehrtuo1s" path="res://Test/TestImagesSprites/sangria2.png" id="1_vabgy"]
+
+[resource]
+script = ExtResource("1_0iq3n")
+CardName = "Sangria"
+EnergyCost = 1
+Damage = 7
+EffectValue = 2
+Description = "Causa $d de dano e aplica $ef de sangria"
+Art = ExtResource("1_vabgy")
+metadata/_custom_type_script = "uid://bi0qbtumjtxbh"

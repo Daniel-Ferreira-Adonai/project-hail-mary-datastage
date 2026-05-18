@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SanguessugaMedicinaisCard" format=3 uid="uid://dgi0n6537p6al"]
+
+[ext_resource type="Texture2D" uid="uid://urgys2j2njof" path="res://Test/TestImagesSprites/defesaSanguessuga.png" id="1_e4fv0"]
+[ext_resource type="Script" uid="uid://b0kh66wmrekd6" path="res://src/Core/Card/CardsScripts/SanguessugaMedicinaisCard.cs" id="1_o0mo3"]
+
+[resource]
+script = ExtResource("1_o0mo3")
+CardName = "Defesa Sanguessuga"
+EnergyCost = 1
+Block = 6
+EffectValue = 1
+Description = "Receba $b de defesa, e aplica $ef de sangria a todos os inimigos"
+Art = ExtResource("1_e4fv0")
+tipoCarta = 1
+IsAoe = true
+metadata/_custom_type_script = "uid://b0kh66wmrekd6"

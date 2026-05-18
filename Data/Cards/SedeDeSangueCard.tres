@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SedeDeSangueCard" format=3 uid="uid://vi2eqbmaxu6d"]
+
+[ext_resource type="Texture2D" uid="uid://dywgkclk80lp1" path="res://Test/TestImagesSprites/SedeDeSangue.png" id="1_3eidx"]
+[ext_resource type="Script" uid="uid://c4ewxxatorlrg" path="res://src/Core/Card/CardsScripts/SedeDeSangueCard.cs" id="1_abjhm"]
+
+[resource]
+script = ExtResource("1_abjhm")
+CardName = "Sede de Sangue"
+EnergyCost = 1
+EffectValue = 1
+Description = "Poder. Sempre que aplicar Sangria em um inimigo, ganhe o mesmo de Força."
+Art = ExtResource("1_3eidx")
+tipoCarta = 3
+metadata/_custom_type_script = "uid://c4ewxxatorlrg"

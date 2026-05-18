@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="HemorragiaCard" format=3 uid="uid://dlka4qdnlct5v"]
+
+[ext_resource type="Texture2D" uid="uid://de1d0aqi5b8pn" path="res://Test/TestImagesSprites/Hemorragia.png" id="1_4571f"]
+[ext_resource type="Script" uid="uid://h8xksm856bfr" path="res://src/Core/Card/CardsScripts/HemorragiaCard.cs" id="1_qdjk3"]
+
+[resource]
+script = ExtResource("1_qdjk3")
+CardName = "Hemorragia"
+EnergyCost = 1
+EffectValue = 4
+Description = "Dobre a Sangria do inimigo, perca $ef de vida"
+Art = ExtResource("1_4571f")
+IsExhausted = true
+metadata/_custom_type_script = "uid://h8xksm856bfr"

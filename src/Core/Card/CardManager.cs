@@ -22,6 +22,9 @@ public partial class CardManager : Node2D
 	private List<Card> _deck = new List<Card>();  
 	private List<Card> _handList = new List<Card>();      
 	private List<Card> _discard = new List<Card>();  
+
+	private List<Card> _exhausted = new List<Card>();
+
 	public Dictionary<Card, float> _originalRotations = new Dictionary<Card, float>();
 	public Dictionary<Card, Vector2> _originalPositions = new Dictionary<Card, Vector2>();
 	public Dictionary<Card, Vector2> _originalScales = new Dictionary<Card, Vector2>();
@@ -277,12 +280,15 @@ public override void _Process(double delta)
 		card.Scale = new Vector2(scale.X, scale.Y);
 		GD.Print(card.Scale);
 	}
-	public void UpdateAllCardPreviews(Player player, Enemy target)
+	public void UpdateAllCardPreviews(Player player, Enemy target = null)
 {
     foreach (Card card in _handNode.getHandCards())
     {
+		GD.Print(card.GetNode<RichTextLabel>("Descricao").Text);
         card.UpdateDamagePreview(player, target);
         card.UpdateBlockPreview(player);
+		GD.Print(card.GetNode<RichTextLabel>("Descricao").Text);
+
     }
 }
 	private void FinishDrag()
@@ -307,48 +313,55 @@ public override void _Process(double delta)
 		IsHoveringOnCard = false;
 		_handNode.ArrangeFan();
 	}
-	public async void TryToPlayCard(Card card)
-	{
-		if (!IsInPlayZone() || CardBeingDraged is null)
-		{
-			return;
-		}
-		if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack
-		    || CardBeingDraged.Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
-		{
+public async void TryToPlayCard(Card card)
+{
+    if (!IsInPlayZone() || CardBeingDraged is null)
+    {
+        return;
+    }
+    if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack
+        || CardBeingDraged.Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
+    {
+        Enemy Enemy = null;
 
-			Enemy Enemy = _combatManager.getEnemy(CardBeingDraged);
-			GD.Print(Enemy);
-			if(Enemy is Enemy enemy)
-			{
-				PlayerManager.Instance.Player.PlayAttackAnimation();
-				
+        if(CardBeingDraged.Data.IsAoe)
+        {
+            Enemy = _combatManager.RaycastCheckForEnemy() ?? _combatManager.GetFirstEnemy();
+            _combatManager.handleCardPlayed(CardBeingDraged);
+        }
+        else
+        {
+            Enemy = _combatManager.getEnemy(CardBeingDraged);
+        }
 
-				GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
-				_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-				CardBeingDraged.Play(enemy,_combatManager.getPlayer());
-				_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-
-				handleCardDeckTurn(card);
-			} 
-			return;
-		}
-		
-		if(CardBeingDraged.Data.tipoCarta != CardData.CardType.Attack)
-		{
-			Player player = _combatManager.getPlayer(card);
-			if(player is Player Player)
-			{
-				GD.Print("entrei aq");
-			_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-			CardBeingDraged.Play(null,Player);
-			_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-			handleCardDeckTurn(card);
-			}
-			
-		}
-		
-	}
+        GD.Print(Enemy);
+        if(Enemy is Enemy enemy)
+        {
+            PlayerManager.Instance.Player.PlayAttackAnimation();
+            GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
+            _combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
+            CardBeingDraged.Play(enemy, _combatManager.getPlayer());
+            _combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
+            UpdateAllCardPreviews(PlayerManager.Instance.Player, null);
+            handleCardDeckTurn(card);
+        } 
+        return;
+    }
+    
+    if(CardBeingDraged.Data.tipoCarta != CardData.CardType.Attack)
+    {
+        Player player = _combatManager.getPlayer(card);
+        if(player is Player Player)
+        {
+            GD.Print("entrei aq");
+            _combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
+            CardBeingDraged.Play(null, Player);
+            _combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
+            UpdateAllCardPreviews(PlayerManager.Instance.Player, null);
+            handleCardDeckTurn(card);
+        }
+    }
+}
 	public void handleCardDeckTurn(Card card)
 {
     if (card == _currentHoveredCard) _currentHoveredCard = null;
@@ -363,8 +376,17 @@ public override void _Process(double delta)
     _handList.Remove(card);
 	_handNode.RemoveCard(card);
     _handNode.RemoveChild(card);
-    _discard.Add(card);
-    
+	
+	if (card.Data is PowerData power)
+	{
+		PlayerManager.Instance.Player.ActivePowers.Add(power);
+		card.Data.IsExhausted = true;
+	}
+	if (card.Data.IsExhausted)
+        _exhausted.Add(card); 
+    else
+        _discard.Add(card); 
+
     _originalPositions.Remove(card);
     _originalRotations.Remove(card);
     _originalScales.Remove(card);
@@ -470,6 +492,7 @@ public void ResetDeck()
     _deck.Clear();
     _discard.Clear();
     _handList.Clear();
+	_exhausted.Clear();
     _originalPositions.Clear();
     _originalRotations.Clear();
     _originalScales.Clear();

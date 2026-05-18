@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dcybaoh8wrw2t"]
+
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_2nh1w"]
+[ext_resource type="Texture2D" uid="uid://dwdtw5ysk4veq" path="res://Test/TestImagesSprites/art/HumanWomen.png" id="1_j54iv"]
+[ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="2_5we83"]
+[ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="3_ajkav"]
+[ext_resource type="Script" uid="uid://cierbh5kwpggb" path="res://src/Core/Enemy/EnemyTurn.cs" id="4_tj68f"]
+[ext_resource type="Script" uid="uid://cxiepvdk4td6n" path="res://src/Core/Enemy/IntentScripts/DebuffFrailIntent.cs" id="5_5we83"]
+
+[sub_resource type="Resource" id="Resource_vtksm"]
+script = ExtResource("3_ajkav")
+Value = 4
+metadata/_custom_type_script = "uid://bccl3286c7bxr"
+
+[sub_resource type="Resource" id="Resource_l7oy0"]
+script = ExtResource("4_tj68f")
+Actions = Array[ExtResource("2_5we83")]([SubResource("Resource_vtksm")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[sub_resource type="Resource" id="Resource_ajkav"]
+script = ExtResource("5_5we83")
+Type = 3
+Value = 3
+metadata/_custom_type_script = "uid://cxiepvdk4td6n"
+
+[sub_resource type="Resource" id="Resource_o2x60"]
+script = ExtResource("4_tj68f")
+Actions = Array[ExtResource("2_5we83")]([SubResource("Resource_ajkav")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[resource]
+script = ExtResource("1_2nh1w")
+Sprite = ExtResource("1_j54iv")
+Strength = 3
+TurnPatterns = Array[Object]([SubResource("Resource_l7oy0"), SubResource("Resource_o2x60")])
+Size = 3
+metadata/_custom_type_script = "uid://b2o7r58snev8f"

@@ -64,9 +64,20 @@ src/Core/
   CardsScripts/
    BlockCard.cs
    BlockVunarable.cs
+   CoagulacaoCard.cs
+   CorteHemoliticoCard.cs
+   HemorragiaCard.cs
+   PactoDeSangueCard.cs
+   SangriaCard.cs
+   SanguessugaMedicinaisCard.cs
+   SedeDeSangueCard.cs
    StrikeCard.cs
   Hand.cs
+  PowerData.cs
  CardDisplay.cs
+ CharacterSelect/
+  CharacterData.cs
+  CharacterSelect.cs
  CombatManager/
   CombatManager.cs
   EncounterData.cs
@@ -76,7 +87,11 @@ src/Core/
   EnemyScaler.cs
   EnemyTurn.cs
   IntentData.cs
-  IntentScripts/AttackIntent.cs
+  IntentScripts/
+   AttackIntent.cs
+   BuffForcaIntent.cs
+   DebuffFrailIntent.cs
+   DebuffWeakIntent.cs
  Events/
   EventChoice.cs
   EventChoiceButton.cs
@@ -84,11 +99,17 @@ src/Core/
   EventEffect.cs
   EventUi.cs
  GameManager/GameManager.cs
+ Inventory/
+  CardInspectPopup.cs
+  DeckViewer.cs
  Map/
   Map.cs
   MapGenerator.cs
   MapRoom.cs
   Room.cs
+ Menu/
+  ComingSoon.cs
+  MainMenu.cs
  Mouse tracking/MouseInputTracker.cs
  Player/
   Player.cs
@@ -113,6 +134,7 @@ src/Core/
   RelicChestReward.cs
   RewardButton.cs
   RewardCard.cs
+ RunData.cs
  Shop/
   Shop.cs
   ShopDebugOpener.cs
@@ -120,6 +142,7 @@ src/Core/
   BarraDeVida.cs
   DamageLabel.cs
   RelicBar.cs
+  RelicTooltip.cs
   TopBar.cs
   TopHud.cs
   UI.cs

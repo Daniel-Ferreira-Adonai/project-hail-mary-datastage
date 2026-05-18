@@ -10,7 +10,7 @@ public partial class BlockVunarable : CardData
 		{
 			GD.Print("card jogado");
 			enemy.ApplyDebuff("Vulnerable",1);
-			player.BlockValue += this.Block;
+			player.BlockValue += CombatManager.CalculateBlock(this.Block,player,this);
 			player.UpdateLabelValues();
 		}
 	}

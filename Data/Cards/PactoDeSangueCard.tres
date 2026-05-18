@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PactoDeSangueCard" format=3 uid="uid://cw5tu0s5vpxja"]
+
+[ext_resource type="Script" uid="uid://bmx4vxv7tp2vt" path="res://src/Core/Card/CardsScripts/PactoDeSangueCard.cs" id="1_8qkxd"]
+[ext_resource type="Texture2D" uid="uid://mwyjipkkjvx0" path="res://Test/TestImagesSprites/pactoDESangue.png" id="1_my3ye"]
+
+[resource]
+script = ExtResource("1_8qkxd")
+CardName = "Pacto de Sangue"
+EffectValue = 4
+SecondaryEffectValue = 1
+Description = "Compre $sef e perca $ef de vida"
+Art = ExtResource("1_my3ye")
+tipoCarta = 1
+metadata/_custom_type_script = "uid://bmx4vxv7tp2vt"

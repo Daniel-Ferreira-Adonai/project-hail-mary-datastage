@@ -18,5 +18,8 @@ public partial class RelicData : Resource
     public virtual void OnTakeDamage(Player player, ref int damage) { }
     public virtual void OnKillEnemy(Player player, Enemy enemy) { }
     public virtual void OnDebuffApplied(Player player, string debuff) { }
+    public virtual int GetDamageBonus(Player player, CardData card) => 0;
+
+    public virtual int GetBonusBlock(Player player, CardData card) => 0;
 
 }
