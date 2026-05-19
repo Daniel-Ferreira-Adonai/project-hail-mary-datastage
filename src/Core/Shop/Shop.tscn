@@ -3,20 +3,29 @@
 [ext_resource type="Script" uid="uid://ibbeurvbj03e" path="res://src/Core/Shop/Shop.cs" id="1_shop"]
 [ext_resource type="Texture2D" uid="uid://j8dybmusjax2" path="res://Background_Loja.png" id="2_dqq6m"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.02, 0.015, 0.012, 0.08)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.27, 0.07, 0.045, 0.95)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_main"]
+bg_color = Color(0.06, 0.03, 0.08, 0.92)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.58, 0.39, 0.18, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.6, 0.35, 0.1, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.36, 0.12, 0.08, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.5, 0.1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Shop" type="Control" unique_id=1035967890]
 layout_mode = 3
@@ -41,20 +50,20 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=2018578090]
-custom_minimum_size = Vector2(1200, 700)
+custom_minimum_size = Vector2(1400, 750)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -350.0
-offset_right = 600.0
-offset_bottom = 350.0
+offset_left = -700.0
+offset_top = -375.0
+offset_right = 700.0
+offset_bottom = 375.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_main")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1626878646]
 layout_mode = 2
@@ -65,38 +74,55 @@ theme_override_constants/margin_bottom = 28
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=2052237316]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 14
 
 [node name="Header" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=882848916]
+custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Header" unique_id=457282120]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 46
-text = "Loja"
+theme_override_colors/font_color = Color(1, 0.82, 0.3, 1)
+theme_override_font_sizes/font_size = 38
+text = "LOJA"
 
 [node name="GoldLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/Header" unique_id=1559464649]
 layout_mode = 2
-theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 28
 text = "Ouro: 0"
 horizontal_alignment = 2
 
-[node name="CardsContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=300253839]
-custom_minimum_size = Vector2(0, 390)
+[node name="HSeparatorHeader" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 86
-alignment = 1
 
-[node name="Spacer" type="Control" parent="Panel/MarginContainer/VBoxContainer" unique_id=1875591845]
-custom_minimum_size = Vector2(0, 96)
+[node name="CardsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.65, 0.35, 1)
+theme_override_font_sizes/font_size = 20
+text = "Cartas disponíveis"
+horizontal_alignment = 1
+
+[node name="CardsScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_vertical = 0
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="CardsContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/CardsScroll" unique_id=300253839]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HSeparatorRelics" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="MessageLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer" unique_id=1938058471]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 
@@ -105,9 +131,11 @@ layout_mode = 2
 alignment = 2
 
 [node name="ExitButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Footer" unique_id=516280858]
-custom_minimum_size = Vector2(180, 50)
+custom_minimum_size = Vector2(240, 56)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-text = "Sair da loja"
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "SAIR DA LOJA"
 
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Footer/ExitButton" to="." method="OnExitPressed"]

@@ -54,9 +54,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -800.0
-offset_top = -440.0
+offset_top = -400.0
 offset_right = 800.0
-offset_bottom = 440.0
+offset_bottom = 480.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
@@ -64,6 +64,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 [node name="OuterVBox" type="VBoxContainer" parent="Panel"]
 layout_mode = 2
 theme_override_constants/separation = 16
+theme_override_constants/margin_top = 20
 
 [node name="Header" type="VBoxContainer" parent="Panel/OuterVBox"]
 layout_mode = 2
@@ -86,13 +87,17 @@ horizontal_alignment = 1
 layout_mode = 2
 
 [node name="Scroll" type="ScrollContainer" parent="Panel/OuterVBox"]
-custom_minimum_size = Vector2(0, 580)
+custom_minimum_size = Vector2(0, 640)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Grid" type="GridContainer" parent="Panel/OuterVBox/Scroll"]
+[node name="GridWrapper" type="CenterContainer" parent="Panel/OuterVBox/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Grid" type="GridContainer" parent="Panel/OuterVBox/Scroll/GridWrapper"]
+layout_mode = 2
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 columns = 5

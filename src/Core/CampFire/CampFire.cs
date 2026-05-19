@@ -9,6 +9,7 @@ public partial class CampFire : Control
     private Godot.Button _proceedButton;
     private Label _messageLabel;
     private BarraDeVida _hpBar;
+    private PointLight2D _fireLight;
 
     public override void _Ready()
     {
@@ -24,8 +25,18 @@ public partial class CampFire : Control
         vbox.AddChild(_hpBar);
         vbox.MoveChild(_hpBar, _messageLabel.GetIndex());
 
+        _fireLight = GetNodeOrNull<PointLight2D>("FireLight");
+
         RefreshHpBar();
         SetMessage("Escolha uma ação na fogueira.");
+    }
+
+    public override void _Process(double delta)
+    {
+        if (_fireLight is null) return;
+        _fireLight.Energy = 0.8f
+            + Mathf.Sin(Time.GetTicksMsec() * 0.005f) * 0.15f
+            + (float)GD.RandRange(-0.05, 0.05);
     }
 
     public void OnRestPressed()

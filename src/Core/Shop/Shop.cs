@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class Shop : Control
 {
-    private const int CardCount = 3;
+    private const int CardCount = 8;
     private const int RelicCount = 2;
 
     [Export] private PackedScene _cardDisplayScene;
@@ -31,20 +31,20 @@ public partial class Shop : Control
     public override void _Ready()
     {
         _cardDisplayScene ??= GD.Load<PackedScene>("res://src/Core/card_display.tscn");
-        _cardsContainer = GetNode<HBoxContainer>("Panel/MarginContainer/VBoxContainer/CardsContainer");
+        var cardsScroll = GetNode<ScrollContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll");
+        _cardsContainer = GetNode<HBoxContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll/CardsContainer");
         _goldLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/Header/GoldLabel");
         _messageLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/MessageLabel");
 
         var vbox = GetNode<VBoxContainer>("Panel/MarginContainer/VBoxContainer");
-        var relicsLabel = new Label { Text = "Relíquias" };
-        relicsLabel.Text = "Reliquias";
+        var relicsLabel = new Label { Text = "Reliquias" };
         relicsLabel.HorizontalAlignment = HorizontalAlignment.Center;
         relicsLabel.AddThemeFontSizeOverride("font_size", 18);
         _relicsContainer = new HBoxContainer();
         _relicsContainer.AddThemeConstantOverride("separation", 20);
         vbox.AddChild(relicsLabel);
         vbox.AddChild(_relicsContainer);
-        int cardsIdx = _cardsContainer.GetIndex();
+        int cardsIdx = cardsScroll.GetIndex();
         vbox.MoveChild(relicsLabel, cardsIdx + 1);
         vbox.MoveChild(_relicsContainer, cardsIdx + 2);
 

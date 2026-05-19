@@ -26,7 +26,7 @@ public partial class DeckViewer : Control
         if (GetTree().GetNodesInGroup("enemies").Count > 0)
             GetTree().Paused = true;
 
-        _grid       = GetNode<GridContainer>("Panel/OuterVBox/Scroll/Grid");
+        _grid       = GetNode<GridContainer>("Panel/OuterVBox/Scroll/GridWrapper/Grid");
         _titleLabel = GetNode<Label>("Panel/OuterVBox/Header/Title");
         _infoLabel  = GetNode<Label>("Panel/OuterVBox/Header/InfoLabel");
 
