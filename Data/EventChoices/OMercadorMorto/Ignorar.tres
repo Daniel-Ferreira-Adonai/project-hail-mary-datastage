@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://be0ecw10e2hto"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_47jht"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="2_v5qjb"]
+
+[sub_resource type="Resource" id="Resource_kcyvw"]
+script = ExtResource("1_47jht")
+Value = 25
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("2_v5qjb")
+ChoiceText = "Não é problema seu. Seguir em frente"
+ResultText = "Você passa por ele sem olhar. Alguns metros adiante, encontra uma bolsa jogada na estrada."
+Effects = Array[Object]([SubResource("Resource_kcyvw")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

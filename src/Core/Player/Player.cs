@@ -29,6 +29,7 @@ public partial class Player : Node2D
 			UpdateLabelValues();
 		}
 	}
+	[Export] public PlayerEnum playerEnum {get; set;}
 	public List<PowerData> ActivePowers { get; set; } = new List<PowerData>();
 	[Export] private int _startingGold = 100;
 	private int _gold;
@@ -358,7 +359,42 @@ public async void PlayAttackAnimation()
     animation.Play("idle");
     _isAttacking = false;
 }
+	public CardData DuplicateRandomCard()
+	{
+		if (_BaseDeck.Count == 0) return null;
 
+		var rng = new Random();
+		var card = _BaseDeck[rng.Next(_BaseDeck.Count)];
+		AddCardToDeck(card);
+		return card;
+	}
+public (CardData removed, CardData added) TransformRandomCard()
+{
+    if (_BaseDeck.Count == 0) return (null, null);
+
+    var rng = new Random();
+    int index = rng.Next(_BaseDeck.Count);
+    CardData removed = _BaseDeck[index];
+    _BaseDeck.RemoveAt(index);
+
+    var allCards = new List<CardData>();
+    var files = DirAccess.GetFilesAt("res://Data/Cards/");
+    foreach (var file in files)
+    {
+        if (file.EndsWith(".tres"))
+        {
+            var card = GD.Load<CardData>($"res://Data/Cards/{file}");
+            if (card != null)
+                allCards.Add(card);
+        }
+    }
+
+    if (allCards.Count == 0) return (removed, null);
+
+    CardData added = allCards[rng.Next(allCards.Count)];
+    AddCardToDeck(added);
+    return (removed, added);
+}
 private void OnAttackFrameChanged()
 {
     if (animation.Animation == "attack" && animation.Frame == ImpactFrame)

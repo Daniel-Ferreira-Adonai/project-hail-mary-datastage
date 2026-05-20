@@ -113,6 +113,7 @@ src/Core/
  Mouse tracking/MouseInputTracker.cs
  Player/
   Player.cs
+  PlayerEnum.cs
   PlayerManager.cs
  Relic/
   RelicData.cs
@@ -122,7 +123,10 @@ src/Core/
    ArmaduraDourada.cs
    BebidaSuspeita.cs
    BulletproofVestRelic.cs
+   EspinhosRelic.cs
    GritoDaMasculinidade.cs
+   MestreDaSangriaRelic.cs
+   MoedaDaSorteRelic.cs
    OlhoDeSauron.cs
    OvoVermelho.cs
    PocaoDeVida.cs

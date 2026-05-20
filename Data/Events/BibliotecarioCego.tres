@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://b3f1a0ud343pp"]
+
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_sxp07"]
+
+[resource]
+script = ExtResource("1_sxp07")
+Choices = null
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

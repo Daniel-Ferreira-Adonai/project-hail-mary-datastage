@@ -325,10 +325,11 @@ public async void TryToPlayCard(Card card)
         Enemy Enemy = null;
 
         if(CardBeingDraged.Data.IsAoe)
-        {
-            Enemy = _combatManager.RaycastCheckForEnemy() ?? _combatManager.GetFirstEnemy();
-            _combatManager.handleCardPlayed(CardBeingDraged);
-        }
+		{
+			if(!_combatManager.canPlayCard(CardBeingDraged)) return; 
+			Enemy = _combatManager.RaycastCheckForEnemy() ?? _combatManager.GetFirstEnemy();
+			_combatManager.handleCardPlayed(CardBeingDraged);
+		}
         else
         {
             Enemy = _combatManager.getEnemy(CardBeingDraged);

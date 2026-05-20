@@ -6,7 +6,7 @@ public partial class XabuzadoRelic : RelicData
 {
     private int _debuffCount = 0;
 
-    public override void OnDebuffApplied(Player player, string debuff) 
+    public override void OnDebuffApplied(Player player, string debuff, Enemy enemy) 
     {
         _debuffCount++;
         if (_debuffCount % 5 == 0)

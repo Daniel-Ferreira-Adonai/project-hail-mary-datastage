@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public enum EffectType { GainGold, LoseGold, GainHP, LoseHP, GainCard, RemoveCard, GainRelic, GainRandomCard, UpgradeCard, UpgradeRandomCard, RemoveRandomCard, nothing, RandomHpSwing, RandomGoldSwing, RandomCardSwing  }
+public enum EffectType { GainGold, LoseGold, GainHP, LoseHP, GainCard, RemoveCard, GainRelic, GainRandomCard, UpgradeCard, UpgradeRandomCard, RemoveRandomCard, nothing, RandomHpSwing, RandomGoldSwing, RandomCardSwing, DuplicateRandomCard, TransformRandomCard  }
 
 
 

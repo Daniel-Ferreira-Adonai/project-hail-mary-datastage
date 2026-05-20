@@ -129,6 +129,27 @@ public void UpdateDamagePreview(Player player, Enemy target = null)
     
     await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
 }
+    public async Task PLayShowCard()
+{
+    var animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    animPlayer.Play("ShowCard");
+    
+    await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
+}
+    public async Task PlayTransformCardStart()
+{
+    var animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    animPlayer.Play("TransformCardStart");
+    
+    await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
+}
+    public async Task PlayTransformCardEnd()
+{
+    var animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    animPlayer.Play("TransformCardEnd");
+    
+    await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
+}
 	public void Setup(CardData data)
 	{
 		Data = data;

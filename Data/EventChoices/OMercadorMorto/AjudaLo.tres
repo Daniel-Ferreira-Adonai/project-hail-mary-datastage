@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://bobruh4pstyg1"]
+
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_3v5gi"]
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_5q3th"]
+
+[sub_resource type="Resource" id="Resource_87rxf"]
+script = ExtResource("1_3v5gi")
+Type = 3
+Value = 15
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_nd0vj"]
+script = ExtResource("1_3v5gi")
+Type = 6
+Value = 1
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_5q3th")
+ChoiceText = "Usar seus suprimentos para socorrê-lo."
+ResultText = "Ele se recupera lentamente e, em gratidão, pressiona uma relíquia em sua mão antes de partir. Custou, mas valeu."
+Effects = Array[Object]([SubResource("Resource_87rxf"), SubResource("Resource_nd0vj")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

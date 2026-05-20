@@ -314,7 +314,7 @@ public void ShowIntent(Array<IntentData> intents)
         var combatManager = GetTree().GetFirstNodeInGroup("combat_manager") as CombatManager;
         GD.Print("combatManager: " + combatManager);
         GD.Print("ActivePowers: " + combatManager?.Player.ActivePowers.Count);
-        combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff));
+        combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff, this));
         combatManager?.Player.TriggerPowers(p => p.OnDebuffApplied(combatManager.Player, debuff, finalValue, this)); 
 
     }

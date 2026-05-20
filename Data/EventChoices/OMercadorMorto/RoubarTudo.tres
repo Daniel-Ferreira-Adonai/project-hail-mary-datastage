@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://cdv2kgb301t5v"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_mipqm"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_rctlg"]
+
+[sub_resource type="Resource" id="Resource_8orsa"]
+script = ExtResource("1_rctlg")
+Type = 12
+Value = 10
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_ktuqx"]
+script = ExtResource("1_rctlg")
+Value = 60
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_mipqm")
+ChoiceText = "Revirar os bolsos. Ele não vai precisar mais disso."
+ResultText = "Você encontra uma boa quantia... mas algo no olhar dele te perturba. Uma maldição? Talvez.|Sorte sua. Ouro e uma relíquia. O mercador sorri fraco e fecha os olhos."
+Effects = Array[Object]([SubResource("Resource_8orsa"), SubResource("Resource_ktuqx")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

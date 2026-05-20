@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public partial class EventUi  : Control
@@ -102,6 +103,11 @@ private async void OnChoiceSelected(EventChoice choice)
 				case EffectType.RandomCardSwing:
 					await CardSwingEvent(effect, choice);
 					break;
+                case EffectType.DuplicateRandomCard:
+                var duplicated = PlayerManager.Instance.Player.DuplicateRandomCard();
+                if (duplicated != null)
+                    await ShowDuplicateAnimation(duplicated); // reusa a animação existente
+                break;
                 case EffectType.GainCard:
                     break;
 
@@ -169,26 +175,38 @@ private async Task ShowUpgradeAnimation(CardData data)
         _description.Text = texts.Length > 1 ? texts[1] : texts[0];
     }
 }
-  private RelicData GetRandomRelic()
+private RelicData GetRandomRelic()
+{
+    var allRelics = new List<RelicData>();
+
+    var files = DirAccess.GetFilesAt("res://Data/Relics/");
+    foreach (var file in files)
     {
-        var allRelics = new System.Collections.Generic.List<RelicData>();
-
-        var files = DirAccess.GetFilesAt("res://Data/Relics/");
-        foreach (var file in files)
+        if (file.EndsWith(".tres"))
         {
-            if (file.EndsWith(".tres"))
-            {
-                var relic = GD.Load<RelicData>($"res://Data/Relics/{file}");
-                if (relic != null)
-                    allRelics.Add(relic);
-            }
+            var relic = GD.Load<RelicData>($"res://Data/Relics/{file}");
+            if (relic != null)
+                allRelics.Add(relic);
         }
-
-        if (allRelics.Count == 0) return null;
-
-        var rng = new Random();
-        return allRelics[rng.Next(allRelics.Count)];
     }
+
+    if (allRelics.Count == 0) return null;
+
+    var validRelics = new List<RelicData>();
+
+    Player player = PlayerManager.Instance.Player;
+
+    foreach (var relic in allRelics)
+    {
+        if (relic.PlayerEnum == PlayerEnum.any || relic.PlayerEnum == player.playerEnum)
+            validRelics.Add(relic);
+    }
+
+    if (validRelics.Count == 0) return null;
+
+    var rng = new Random();
+    return validRelics[rng.Next(validRelics.Count)];
+}
 	private async Task CardSwingEvent(EventEffect effect, EventChoice choice)
 {
     bool isGood = GD.Randf() > 0.5f;
@@ -237,6 +255,64 @@ private async Task ShowUpgradeAnimation(CardData data)
     
     await card.PlayRemoveAnimation();
     
+    container.QueueFree();
+}
+private async Task ShowTransformAnimation(CardData removedData, CardData newData)
+{
+    var cardScene = GD.Load<PackedScene>("res://src/Core/Card/Card.tscn");
+    
+    var container = new Control();
+    container.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+    UI.Instance.AddUI(container);
+
+    var viewportSize = GetViewport().GetVisibleRect().Size;
+    Vector2 center = new Vector2(viewportSize.X / 2, viewportSize.Y / 2);
+
+    // carta antiga sendo transformada
+    var oldCard = cardScene.Instantiate<Card>();
+    container.AddChild(oldCard);
+    oldCard.Setup(removedData);
+    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+    oldCard.GlobalPosition = center;
+    oldCard.ZIndex = 100;
+    await oldCard.PlayTransformCardStart();
+    oldCard.QueueFree();
+
+    // carta nova aparecendo
+    var newCard = cardScene.Instantiate<Card>();
+    container.AddChild(newCard);
+    newCard.Setup(newData);
+    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+    newCard.GlobalPosition = center;
+    newCard.ZIndex = 100;
+    await newCard.PlayTransformCardEnd();
+
+    container.QueueFree();
+}
+private async Task ShowDuplicateAnimation(CardData data)
+{
+    var cardScene = GD.Load<PackedScene>("res://src/Core/Card/Card.tscn");
+    var card = cardScene.Instantiate<Card>();
+
+    var container = new Control();
+    container.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+
+    UI.Instance.AddUI(container);
+    container.AddChild(card);
+
+    card.Setup(data);
+
+    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
+    var viewportSize = GetViewport().GetVisibleRect().Size;
+    card.GlobalPosition = new Vector2(
+        viewportSize.X / 2,
+        viewportSize.Y / 2
+    );
+    card.ZIndex = 100;
+
+    await card.PLayShowCard();
+
     container.QueueFree();
 }
 }
