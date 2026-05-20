@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://8uote2j2x1o7"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_6ndm0"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_uiph1"]
+
+[sub_resource type="Resource" id="Resource_4wskv"]
+script = ExtResource("1_uiph1")
+Type = 16
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_6ndm0")
+ChoiceText = "Pedir que reescreva uma de suas técnicas."
+ResultText = "Ele reescreve com dedos ágeis. O que volta é irreconhecível, mas poderoso"
+Effects = Array[Object]([SubResource("Resource_4wskv")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://xu7see8wtusi"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_7jbu6"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_uf8ru"]
+
+[sub_resource type="Resource" id="Resource_x0nnf"]
+script = ExtResource("1_uf8ru")
+Type = 1
+Value = 35
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[sub_resource type="Resource" id="Resource_k1kbx"]
+script = ExtResource("1_uf8ru")
+Type = 9
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_7jbu6")
+ChoiceText = "Acordar o ferreiro e pagar pelos serviços."
+ResultText = "Ele reclama, mas trabalha. Caro, porém bem feito."
+Effects = Array[Object]([SubResource("Resource_x0nnf"), SubResource("Resource_k1kbx")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

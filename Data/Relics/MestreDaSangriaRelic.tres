@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MestreDaSangriaRelic" format=3 uid="uid://c14bljk6fmjnb"]
+
+[ext_resource type="Texture2D" uid="uid://cscg7j4dg8sjy" path="res://Test/TestImagesSprites/art/Sangramento.png" id="1_1lx0r"]
+[ext_resource type="Script" uid="uid://dfltw34u3vi63" path="res://src/Core/Relic/RelicScripts/MestreDaSangriaRelic.cs" id="1_hqyhl"]
+
+[resource]
+script = ExtResource("1_hqyhl")
+RelicName = "Mestre Da Sangria"
+Icon = ExtResource("1_1lx0r")
+metadata/_custom_type_script = "uid://dfltw34u3vi63"

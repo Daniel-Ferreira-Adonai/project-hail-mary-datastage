@@ -11,7 +11,10 @@
 [ext_resource type="Resource" uid="uid://bnbqpcj1sftt8" path="res://Data/Events/EquilibroPerfeito.tres" id="8_m05g2"]
 [ext_resource type="Resource" uid="uid://nx4cn3ru15i6" path="res://Data/Events/CovilDeApostas.tres" id="9_skxkj"]
 [ext_resource type="Resource" uid="uid://cwclebisiqsp4" path="res://Data/Events/OEsqueletoNegociante.tres" id="10_52122"]
+[ext_resource type="Resource" uid="uid://b3f1a0ud343pp" path="res://Data/Events/BibliotecarioCego.tres" id="11_gbfhp"]
 [ext_resource type="Resource" uid="uid://xiynavl5rabb" path="res://Data/Encounters/HumanEncounter.tres" id="12_52122"]
+[ext_resource type="Resource" uid="uid://4eq81estukpd" path="res://Data/Events/OMercadorMorto.tres" id="12_xbvni"]
+[ext_resource type="Resource" uid="uid://bu2bxed76tads" path="res://Data/Events/FerreiroBebado.tres" id="13_iglaa"]
 
 [sub_resource type="Gradient" id="Gradient_fu1mf"]
 colors = PackedColorArray(0.24840015, 0.24840018, 0.24840015, 1, 0.4, 0.21960784, 0.20392157, 1)
@@ -36,8 +39,8 @@ offset = Vector2(960, 540)
 
 [node name="MapGenerator" type="Node" parent="." unique_id=1635660364]
 script = ExtResource("1_fu1mf")
-Events = [ExtResource("3_of231"), ExtResource("4_wyjav"), ExtResource("5_xbaaq"), ExtResource("6_i58sm"), ExtResource("7_5a600"), ExtResource("8_m05g2"), ExtResource("9_skxkj"), ExtResource("10_52122")]
-EasyEncounters = [ExtResource("12_52122")]
+Events = [ExtResource("4_wyjav"), ExtResource("6_i58sm"), ExtResource("7_5a600"), ExtResource("11_gbfhp"), ExtResource("9_skxkj"), ExtResource("8_m05g2"), ExtResource("5_xbaaq"), ExtResource("13_iglaa"), ExtResource("3_of231"), ExtResource("10_52122"), ExtResource("12_xbvni")]
+EasyEncounters = [ExtResource("12_52122"), ExtResource("3_14n3b")]
 MediumEncounters = [ExtResource("3_14n3b")]
 
 [node name="MapBackground" type="CanvasLayer" parent="." unique_id=1184612790]

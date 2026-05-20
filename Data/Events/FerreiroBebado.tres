@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EventData" format=3 uid="uid://bu2bxed76tads"]
+
+[ext_resource type="Texture2D" uid="uid://k06o6dbbiobe" path="res://Test/TestImagesSprites/FerreiroEvento.png" id="1_ndwbf"]
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_ug4pq"]
+[ext_resource type="Resource" uid="uid://xu7see8wtusi" path="res://Data/EventChoices/FerreiroBebado/AcordarEpedirAjuda.tres" id="2_3xsvi"]
+[ext_resource type="Resource" uid="uid://blgr1p7xt8bny" path="res://Data/EventChoices/FerreiroBebado/UsaForja.tres" id="3_nkaim"]
+
+[resource]
+script = ExtResource("1_ug4pq")
+EventName = "O Ferreiro Bêbado"
+Description = "Um ferreiro corpulento dorme encostado na bigorna, uma garrafa vazia na mão. Sua forja ainda está acesa. As ferramentas ao redor parecem de boa qualidade... e ele não vai notar."
+Art = ExtResource("1_ndwbf")
+Choices = Array[Object]([ExtResource("2_3xsvi"), ExtResource("3_nkaim")])
+metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

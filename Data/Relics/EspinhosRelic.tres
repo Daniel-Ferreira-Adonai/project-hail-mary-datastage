@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EspinhosRelic" format=3 uid="uid://dl7eskgc2e2mw"]
+
+[ext_resource type="Texture2D" uid="uid://yhyb0a1y72og" path="res://Test/TestImagesSprites/art/Espinhos.png" id="1_m02xn"]
+[ext_resource type="Script" uid="uid://nwkcpopp05nc" path="res://src/Core/Relic/RelicScripts/EspinhosRelic.cs" id="1_o326n"]
+
+[resource]
+script = ExtResource("1_o326n")
+RelicName = "Espinhos"
+Description = "fura legal"
+Icon = ExtResource("1_m02xn")
+metadata/_custom_type_script = "uid://nwkcpopp05nc"

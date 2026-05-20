@@ -1,8 +1,15 @@
 [gd_resource type="Resource" script_class="EventData" format=3 uid="uid://b3f1a0ud343pp"]
 
-[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_sxp07"]
+[ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_lf8as"]
+[ext_resource type="Texture2D" uid="uid://0rl7ocfxmh7r" path="res://Test/TestImagesSprites/BibliotecarioCego.png" id="1_nji0i"]
+[ext_resource type="Resource" uid="uid://cm4dca01pwn7o" path="res://Data/EventChoices/BibliotecarioCego/DeixarQueimar.tres" id="2_6vxfw"]
+[ext_resource type="Resource" uid="uid://8uote2j2x1o7" path="res://Data/EventChoices/BibliotecarioCego/PedirTransformar.tres" id="3_t26ku"]
+[ext_resource type="Resource" uid="uid://ceyrwj663w4y5" path="res://Data/EventChoices/BibliotecarioCego/PedirUmaCopia.tres" id="4_0ydsx"]
 
 [resource]
-script = ExtResource("1_sxp07")
-Choices = null
+script = ExtResource("1_lf8as")
+EventName = "O Bibliotecário Cego"
+Description = "Um velho de olhos vendados senta entre pilhas de livros em chamas. Ele não tenta apagar. Apenas vira as páginas calmamente enquanto tudo ao redor queima. \"Conhecimento demais\", ele murmura, \"é veneno."
+Art = ExtResource("1_nji0i")
+Choices = Array[Object]([ExtResource("2_6vxfw"), ExtResource("3_t26ku"), ExtResource("4_0ydsx")])
 metadata/_custom_type_script = "uid://d28nw1mlpqsrp"

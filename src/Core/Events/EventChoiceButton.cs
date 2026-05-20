@@ -63,6 +63,9 @@ public partial class EventChoiceButton : PanelContainer
 				EffectType.RemoveRandomCard => $"[color=#FF4444]Remova uma carta aleatória[/color] ",
 				EffectType.RandomHpSwing => $"[color=#FFAA44]Ganhe ou Perca {effect.Value} HP (50/50)[/color] ",
 				EffectType.RandomGoldSwing => $"[color=#FFAA44]Ganhe ou Perca {effect.Value} Gold (50/50)[/color] ",
+                EffectType.RandomCardSwing => $"[color=#FFAA44]Melhore ou Remova uma carta aleatória (50/50)[/color] ",
+                EffectType.DuplicateRandomCard => $"[color=#44FF44]Duplique uma carta aleatória[/color] ",
+                EffectType.TransformRandomCard => $"[color=#AA44FF]Transforme uma carta aleatória[/color] ",
 				EffectType.nothing => "",
 				_ => ""
             };

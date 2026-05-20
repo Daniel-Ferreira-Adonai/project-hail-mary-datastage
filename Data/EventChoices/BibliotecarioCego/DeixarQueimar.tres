@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EventChoice" format=3 uid="uid://cm4dca01pwn7o"]
+
+[ext_resource type="Script" uid="uid://d1a0u6167j7x1" path="res://src/Core/Events/EventChoice.cs" id="1_1tnn5"]
+[ext_resource type="Script" uid="uid://bw54hv2smagm2" path="res://src/Core/Events/EventEffect.cs" id="1_pfbtp"]
+
+[sub_resource type="Resource" id="Resource_pg7b0"]
+script = ExtResource("1_pfbtp")
+Type = 5
+metadata/_custom_type_script = "uid://bw54hv2smagm2"
+
+[resource]
+script = ExtResource("1_1tnn5")
+ChoiceText = "Entregar uma carta ao velho. Ele sabe o que faz"
+ResultText = "\"Ele rasga a carta devagar, inhala a fumaça e sorri. Em troca, pressiona um tomo estranho em sua mão"
+Effects = Array[Object]([SubResource("Resource_pg7b0")])
+metadata/_custom_type_script = "uid://d1a0u6167j7x1"

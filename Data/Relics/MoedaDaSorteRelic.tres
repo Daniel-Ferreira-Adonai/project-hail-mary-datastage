@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MoedaDaSorteRelic" format=3 uid="uid://bkse543wgev18"]
+
+[ext_resource type="Texture2D" uid="uid://dbx2p1d7eoo5o" path="res://Test/TestImagesSprites/art/MoedaDasorte.png" id="1_nt5mo"]
+[ext_resource type="Script" uid="uid://b0i1w1d0d8yc5" path="res://src/Core/Relic/RelicScripts/MoedaDaSorteRelic.cs" id="1_r07f7"]
+
+[resource]
+script = ExtResource("1_r07f7")
+RelicName = "Moeda Da Sorte"
+Icon = ExtResource("1_nt5mo")
+metadata/_custom_type_script = "uid://b0i1w1d0d8yc5"

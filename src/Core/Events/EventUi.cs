@@ -64,10 +64,10 @@ private async void OnChoiceSelected(EventChoice choice)
                     PlayerManager.Instance.Player.Gold += effect.Value;
                     break;
 				case EffectType.LoseGold:
-                    PlayerManager.Instance.Player.Gold -= effect.Value;
+                 SpendGold(effect.Value);
                     break;
                 case EffectType.LoseHP:
-                    PlayerManager.Instance.Player.TakeDamage(effect.Value);
+                        SpendHp(effect.Value);
                     break;
                 case EffectType.GainHP:
                     PlayerManager.Instance.Player.TryToHeal(effect.Value);
@@ -106,7 +106,12 @@ private async void OnChoiceSelected(EventChoice choice)
                 case EffectType.DuplicateRandomCard:
                 var duplicated = PlayerManager.Instance.Player.DuplicateRandomCard();
                 if (duplicated != null)
-                    await ShowDuplicateAnimation(duplicated); // reusa a animação existente
+                    await ShowDuplicateAnimation(duplicated); 
+                break;
+                case EffectType.TransformRandomCard:
+                var (removed, added) = PlayerManager.Instance.Player.TransformRandomCard();
+                if (removed != null && added != null)
+                    await ShowTransformAnimation(removed, added);
                 break;
                 case EffectType.GainCard:
                     break;
@@ -143,7 +148,7 @@ private async Task ShowUpgradeAnimation(CardData data)
 		
 		container.QueueFree();
 	}
-	private void hpSwingEvent(EventEffect effect, EventChoice choice)
+private void hpSwingEvent(EventEffect effect, EventChoice choice)
 {
     bool isGood = GD.Randf() > 0.5f;
     string[] texts = choice.ResultText.Split("|");
@@ -155,11 +160,27 @@ private async Task ShowUpgradeAnimation(CardData data)
     }
     else
     {
-        PlayerManager.Instance.Player.TakeDamage(effect.Value);
+        var player = PlayerManager.Instance.Player;
+        int damage = Math.Min(effect.Value, player.currentHp - 1);
+        if (damage > 0)
+            player.TakeDamage(damage);
         _description.Text = texts.Length > 1 ? texts[1] : texts[0];
     }
 }
-	private void GoldSwingEvent(EventEffect effect, EventChoice choice)
+private void SpendHp(int amount)
+{
+    var player = PlayerManager.Instance.Player;
+    int damage = Math.Min(amount, player.currentHp - 1);
+    if (damage > 0)
+        player.TakeDamage(damage);
+}
+
+private void SpendGold(int amount)
+{
+    var player = PlayerManager.Instance.Player;
+    player.Gold = Math.Max(0, player.Gold - amount);
+}
+private void GoldSwingEvent(EventEffect effect, EventChoice choice)
 {
     bool isGood = GD.Randf() > 0.5f;
     string[] texts = choice.ResultText.Split("|");
@@ -171,7 +192,8 @@ private async Task ShowUpgradeAnimation(CardData data)
     }
     else
     {
-        PlayerManager.Instance.Player.Gold -= effect.Value;
+        var player = PlayerManager.Instance.Player;
+        player.Gold = Math.Max(0, player.Gold - effect.Value);
         _description.Text = texts.Length > 1 ? texts[1] : texts[0];
     }
 }

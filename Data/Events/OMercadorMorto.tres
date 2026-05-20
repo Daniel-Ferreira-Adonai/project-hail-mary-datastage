@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="EventData" format=3 uid="uid://4eq81estukpd"]
 
+[ext_resource type="Texture2D" uid="uid://bj80oubt2qmfl" path="res://Test/TestImagesSprites/art/mercadorMorto.png" id="1_tnlfk"]
 [ext_resource type="Script" uid="uid://d28nw1mlpqsrp" path="res://src/Core/Events/EventData.cs" id="1_xrffk"]
 [ext_resource type="Resource" uid="uid://bobruh4pstyg1" path="res://Data/EventChoices/OMercadorMorto/AjudaLo.tres" id="1_y8ora"]
 [ext_resource type="Resource" uid="uid://be0ecw10e2hto" path="res://Data/EventChoices/OMercadorMorto/Ignorar.tres" id="2_tnlfk"]
@@ -9,5 +10,6 @@
 script = ExtResource("1_xrffk")
 EventName = "O Mercador Morto"
 Description = " Um mercador jaz estirado na estrada, seus pertences espalhados ao redor. Ainda respirando... ou quase. Seus olhos te seguem enquanto você se aproxima."
+Art = ExtResource("1_tnlfk")
 Choices = Array[Object]([ExtResource("1_y8ora"), ExtResource("2_tnlfk"), ExtResource("3_1k5g0")])
 metadata/_custom_type_script = "uid://d28nw1mlpqsrp"
