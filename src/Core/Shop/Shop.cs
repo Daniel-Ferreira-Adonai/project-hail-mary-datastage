@@ -20,7 +20,7 @@ public partial class Shop : Control
     [Signal] public delegate void PurchaseFailedEventHandler(string reason);
     [Signal] public delegate void ExitRequestedEventHandler();
 
-    private HBoxContainer _cardsContainer;
+    private GridContainer _cardsContainer;
     private HBoxContainer _relicsContainer;
     private Label _goldLabel;
     private Label _messageLabel;
@@ -32,7 +32,7 @@ public partial class Shop : Control
     {
         _cardDisplayScene ??= GD.Load<PackedScene>("res://src/Core/card_display.tscn");
         var cardsScroll = GetNode<ScrollContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll");
-        _cardsContainer = GetNode<HBoxContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll/CardsContainer");
+        _cardsContainer = GetNode<GridContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll/CardsContainer");
         _goldLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/Header/GoldLabel");
         _messageLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/MessageLabel");
 
@@ -291,6 +291,16 @@ public partial class Shop : Control
 
         RefreshGoldLabel();
         SetMessage($"{relic.RelicName} comprada.");
+    }
+
+    public void OnViewDeckPressed()
+    {
+        var deckViewerScene = GD.Load<PackedScene>("res://src/Core/Inventory/DeckViewer.tscn");
+        if (deckViewerScene is null) return;
+        var viewer = deckViewerScene.Instantiate<DeckViewer>();
+        viewer.Mode = DeckViewer.ViewerMode.Inspect;
+        AddChild(viewer);
+        viewer.LoadDeck(new List<CardData>(_playerState.Deck));
     }
 
     public void OnExitPressed()

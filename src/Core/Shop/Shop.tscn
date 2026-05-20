@@ -106,15 +106,18 @@ text = "Cartas disponíveis"
 horizontal_alignment = 1
 
 [node name="CardsScroll" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
+custom_minimum_size = Vector2(0, 480)
 layout_mode = 2
-size_flags_vertical = 0
-horizontal_scroll_mode = 1
-vertical_scroll_mode = 0
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
 
-[node name="CardsContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/CardsScroll" unique_id=300253839]
+[node name="CardsContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/CardsScroll" unique_id=300253839]
 layout_mode = 2
-theme_override_constants/separation = 20
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 4
 
 [node name="HSeparatorRelics" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -128,7 +131,15 @@ horizontal_alignment = 1
 
 [node name="Footer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer" unique_id=88603429]
 layout_mode = 2
+theme_override_constants/separation = 16
 alignment = 2
+
+[node name="ViewDeckButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Footer"]
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "VER BARALHO"
 
 [node name="ExitButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/Footer" unique_id=516280858]
 custom_minimum_size = Vector2(240, 56)
@@ -138,4 +149,5 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
 text = "SAIR DA LOJA"
 
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Footer/ViewDeckButton" to="." method="OnViewDeckPressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Footer/ExitButton" to="." method="OnExitPressed"]
