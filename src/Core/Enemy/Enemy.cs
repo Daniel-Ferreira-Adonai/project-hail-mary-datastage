@@ -14,7 +14,10 @@ public partial class Enemy : Node2D
     [Export] private Texture2D _debuffIcon;
     [Export] private Texture2D _unknownIcon;
     
+    [Export] private PackedScene _healthBarScene;
     [Export] private float _intentOffsetY = -160f;
+
+    private EnemyHealthBar _healthBar;
 
     private int _currentHealth;
     public int CurrentHealth
@@ -23,18 +26,27 @@ public partial class Enemy : Node2D
         set
         {
             _currentHealth = value;
-            UpdateHealthLabel();
-            
+            _healthBar?.UpdateHp(_currentHealth);
+
             if (_currentHealth <= 0)
-            {
                 Die();
-            }
         }
     }
     
     public int MaxHealth { get; private set; }
     public int Strength { get; set; }
     public int BuffedStrength { get; set; }
+
+    private int _block;
+    public int Block
+    {
+        get => _block;
+        set
+        {
+            _block = Mathf.Max(0, value);
+            _healthBar?.UpdateBlock(_block);
+        }
+    }
     public int Vulnerable
     {
         get => Debuffs.ContainsKey("Vulnerable") ? Debuffs["Vulnerable"] : 0;
@@ -47,7 +59,6 @@ public partial class Enemy : Node2D
         set => Debuffs["Weak"] = value;
     }
     
-    private Label _healthLabel;
     private Sprite2D _sprite;
     
     private CollisionShape2D _collision;
@@ -62,10 +73,15 @@ public partial class Enemy : Node2D
     
     public override void _Ready()
     {
-       _healthLabel = GetNode<Label>("health");
-    _sprite = GetNodeOrNull<Sprite2D>("Sprite");
-    _collision = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
-    _intentContainer = GetNodeOrNull<HBoxContainer>("HBoxContainer");
+        _sprite          = GetNodeOrNull<Sprite2D>("Sprite");
+        _collision       = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
+        _intentContainer = GetNodeOrNull<HBoxContainer>("HBoxContainer");
+
+        if (_healthBarScene is not null)
+        {
+            _healthBar = _healthBarScene.Instantiate<EnemyHealthBar>();
+            AddChild(_healthBar);
+        }
 
 if (_intentContainer != null)
 {
@@ -85,14 +101,7 @@ if (_intentContainer != null)
         AddToGroup("enemies");
         
         if (Data != null)
-        {
             Setup(Data);
-        }
-        else
-        {
-            MaxHealth = _currentHealth; 
-            UpdateHealthLabel();
-        }
     }
     
   
@@ -102,23 +111,31 @@ if (_intentContainer != null)
         Name = data.EnemyName;
         
         MaxHealth = data.MaxHealth;
-        CurrentHealth = MaxHealth;
-        Strength = data.Strength;
-        
+        Strength  = data.Strength;
+
         if (_sprite != null && data.Sprite != null)
         {
-            _sprite.Texture = data.Sprite;
-            
-            _sprite.Scale = EnemyScaler.CalculateScale(data.Sprite, data.Size);
-            
-            _sprite.Position = new Vector2(_sprite.Position.X, data.VerticalOffset);
+            _sprite.Texture   = data.Sprite;
+            _sprite.Scale     = EnemyScaler.CalculateScale(data.Sprite, data.Size);
+            _sprite.Position  = new Vector2(_sprite.Position.X, data.VerticalOffset);
         }
-        
+
         Modulate = data.Tint;
-        
+
+        if (_healthBar is not null)
+        {
+            float dispW = EnemyScaler.CalculateDisplayWidth(data.Sprite, data.Size);
+            float dispH = EnemyScaler.CalculateDisplayHeight(data.Sprite, data.Size);
+            _healthBar.Setup(MaxHealth, data.Size, dispW);
+            _healthBar.Position = new Vector2(_healthBar.Position.X,
+                data.VerticalOffset + dispH / 2f + 8f);
+        }
+
         _turnPatterns = data.TurnPatterns;
         UpdateHitbox();
-        UpdateHealthLabel();
+
+        // Set HP after health bar is configured so the initial UpdateHp fires correctly
+        CurrentHealth = MaxHealth;
     }
     
     public float GetDisplayWidth()
@@ -324,14 +341,6 @@ public void ShowIntent(Array<IntentData> intents)
 
     }
 
-    private void UpdateHealthLabel()
-    {
-        if (_healthLabel != null)
-        {
-            _healthLabel.Text = _currentHealth <= 0 ? "0" : _currentHealth.ToString();
-        }
-    }
-    
     public void UpdateTemporaryEffects()
     {
         var keys = new List<string>(Debuffs.Keys);

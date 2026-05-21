@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public partial class DeckViewer : Control
 {
     public enum ViewerMode { Inspect, Remove, Upgrade }
+    private static readonly Vector2 ViewerCardSize = new(210, 320);
 
     [Signal] public delegate void CardRemovedEventHandler(CardData cardData);
     [Signal] public delegate void CardUpgradedEventHandler(CardData cardData);
@@ -75,6 +76,8 @@ public partial class DeckViewer : Control
         foreach (var cardData in _deck)
         {
             var display = _cardDisplayScene.Instantiate<CardDisplay>();
+            display.CustomMinimumSize = ViewerCardSize;
+            display.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
             display.Context = CardDisplay.CardDisplayContext.DeckViewer;
             display.SetCard(cardData);
 
@@ -106,7 +109,6 @@ public partial class DeckViewer : Control
         switch (Mode)
         {
             case ViewerMode.Remove:
-                _deck.Remove(card);
                 display.QueueFree();
                 EmitSignal(SignalName.CardRemoved, card);
                 OnClosePressed();

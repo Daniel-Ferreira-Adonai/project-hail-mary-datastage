@@ -12,9 +12,10 @@ public partial class RelicTooltip : Control
 
     public override void _Ready()
     {
-        Instance = this;
-        Visible  = false;
-        ZIndex   = 200;
+        Instance    = this;
+        Visible     = false;
+        ZIndex      = 1000;
+        ZAsRelative = false;
 
         _nameLabel = GetNode<Label>("Panel/VBox/Header/Name");
         _descLabel = GetNode<Label>("Panel/VBox/Desc");
@@ -40,9 +41,18 @@ public partial class RelicTooltip : Control
 
     public void ShowTooltip(RelicData relic)
     {
+        _icon.Texture   = relic.Icon;
+        _icon.Visible   = relic.Icon is not null;
         _nameLabel.Text = relic.RelicName ?? "";
         _descLabel.Text = relic.Description ?? "";
-        _icon.Texture   = relic.Icon;
+        Visible         = true;
+    }
+
+    public void ShowTooltip(string title, string desc)
+    {
+        _icon.Visible   = false;
+        _nameLabel.Text = title;
+        _descLabel.Text = desc;
         Visible         = true;
     }
 

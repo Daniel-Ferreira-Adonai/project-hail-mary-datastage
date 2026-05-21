@@ -282,6 +282,18 @@ private void SpawnDamageLabel(int damage)
 		_BaseDeck.Add(cardData);
 		GameManager.Instance?.UpdateTopBar();
 	}
+	public bool RemoveCardFromDeck(CardData cardData)
+	{
+		if (cardData is null) return false;
+
+		bool removed = _BaseDeck.Remove(cardData);
+		if (removed)
+		{
+			GameManager.Instance?.UpdateTopBar();
+		}
+
+		return removed;
+	}
 	public CardData UpgradeRandomCard()
 {
     var nonUpgraded = _BaseDeck.FindAll(cardData => !cardData.IsCardUpgraded);
@@ -299,8 +311,7 @@ public CardData RemoveRandomCard()
     
     int random = GD.RandRange(0, _BaseDeck.Count - 1);
     CardData cardData = _BaseDeck[random];
-    _BaseDeck.RemoveAt(random); 
-    return cardData;
+    return RemoveCardFromDeck(cardData) ? cardData : null;
 }
 	public void setupBasicDeck()
 	{

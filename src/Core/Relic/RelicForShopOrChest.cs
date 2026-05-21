@@ -24,6 +24,9 @@ public partial class RelicForShopOrChest : TextureButton
         StretchMode = StretchModeEnum.Scale;
         CustomMinimumSize = new Vector2(62, 62);
 
+        MouseEntered += () => RelicTooltip.Instance?.ShowTooltip(relicData);
+        MouseExited  += () => RelicTooltip.Instance?.HideTooltip();
+
         if (StartsDisabled)
         {
             Disabled = true;

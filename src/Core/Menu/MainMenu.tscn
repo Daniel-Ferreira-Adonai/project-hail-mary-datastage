@@ -1,22 +1,29 @@
 [gd_scene format=3 uid="uid://eg8erewyudam"]
 
 [ext_resource type="Script" uid="uid://bcmugiqmqkkgn" path="res://src/Core/Menu/MainMenu.cs" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://csv66461yt4fo" path="res://BackgroundMenu.png" id="2_bg"]
-[ext_resource type="Texture2D" uid="uid://bk5qqbqpdyfx1" path="res://BotãoJogar.png" id="3_btn_play"]
-[ext_resource type="Texture2D" path="res://Configurações.png" id="4_btn_cfg"]
-[ext_resource type="Texture2D" path="res://Sair.png" id="5_btn_sair"]
+[ext_resource type="VideoStream" uid="uid://bgbxd1k2qai2r" path="res://Test/MenuBackground_new.ogv" id="2_video"]
+[ext_resource type="FontFile" uid="uid://b1bqf5lm6q6uw" path="res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf" id="3_qdhen"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
-bg_color = Color(0.05, 0.02, 0.1, 0.85)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.4, 0.2, 0.6, 0.8)
+bg_color = Color(0.02, 0.02, 0.04, 0.4)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_highlight"]
+bg_color = Color(0.04, 0.02, 0.0, 0.45)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1.0, 0.75, 0.15, 1.0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="MainMenu" type="Control" unique_id=149446269]
 layout_mode = 3
@@ -27,15 +34,32 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1353045184]
-layout_mode = 0
+[node name="Background" type="Control" parent="." unique_id=1353045184]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bg")
-expand_mode = 1
-stretch_mode = 6
+mouse_filter = 2
+
+[node name="BackgroundVideo" type="VideoStreamPlayer" parent="Background" unique_id=850575640]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 14.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stream = ExtResource("2_video")
+volume_db = -80.0
+autoplay = true
+expand = true
+loop = true
 
 [node name="LoginPanel" type="PanelContainer" parent="Background" unique_id=1712253323]
 layout_mode = 0
@@ -58,42 +82,124 @@ alignment = 1
 
 [node name="GameTitle" type="Label" parent="Background/LoginPanel/VBox" unique_id=454119666]
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "PROJECT HAIL MARY"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_qdhen")
+theme_override_font_sizes/font_size = 94
+text = "Stuck no More"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Background/LoginPanel/VBox" unique_id=220265141]
+[node name="PlayContainer" type="Control" parent="Background/LoginPanel/VBox" unique_id=111111111]
+custom_minimum_size = Vector2(450, 64)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.5, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "DATASTAGE"
-horizontal_alignment = 1
+size_flags_horizontal = 3
 
-[node name="PlayButton" type="TextureButton" parent="Background/LoginPanel/VBox" unique_id=2129924181]
-custom_minimum_size = Vector2(400, 100)
+[node name="PlayHighlight" type="Panel" parent="Background/LoginPanel/VBox/PlayContainer" unique_id=211111111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+modulate = Color(1, 1, 1, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
+
+[node name="PlayButton" type="Button" parent="Background/LoginPanel/VBox/PlayContainer" unique_id=2129924181]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+text = "Jogar"
+theme_override_fonts/font = ExtResource("3_qdhen")
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+
+[node name="SettingsContainer" type="Control" parent="Background/LoginPanel/VBox" unique_id=111111112]
+custom_minimum_size = Vector2(450, 64)
 layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("3_btn_play")
-ignore_texture_size = true
-stretch_mode = 6
+size_flags_horizontal = 3
 
-[node name="SettingsButton" type="TextureButton" parent="Background/LoginPanel/VBox"]
-custom_minimum_size = Vector2(400, 100)
+[node name="SettingsHighlight" type="Panel" parent="Background/LoginPanel/VBox/SettingsContainer" unique_id=211111112]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+modulate = Color(1, 1, 1, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
+
+[node name="SettingsButton" type="Button" parent="Background/LoginPanel/VBox/SettingsContainer" unique_id=1193570803]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+text = "Configurações"
+theme_override_fonts/font = ExtResource("3_qdhen")
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+
+[node name="QuitContainer" type="Control" parent="Background/LoginPanel/VBox" unique_id=111111113]
+custom_minimum_size = Vector2(450, 64)
 layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("4_btn_cfg")
-ignore_texture_size = true
-stretch_mode = 6
+size_flags_horizontal = 3
 
-[node name="QuitButton" type="TextureButton" parent="Background/LoginPanel/VBox"]
-custom_minimum_size = Vector2(400, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-texture_normal = ExtResource("5_btn_sair")
-ignore_texture_size = true
-stretch_mode = 6
+[node name="QuitHighlight" type="Panel" parent="Background/LoginPanel/VBox/QuitContainer" unique_id=211111113]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+modulate = Color(1, 1, 1, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
 
-[connection signal="pressed" from="Background/LoginPanel/VBox/PlayButton" to="." method="OnPlayPressed"]
-[connection signal="pressed" from="Background/LoginPanel/VBox/SettingsButton" to="." method="OnSettingsPressed"]
-[connection signal="pressed" from="Background/LoginPanel/VBox/QuitButton" to="." method="OnQuitPressed"]
+[node name="QuitButton" type="Button" parent="Background/LoginPanel/VBox/QuitContainer" unique_id=415218444]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+text = "Sair"
+theme_override_fonts/font = ExtResource("3_qdhen")
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+
+[connection signal="pressed" from="Background/LoginPanel/VBox/PlayContainer/PlayButton" to="." method="OnPlayPressed"]
+[connection signal="pressed" from="Background/LoginPanel/VBox/SettingsContainer/SettingsButton" to="." method="OnSettingsPressed"]
+[connection signal="pressed" from="Background/LoginPanel/VBox/QuitContainer/QuitButton" to="." method="OnQuitPressed"]

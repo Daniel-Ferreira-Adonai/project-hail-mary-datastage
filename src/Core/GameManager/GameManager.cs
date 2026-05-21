@@ -182,6 +182,10 @@ public partial class GameManager : Node
 
         var viewer = _deckViewerScene.Instantiate<DeckViewer>();
         viewer.Mode = mode;
+        if (mode == DeckViewer.ViewerMode.Remove)
+        {
+            viewer.CardRemoved += card => PlayerManager.Instance.Player.RemoveCardFromDeck(card);
+        }
         viewer.ExitRequested += () => viewer.QueueFree();
         UI.Instance.AddUI(viewer);
 

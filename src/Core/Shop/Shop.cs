@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class Shop : Control
 {
-    private const int CardCount = 8;
+    private const int CardCount = 4;
     private const int RelicCount = 2;
 
     [Export] private PackedScene _cardDisplayScene;
@@ -20,58 +20,64 @@ public partial class Shop : Control
     [Signal] public delegate void PurchaseFailedEventHandler(string reason);
     [Signal] public delegate void ExitRequestedEventHandler();
 
-    private GridContainer _cardsContainer;
+    private HBoxContainer _cardsContainer;
     private HBoxContainer _relicsContainer;
     private Label _goldLabel;
     private Label _messageLabel;
     private readonly List<ShopOffer> _offers = [];
     private readonly List<RelicShopOffer> _relicOffers = [];
     private IShopPlayerState _playerState;
+    private int _removeCardCost = 75;
+    private bool _cardRemoved = false;
+
+    // ── Paths ─────────────────────────────────────────────────────────────────
+    private const string BasePath      = "Panel/MarginContainer/VBoxContainer";
+    private const string GoldLabelPath = BasePath + "/Header/GoldGroup/GoldLabel";
+    private const string CardsPath     = BasePath + "/CardsContainer";
+    private const string RelicsPath    = BasePath + "/BottomBar/RelicsContainer";
+    private const string MsgPath       = BasePath + "/MessageLabel";
+    private const string RemoveBtnPath = BasePath + "/BottomBar/RemoveButton";
 
     public override void _Ready()
     {
         _cardDisplayScene ??= GD.Load<PackedScene>("res://src/Core/card_display.tscn");
-        var cardsScroll = GetNode<ScrollContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll");
-        _cardsContainer = GetNode<GridContainer>("Panel/MarginContainer/VBoxContainer/CardsScroll/CardsContainer");
-        _goldLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/Header/GoldLabel");
-        _messageLabel = GetNode<Label>("Panel/MarginContainer/VBoxContainer/MessageLabel");
 
-        var vbox = GetNode<VBoxContainer>("Panel/MarginContainer/VBoxContainer");
-        var relicsLabel = new Label { Text = "Reliquias" };
-        relicsLabel.HorizontalAlignment = HorizontalAlignment.Center;
-        relicsLabel.AddThemeFontSizeOverride("font_size", 18);
-        _relicsContainer = new HBoxContainer();
-        _relicsContainer.AddThemeConstantOverride("separation", 20);
-        vbox.AddChild(relicsLabel);
-        vbox.AddChild(_relicsContainer);
-        int cardsIdx = cardsScroll.GetIndex();
-        vbox.MoveChild(relicsLabel, cardsIdx + 1);
-        vbox.MoveChild(_relicsContainer, cardsIdx + 2);
+        _cardsContainer  = GetNode<HBoxContainer>(CardsPath);
+        _relicsContainer = GetNode<HBoxContainer>(RelicsPath);
+        _goldLabel       = GetNode<Label>(GoldLabelPath);
+        _messageLabel    = GetNode<Label>(MsgPath);
+
+        if (UI.Instance?.TopHud is not null)
+            UI.Instance.TopHud.Visible = false;
+
+        EnsureTooltip();
 
         LoadCardPool();
         _playerState = ResolvePlayerState();
 
-        GD.Print($"Shop: cartas carregadas no pool = {CountValidCards(_cardPool)}");
-        GD.Print($"Shop: cartas no deck usado = {_playerState.Deck.Count}");
-
         RefreshGoldLabel();
         PopulateShop();
         PopulateRelics();
-
-        GD.Print($"Shop: ofertas criadas = {_offers.Count}");
+        UpdateRemoveButton();
 
         if (_playerState.IsDebug)
-        {
             SetMessage("Modo debug: usando ouro e deck temporarios.");
-        }
     }
+
+    private static void EnsureTooltip()
+    {
+        if (RelicTooltip.Instance is not null) return;
+        var scene = GD.Load<PackedScene>("res://src/Core/UI/RelicTooltip.tscn");
+        if (scene is null) return;
+        var tooltip = scene.Instantiate<RelicTooltip>();
+        UI.Instance?.AddUI(tooltip);
+    }
+
+    // ── Card pool ─────────────────────────────────────────────────────────────
 
     private void LoadCardPool()
     {
-        if (CountValidCards(_cardPool) > 0)
-        {
-            return;
-        }
+        if (CountValidCards(_cardPool) > 0) return;
 
         _cardPool.Clear();
 
@@ -83,10 +89,8 @@ public partial class Shop : Control
             return;
         }
 
-        var error = dir.ListDirBegin();
-        if (error != Error.Ok)
+        if (dir.ListDirBegin() != Error.Ok)
         {
-            GD.PushWarning($"Shop: erro ao listar res://Data/Cards: {error}");
             LoadKnownCardsFallback();
             return;
         }
@@ -97,144 +101,56 @@ public partial class Shop : Control
             if (!dir.CurrentIsDir() && fileName.EndsWith(".tres", StringComparison.OrdinalIgnoreCase))
             {
                 var card = GD.Load<CardData>($"res://Data/Cards/{fileName}");
-                if (card is not null)
-                {
-                    _cardPool.Add(card);
-                }
+                if (card is not null) _cardPool.Add(card);
             }
-
             fileName = dir.GetNext();
         }
         dir.ListDirEnd();
 
-        if (CountValidCards(_cardPool) == 0)
-        {
-            LoadKnownCardsFallback();
-        }
+        if (CountValidCards(_cardPool) == 0) LoadKnownCardsFallback();
     }
 
     private void LoadKnownCardsFallback()
     {
-        string[] cardPaths =
+        string[] paths =
         [
             "res://Data/Cards/StrikeCard.tres",
             "res://Data/Cards/BlockCard.tres",
             "res://Data/Cards/BlockVunarable.tres",
         ];
-
-        foreach (string cardPath in cardPaths)
+        foreach (var p in paths)
         {
-            var card = GD.Load<CardData>(cardPath);
-            if (card is not null)
-            {
-                _cardPool.Add(card);
-            }
+            var card = GD.Load<CardData>(p);
+            if (card is not null) _cardPool.Add(card);
         }
     }
 
+    // ── Populate ──────────────────────────────────────────────────────────────
+
     private void PopulateShop()
     {
-        foreach (var child in _cardsContainer.GetChildren())
-        {
-            child.QueueFree();
-        }
+        foreach (var child in _cardsContainer.GetChildren()) child.QueueFree();
         _offers.Clear();
 
-        if (_cardPool.Count == 0)
-        {
-            SetMessage("Nenhuma carta disponivel para venda.");
-            return;
-        }
+        if (_cardPool.Count == 0) { SetMessage("Nenhuma carta disponivel para venda."); return; }
 
-        var availableCards = new List<CardData>();
-        foreach (var cardData in _cardPool)
-        {
-            if (cardData is not null)
-            {
-                availableCards.Add(cardData);
-            }
-        }
+        var pool = new List<CardData>();
+        foreach (var c in _cardPool) if (c is not null) pool.Add(c);
 
-        for (int i = 0; i < CardCount && availableCards.Count > 0; i++)
+        for (int i = 0; i < CardCount && pool.Count > 0; i++)
         {
-            int index = (int)(GD.Randi() % (uint)availableCards.Count);
-            CardData cardData = availableCards[index];
-            availableCards.RemoveAt(index);
-
-            var offer = CreateOffer(cardData, GenerateCardPrice(cardData));
+            int idx = (int)(GD.Randi() % (uint)pool.Count);
+            var offer = CreateOffer(pool[idx], GenerateCardPrice(pool[idx]));
+            pool.RemoveAt(idx);
             _offers.Add(offer);
             _cardsContainer.AddChild(offer.Root);
         }
     }
 
-    private ShopOffer CreateOffer(CardData cardData, int price)
-    {
-        var root = new VBoxContainer
-        {
-            CustomMinimumSize = new Vector2(220, 370),
-            Alignment = BoxContainer.AlignmentMode.Center,
-        };
-        root.AddThemeConstantOverride("separation", 10);
-
-        var display = _cardDisplayScene.Instantiate<CardDisplay>();
-        display.Context = CardDisplay.CardDisplayContext.Shop;
-        display.SetCard(cardData);
-
-        var priceLabel = new Label
-        {
-            Text = $"{price} ouro",
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-        priceLabel.AddThemeFontSizeOverride("font_size", 22);
-
-        root.AddChild(display);
-        root.AddChild(priceLabel);
-
-        var offer = new ShopOffer(root, display, priceLabel, cardData, price);
-        display.CardChosen += chosenCard => TryBuyCard(offer);
-
-        return offer;
-    }
-
-    private int GenerateCardPrice(CardData cardData)
-    {
-        int basePrice = (int)GD.RandRange(_minCardPrice, _maxCardPrice);
-        return Math.Max(0, basePrice + cardData.EnergyCost * 5);
-    }
-
-    private void TryBuyCard(ShopOffer offer)
-    {
-        if (offer.IsSold)
-        {
-            return;
-        }
-
-        if (!_playerState.SpendGold(offer.Price))
-        {
-            Fail("Ouro insuficiente.");
-            return;
-        }
-
-        _playerState.AddCardToDeck(offer.CardData);
-        offer.MarkSold();
-
-        RefreshGoldLabel();
-        SetMessage($"{offer.CardData.CardName} comprada.");
-        EmitSignal(SignalName.CardPurchased, offer.CardData, offer.Price);
-    }
-
     private void PopulateRelics()
     {
-        if (_relicScene is null)
-        {
-            _relicScene = GD.Load<PackedScene>("res://src/Core/Relic/RelicForShopOrChest.tscn");
-        }
-
-        if (_relicScene is null)
-        {
-            GD.PushWarning("Shop: cena de relíquia não encontrada.");
-            return;
-        }
+        _relicScene ??= GD.Load<PackedScene>("res://src/Core/Relic/RelicForShopOrChest.tscn");
+        if (_relicScene is null) { GD.PushWarning("Shop: cena de relíquia não encontrada."); return; }
 
         for (int i = 0; i < RelicCount; i++)
         {
@@ -245,14 +161,39 @@ public partial class Shop : Control
         }
     }
 
+    // ── Create offer ──────────────────────────────────────────────────────────
+
+    private ShopOffer CreateOffer(CardData cardData, int price)
+    {
+        var root = new VBoxContainer
+        {
+            CustomMinimumSize = new Vector2(240, 440),
+            Alignment = BoxContainer.AlignmentMode.Center,
+        };
+        root.AddThemeConstantOverride("separation", 10);
+
+        var display = _cardDisplayScene.Instantiate<CardDisplay>();
+        display.Context = CardDisplay.CardDisplayContext.Shop;
+        display.SetCard(cardData);
+        display.CustomMinimumSize = new Vector2(220, 360);
+        display.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+
+        root.AddChild(display);
+        root.AddChild(BuildPriceRow(price, out var priceLabel));
+
+        var offer = new ShopOffer(root, display, priceLabel, cardData, price);
+        display.CardChosen += _ => TryBuyCard(offer);
+        return offer;
+    }
+
     private RelicShopOffer CreateRelicOffer(int price)
     {
         var root = new VBoxContainer
         {
-            CustomMinimumSize = new Vector2(100, 120),
+            CustomMinimumSize = new Vector2(90, 110),
             Alignment = BoxContainer.AlignmentMode.Center,
         };
-        root.AddThemeConstantOverride("separation", 8);
+        root.AddThemeConstantOverride("separation", 6);
 
         var relicButton = _relicScene.Instantiate<RelicForShopOrChest>();
         relicButton.Context = RelicForShopOrChest.RelicContext.Shop;
@@ -260,44 +201,115 @@ public partial class Shop : Control
         relicButton.StartsDisabled = false;
         relicButton.StartsInvisible = false;
 
-        var priceLabel = new Label
-        {
-            Text = $"{price} ouro",
-            HorizontalAlignment = HorizontalAlignment.Center,
-        };
-        priceLabel.AddThemeFontSizeOverride("font_size", 18);
-
         root.AddChild(relicButton);
-        root.AddChild(priceLabel);
+        root.AddChild(BuildPriceRow(price, out var priceLabel, iconSize: 18, fontSize: 16));
 
         var offer = new RelicShopOffer(root, relicButton, priceLabel, price);
         relicButton.RelicCollected += relic => TryBuyRelic(offer, relic);
-
         return offer;
+    }
+
+    private static HBoxContainer BuildPriceRow(int price, out Label label,
+        int iconSize = 24, int fontSize = 20)
+    {
+        var row = new HBoxContainer { Alignment = BoxContainer.AlignmentMode.Center };
+        row.AddThemeConstantOverride("separation", 6);
+
+        var coinTexture = GD.Load<Texture2D>("res://Test/TestImagesSprites/art/gold.png");
+        if (coinTexture is not null)
+        {
+            row.AddChild(new TextureRect
+            {
+                Texture = coinTexture,
+                CustomMinimumSize = new Vector2(iconSize, iconSize),
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
+            });
+        }
+
+        label = new Label { Text = price.ToString(), HorizontalAlignment = HorizontalAlignment.Center };
+        label.AddThemeFontSizeOverride("font_size", fontSize);
+        row.AddChild(label);
+        return row;
+    }
+
+    // ── Buy logic ─────────────────────────────────────────────────────────────
+
+    private int GenerateCardPrice(CardData cardData) =>
+        Math.Max(0, (int)GD.RandRange(_minCardPrice, _maxCardPrice) + cardData.EnergyCost * 5);
+
+    private void TryBuyCard(ShopOffer offer)
+    {
+        if (offer.IsSold) return;
+        if (!_playerState.SpendGold(offer.Price)) { Fail("Ouro insuficiente."); return; }
+
+        _playerState.AddCardToDeck(offer.CardData);
+        offer.MarkSold();
+        RefreshGoldLabel();
+        SetMessage($"{offer.CardData.CardName} comprada.");
+        EmitSignal(SignalName.CardPurchased, offer.CardData, offer.Price);
     }
 
     private void TryBuyRelic(RelicShopOffer offer, RelicData relic)
     {
         if (offer.IsBought) return;
-
-        if (!_playerState.SpendGold(offer.Price))
-        {
-            Fail("Ouro insuficiente.");
-            return;
-        }
+        if (!_playerState.SpendGold(offer.Price)) { Fail("Ouro insuficiente."); return; }
 
         _playerState.AddRelic(relic);
         offer.MarkBought();
-
         RefreshGoldLabel();
         SetMessage($"{relic.RelicName} comprada.");
     }
 
+    // ── Remove card service ───────────────────────────────────────────────────
+
+    public void OnRemoveCardPressed()
+    {
+        if (_cardRemoved) return;
+
+        if (!_playerState.SpendGold(_removeCardCost))
+        {
+            SetMessage("Ouro insuficiente para remover uma carta!");
+            return;
+        }
+
+        _cardRemoved = true;
+        RefreshGoldLabel();
+        UpdateRemoveButton();
+
+        var deckScene = GD.Load<PackedScene>("res://src/Core/Inventory/DeckViewer.tscn");
+        if (deckScene is null) { SetMessage("Erro ao abrir baralho."); return; }
+
+        var viewer = deckScene.Instantiate<DeckViewer>();
+        viewer.Mode = DeckViewer.ViewerMode.Remove;
+        AddChild(viewer);
+        viewer.LoadDeck(new List<CardData>(_playerState.Deck));
+        viewer.CardRemoved += OnCardRemovedFromViewer;
+        SetMessage("Escolha uma carta para remover.");
+    }
+
+    private void OnCardRemovedFromViewer(CardData card)
+    {
+        PlayerManager.Instance?.Player?.RemoveCardFromDeck(card);
+    }
+
+    private void UpdateRemoveButton()
+    {
+        var btn = GetNodeOrNull<Button>(RemoveBtnPath);
+        if (btn is null) return;
+        btn.Disabled = _cardRemoved;
+        btn.Text = _cardRemoved
+            ? "Carta removida"
+            : $"Remover carta do baralho — {_removeCardCost} ouro";
+    }
+
+    // ── Deck viewer ───────────────────────────────────────────────────────────
+
     public void OnViewDeckPressed()
     {
-        var deckViewerScene = GD.Load<PackedScene>("res://src/Core/Inventory/DeckViewer.tscn");
-        if (deckViewerScene is null) return;
-        var viewer = deckViewerScene.Instantiate<DeckViewer>();
+        var scene = GD.Load<PackedScene>("res://src/Core/Inventory/DeckViewer.tscn");
+        if (scene is null) return;
+        var viewer = scene.Instantiate<DeckViewer>();
         viewer.Mode = DeckViewer.ViewerMode.Inspect;
         AddChild(viewer);
         viewer.LoadDeck(new List<CardData>(_playerState.Deck));
@@ -305,56 +317,16 @@ public partial class Shop : Control
 
     public void OnExitPressed()
     {
+        if (UI.Instance?.TopHud is not null)
+            UI.Instance.TopHud.Visible = true;
         EmitSignal(SignalName.ExitRequested);
     }
 
-    private void RefreshGoldLabel()
-    {
-        _goldLabel.Text = $"Ouro: {_playerState.Gold}";
-    }
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private IShopPlayerState ResolvePlayerState()
-    {
-        var player = PlayerManager.Instance?.Player;
-        if (ShouldUseRealPlayer(player))
-        {
-            GD.Print("Shop: Player real encontrado. Usando estado real.");
-            return new RealPlayerShopState(player);
-        }
+    private void RefreshGoldLabel() => _goldLabel.Text = _playerState.Gold.ToString();
 
-        GD.Print("Shop: Player real nao encontrado. Entrando em modo debug/local.");
-        return new DebugShopState(_debugStartingGold, _cardPool);
-    }
-
-    private bool ShouldUseRealPlayer(Player player)
-    {
-        if (!GodotObject.IsInstanceValid(player) || player.IsQueuedForDeletion())
-        {
-            return false;
-        }
-
-        var playerManager = PlayerManager.Instance;
-        bool isAutoloadFallbackPlayer =
-            GodotObject.IsInstanceValid(playerManager) &&
-            playerManager.IsAncestorOf(player) &&
-            GetTree().CurrentScene == this;
-
-        return !isAutoloadFallbackPlayer;
-    }
-
-    private int CountValidCards(IReadOnlyList<CardData> cards)
-    {
-        int count = 0;
-        foreach (var card in cards)
-        {
-            if (card is not null)
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+    private void SetMessage(string msg) => _messageLabel.Text = msg;
 
     private void Fail(string reason)
     {
@@ -362,10 +334,37 @@ public partial class Shop : Control
         EmitSignal(SignalName.PurchaseFailed, reason);
     }
 
-    private void SetMessage(string message)
+    private IShopPlayerState ResolvePlayerState()
     {
-        _messageLabel.Text = message;
+        var player = PlayerManager.Instance?.Player;
+        if (ShouldUseRealPlayer(player))
+        {
+            GD.Print("Shop: Player real encontrado.");
+            return new RealPlayerShopState(player);
+        }
+        GD.Print("Shop: Modo debug.");
+        return new DebugShopState(_debugStartingGold, _cardPool);
     }
+
+    private bool ShouldUseRealPlayer(Player player)
+    {
+        if (!GodotObject.IsInstanceValid(player) || player.IsQueuedForDeletion()) return false;
+
+        var pm = PlayerManager.Instance;
+        bool isFallback = GodotObject.IsInstanceValid(pm)
+            && pm.IsAncestorOf(player)
+            && GetTree().CurrentScene == this;
+        return !isFallback;
+    }
+
+    private int CountValidCards(IReadOnlyList<CardData> cards)
+    {
+        int n = 0;
+        foreach (var c in cards) if (c is not null) n++;
+        return n;
+    }
+
+    // ── Inner types ───────────────────────────────────────────────────────────
 
     private sealed class ShopOffer
     {
@@ -376,19 +375,41 @@ public partial class Shop : Control
         public int Price { get; }
         public bool IsSold { get; private set; }
 
-        public ShopOffer(VBoxContainer root, CardDisplay display, Label priceLabel, CardData cardData, int price)
+        public ShopOffer(VBoxContainer root, CardDisplay display, Label priceLabel,
+            CardData cardData, int price)
         {
-            Root = root;
-            Display = display;
-            PriceLabel = priceLabel;
-            CardData = cardData;
-            Price = price;
+            Root = root; Display = display; PriceLabel = priceLabel;
+            CardData = cardData; Price = price;
         }
 
         public void MarkSold()
         {
             IsSold = true;
             Display.MouseFilter = MouseFilterEnum.Ignore;
+            Root.Modulate = new Color(1f, 1f, 1f, 0.35f);
+            PriceLabel.Text = "Comprada";
+        }
+    }
+
+    private sealed class RelicShopOffer
+    {
+        public VBoxContainer Root { get; }
+        public RelicForShopOrChest RelicButton { get; }
+        public Label PriceLabel { get; }
+        public int Price { get; }
+        public bool IsBought { get; private set; }
+
+        public RelicShopOffer(VBoxContainer root, RelicForShopOrChest relicButton,
+            Label priceLabel, int price)
+        {
+            Root = root; RelicButton = relicButton; PriceLabel = priceLabel; Price = price;
+        }
+
+        public void MarkBought()
+        {
+            IsBought = true;
+            RelicButton.Disabled = true;
+            RelicButton.MouseFilter = MouseFilterEnum.Ignore;
             Root.Modulate = new Color(1f, 1f, 1f, 0.35f);
             PriceLabel.Text = "Comprada";
         }
@@ -407,98 +428,39 @@ public partial class Shop : Control
     private sealed class RealPlayerShopState : IShopPlayerState
     {
         private readonly Player _player;
-
         public int Gold => _player.Gold;
         public IReadOnlyList<CardData> Deck => _player.GetDeck();
         public bool IsDebug => false;
 
-        public RealPlayerShopState(Player player)
-        {
-            _player = player;
-        }
-
-        public bool SpendGold(int amount)
-        {
-            return _player.SpendGold(amount);
-        }
-
-        public void AddCardToDeck(CardData cardData)
-        {
-            _player.AddCardToDeck(cardData);
-        }
-
-        public void AddRelic(RelicData relicData)
-        {
-            _player.AddRelic(relicData);
-        }
+        public RealPlayerShopState(Player player) { _player = player; }
+        public bool SpendGold(int amount) => _player.SpendGold(amount);
+        public void AddCardToDeck(CardData c) => _player.AddCardToDeck(c);
+        public void AddRelic(RelicData r) => _player.AddRelic(r);
     }
 
     private sealed class DebugShopState : IShopPlayerState
     {
         private readonly List<CardData> _deck = [];
-
         public int Gold { get; private set; }
         public IReadOnlyList<CardData> Deck => _deck;
         public bool IsDebug => true;
 
-        public DebugShopState(int startingGold, IReadOnlyList<CardData> cardPool)
+        public DebugShopState(int startingGold, IReadOnlyList<CardData> pool)
         {
             Gold = startingGold;
-
-            for (int i = 0; i < cardPool.Count && _deck.Count < 6; i++)
-            {
-                if (cardPool[i] is not null)
-                {
-                    _deck.Add(cardPool[i]);
-                }
-            }
+            for (int i = 0; i < pool.Count && _deck.Count < 6; i++)
+                if (pool[i] is not null) _deck.Add(pool[i]);
         }
 
         public bool SpendGold(int amount)
         {
-            if (Gold < amount)
-            {
-                return false;
-            }
-
+            if (Gold < amount) return false;
             Gold -= amount;
             return true;
         }
 
-        public void AddCardToDeck(CardData cardData)
-        {
-            _deck.Add(cardData);
-        }
-
-        public void AddRelic(RelicData relicData)
-        {
-            GD.Print($"Debug Shop: relíquia adicionada — {relicData?.RelicName}");
-        }
-    }
-
-    private sealed class RelicShopOffer
-    {
-        public VBoxContainer Root { get; }
-        public RelicForShopOrChest RelicButton { get; }
-        public Label PriceLabel { get; }
-        public int Price { get; }
-        public bool IsBought { get; private set; }
-
-        public RelicShopOffer(VBoxContainer root, RelicForShopOrChest relicButton, Label priceLabel, int price)
-        {
-            Root = root;
-            RelicButton = relicButton;
-            PriceLabel = priceLabel;
-            Price = price;
-        }
-
-        public void MarkBought()
-        {
-            IsBought = true;
-            RelicButton.Disabled = true;
-            RelicButton.MouseFilter = MouseFilterEnum.Ignore;
-            Root.Modulate = new Color(1f, 1f, 1f, 0.35f);
-            PriceLabel.Text = "Comprada";
-        }
+        public void AddCardToDeck(CardData c) => _deck.Add(c);
+        public void AddRelic(RelicData r) =>
+            GD.Print($"Debug Shop: relíquia — {r?.RelicName}");
     }
 }

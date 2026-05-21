@@ -18,6 +18,31 @@ public partial class TopBar : PanelContainer
         var deckButton = GetNodeOrNull<TextureButton>("MarginTopBar/HBoxContainer/DeckPanel/panelContainer/deckButton");
         if (deckButton is not null)
             deckButton.Pressed += OnDeckPressed;
+
+        ConnectStatTooltips();
+    }
+
+    private void ConnectStatTooltips()
+    {
+        var hpContainer = GetNodeOrNull<Control>("MarginTopBar/HBoxContainer/HpContainer");
+        if (hpContainer is not null)
+        {
+            hpContainer.MouseFilter = MouseFilterEnum.Stop;
+            hpContainer.MouseEntered += () => RelicTooltip.Instance?.ShowTooltip(
+                "Pontos de Vida",
+                $"{_hpLabel.Text} / {_hpMaxLabel.Text} HP\nAo chegar em 0, você morre.");
+            hpContainer.MouseExited += () => RelicTooltip.Instance?.HideTooltip();
+        }
+
+        var goldContainer = GetNodeOrNull<Control>("MarginTopBar/HBoxContainer/GoldContainer");
+        if (goldContainer is not null)
+        {
+            goldContainer.MouseFilter = MouseFilterEnum.Stop;
+            goldContainer.MouseEntered += () => RelicTooltip.Instance?.ShowTooltip(
+                "Ouro",
+                $"{_goldLabel.Text} moedas\nUsado para comprar cartas e relíquias.");
+            goldContainer.MouseExited += () => RelicTooltip.Instance?.HideTooltip();
+        }
     }
 
     private static void OnDeckPressed()
