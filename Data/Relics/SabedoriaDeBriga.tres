@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_0namg")
 RelicName = "Sabedoria De Briga"
-Description = "Você entrou em um clube no qual não pode falar sobre"
+Description = "Seu primeiro ataque a cada rodada é aumentando em 3 de dano"
 Icon = ExtResource("1_ydo4g")
 metadata/_custom_type_script = "uid://b773nen07xc4q"

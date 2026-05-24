@@ -1,9 +1,13 @@
 using Godot;
 using System;
+using System.Data.Common;
+using System.Runtime.CompilerServices;
 
 [GlobalClass]
 public partial class SedeDeSangueCard : PowerData
 {
+
+    
     public override void Execute(object target = null, object aux = null)
 {
     if (target is Player player)

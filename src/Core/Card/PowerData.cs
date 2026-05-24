@@ -3,6 +3,7 @@ using Godot;
 [GlobalClass]
 public partial class PowerData : CardData
 {
+    [Export] public string Id;
     public virtual void OnDebuffApplied(Player player, string debuff, int value, Enemy enemy) {}
     public virtual void OnTurnStart(Player player) {}
     public virtual void OnTurnEnd(Player player) {}

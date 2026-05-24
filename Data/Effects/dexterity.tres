@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://e6my7arbmsq0"]
+
+[ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_bofni"]
+
+[resource]
+script = ExtResource("1_bofni")
+Id = "dexterity"
+Name = "Destreza"
+Description = "Aumenta o bloqueio recebido"
+metadata/_custom_type_script = "uid://cw54gno3mnb5t"

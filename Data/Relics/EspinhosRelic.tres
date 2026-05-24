@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_o326n")
 RelicName = "Espinhos"
-Description = "fura legal"
+Description = "Devolve 3 de dano ao ser atacado"
 Icon = ExtResource("1_m02xn")
 metadata/_custom_type_script = "uid://nwkcpopp05nc"

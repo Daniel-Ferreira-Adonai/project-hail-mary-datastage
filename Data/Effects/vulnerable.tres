@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://ds2wpef76p11j"]
+
+[ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_g4vdb"]
+[ext_resource type="Texture2D" uid="uid://cjylwsv0ptah4" path="res://Test/TestImagesSprites/CoracaoHp.png" id="1_ry8l1"]
+
+[resource]
+script = ExtResource("1_g4vdb")
+Id = "vulnerable"
+Name = "Vulnerável"
+Icon = ExtResource("1_ry8l1")
+Description = "Recebe 50% a mais de dano"
+Category = 1
+metadata/_custom_type_script = "uid://cw54gno3mnb5t"

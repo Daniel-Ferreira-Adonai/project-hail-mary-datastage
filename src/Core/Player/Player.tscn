@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://c4x3eygtv088n" path="res://Test/TestMcFrames/Idle/Untitled design (18).png" id="9_jupfw"]
 [ext_resource type="PackedScene" uid="uid://crevm2e6yqhwv" path="res://src/Core/UI/DamageLabel.tscn" id="11_scflc"]
 [ext_resource type="PackedScene" uid="uid://da5mcnljqamdr" path="res://Test/TestScenes/BarraDeVida.tscn" id="11_xmvw8"]
+[ext_resource type="PackedScene" uid="uid://be1owsfkxmfbu" path="res://src/Core/Effects/EffectBar.tscn" id="12_scflc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
 size = Vector2(58, 54)
@@ -55,13 +56,15 @@ animations = [{
 "speed": 2.0
 }]
 
-[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("_hpBar", "animation")]
+[node name="Player" type="Node2D" unique_id=1708444179 node_paths=PackedStringArray("EffectBar", "_hpBar", "animation")]
 scale = Vector2(3.830325, 3.5672452)
 script = ExtResource("1_honyp")
 MaxHp = 50
 currentHp = 50
+EffectBar = NodePath("EffectBar_tscn")
 _hpBar = NodePath("TesteBar")
 PerCombatTemporaryStrength = 15
+Dexterity = 1
 animation = NodePath("AnimatedSprite2D")
 _damageLabelScene = ExtResource("11_scflc")
 
@@ -93,3 +96,9 @@ offset_top = 45.693516
 offset_right = 121.2328
 offset_bottom = 65.69352
 scale = Vector2(0.4321996, 0.4340491)
+
+[node name="EffectBar_tscn" parent="." unique_id=1561142865 instance=ExtResource("12_scflc")]
+offset_left = -64.74646
+offset_top = -76.52964
+offset_right = -64.74646
+offset_bottom = -76.52964

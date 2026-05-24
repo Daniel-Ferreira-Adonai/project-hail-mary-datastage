@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_r07f7")
 RelicName = "Moeda Da Sorte"
+Description = "1% de chance de receber a energia de volta"
 Icon = ExtResource("1_nt5mo")
 metadata/_custom_type_script = "uid://b0i1w1d0d8yc5"

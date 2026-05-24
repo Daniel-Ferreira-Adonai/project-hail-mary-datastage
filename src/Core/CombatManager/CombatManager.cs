@@ -51,6 +51,8 @@ public partial class CombatManager : Node2D
 	private void OnPlayerStatsChanged()
 	{
 	_cardManager.UpdateAllCardPreviews(Player, RaycastCheckForEnemy());	
+    Player.EffectBar?.UpdateEffects(Player.GetAllEffects());
+
 	}
 	public void AjustBackground()
     {
@@ -88,7 +90,7 @@ public partial class CombatManager : Node2D
         Player.TriggerRelics(r => r.OnTurnEnd(Player)); 
 foreach (var enemy in _activeEnemies)
     {
-        if (enemy != null && IsInstanceValid(enemy))
+        if (enemy != null && IsInstanceValid(enemy)){}
             enemy.ClearIntent();
     }
 
@@ -113,6 +115,10 @@ foreach (var enemy in _activeEnemies)
 	{
         Player.TriggerRelics(r => r.OnTurnStart(Player)); 
         Player.TriggerPowers(p => p.OnTurnStart(Player));
+
+        foreach (var enemy in _activeEnemies)
+        if (enemy != null && IsInstanceValid(enemy))
+            enemy.TriggerPowers(p => p.OnTurnStart(enemy)); 
 
         ShowEnemyIntents();
 
@@ -163,6 +169,8 @@ foreach (var enemy in _activeEnemies)
 				foreach(IntentData intent in intents)
 				{
 					intent.Execute(enemy,Player);
+                    enemy.TriggerPowers(p => p.OnTurnEnd(enemy)); // depois dos intents
+
 				}
 			}
     }

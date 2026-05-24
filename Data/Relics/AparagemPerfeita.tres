@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_gmkt0")
 RelicName = "Aparagem Perfeita"
+Description = "Se o seu bloqueio absorver exatamente todo o dano recebido, cause 5 de dano a todos os inimigos."
 Icon = ExtResource("1_2uan8")
 metadata/_custom_type_script = "uid://b8rpxp4swhpq3"

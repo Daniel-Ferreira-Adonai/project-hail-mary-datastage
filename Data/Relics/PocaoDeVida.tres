@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_axw6d")
 RelicName = "Poção De Vida"
-Description = "Simples mas efetiva"
+Description = "Ganhe 2 de vida ao inicio de cada combate"
 Icon = ExtResource("1_wwbiw")
 metadata/_custom_type_script = "uid://bud1j5hljd4mt"

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ThornsEnemyPower" format=3 uid="uid://i4if12nk4mx8"]
+
+[ext_resource type="Script" uid="uid://b3ao2u2shyn3m" path="res://src/Core/Enemy/EnemyPowerScripts/ThornsEnemyPower.cs" id="1_5qliu"]
+
+[resource]
+script = ExtResource("1_5qliu")
+Id = "thorns"
+EffectValue = 3
+metadata/_custom_type_script = "uid://b3ao2u2shyn3m"

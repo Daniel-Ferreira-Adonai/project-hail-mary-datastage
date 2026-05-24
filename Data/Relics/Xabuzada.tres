@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_fqgc3")
 RelicName = "Xabuzada"
+Description = "A cada 5 debuffs o 5 é dobrado, Persiste entre combates."
 Icon = ExtResource("1_bnx6g")
 metadata/_custom_type_script = "uid://dqodw6mfxdrgj"

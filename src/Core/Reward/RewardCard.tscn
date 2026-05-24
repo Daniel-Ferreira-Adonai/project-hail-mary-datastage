@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://8hdw5dj3mwg" path="res://src/Core/Reward/RewardCard.cs" id="1_5fjfp"]
 [ext_resource type="PackedScene" uid="uid://cb2nww2hpuaqo" path="res://src/Core/Reward/RewardButton.tscn" id="1_042u2"]
 [ext_resource type="PackedScene" uid="uid://c6sxiorcbifm5" path="res://src/Core/Reward/PickCardsReward/PickCardRewards.tscn" id="3_aeyrn"]
+[ext_resource type="Texture2D" uid="uid://b0f0qhwptkatv" path="res://src/Core/Card/CardAssets/TopCARD.png" id="4_xuj1c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aeyrn"]
-bg_color = Color(0.6423587, 0.17047846, 9.62615e-08, 1)
+bg_color = Color(0, 0, 0, 0.6784314)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
@@ -50,4 +51,18 @@ text = "Escolha sua recompensa!"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=931027725]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 30
+
+[node name="TopCard" type="Sprite2D" parent="." unique_id=450022933]
+position = Vector2(215.50687, -27.000004)
+scale = Vector2(0.6684323, 0.6285186)
+texture = ExtResource("4_xuj1c")
+
+[node name="Label" type="Label" parent="TopCard" unique_id=1653060906]
+texture_filter = 1
+offset_left = -231.50034
+offset_top = -74.72924
+offset_right = 195.49966
+offset_bottom = 14.604095
+theme_override_font_sizes/font_size = 64
+text = "Recompensas"

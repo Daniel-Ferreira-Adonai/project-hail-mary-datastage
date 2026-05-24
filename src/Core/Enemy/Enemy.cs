@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
@@ -18,6 +19,7 @@ public partial class Enemy : Node2D
     [Export] private float _intentOffsetY = -160f;
 
     private EnemyHealthBar _healthBar;
+public List<EnemyPowerData> ActivePowers { get; set; } = new List<EnemyPowerData>();
 
     private int _currentHealth;
     public int CurrentHealth
@@ -34,8 +36,26 @@ public partial class Enemy : Node2D
     }
     
     public int MaxHealth { get; private set; }
-    public int Strength { get; set; }
-    public int BuffedStrength { get; set; }
+   private int _strength;
+public int Strength
+{
+    get => _strength;
+    set
+    {
+        _strength = value;
+        EffectBar?.UpdateEffects(GetAllEffects());
+    }
+}
+  private int _buffedStrength;
+public int BuffedStrength
+{
+    get => _buffedStrength;
+    set
+    {
+        _buffedStrength = value;
+        EffectBar?.UpdateEffects(GetAllEffects());
+    }
+}
 
     private int _block;
     public int Block
@@ -49,8 +69,8 @@ public partial class Enemy : Node2D
     }
     public int Vulnerable
     {
-        get => Debuffs.ContainsKey("Vulnerable") ? Debuffs["Vulnerable"] : 0;
-        set => Debuffs["Vulnerable"] = value;
+        get => Debuffs.ContainsKey("vulnerable") ? Debuffs["vulnerable"] : 0;
+        set => Debuffs["vulnerable"] = value;
     }
 
     public int Weak
@@ -58,7 +78,8 @@ public partial class Enemy : Node2D
         get => Debuffs.ContainsKey("Weak") ? Debuffs["Weak"] : 0;
         set => Debuffs["Weak"] = value;
     }
-    
+    [Export] public EffectBar EffectBar;
+
     private Sprite2D _sprite;
     
     private CollisionShape2D _collision;
@@ -136,8 +157,17 @@ if (_intentContainer != null)
 
         // Set HP after health bar is configured so the initial UpdateHp fires correctly
         CurrentHealth = MaxHealth;
+        foreach (var power in data.StartingPowers)
+{
+    if (power != null)
+        ActivePowers.Add(power.Duplicate() as EnemyPowerData);
+}
     }
-    
+    public void TriggerPowers(Action<EnemyPowerData> trigger)
+{
+    foreach (var power in ActivePowers)
+        trigger(power);
+}
     public float GetDisplayWidth()
     {
         if (Data?.Sprite == null)
@@ -146,7 +176,6 @@ if (_intentContainer != null)
         return EnemyScaler.CalculateDisplayWidth(Data.Sprite, Data.Size);
     }
     
-    // Pega os intents do turno atual SEM avançar o índice (para preview)
     public Array<IntentData> GetNextTurnIntents()
     {
         if (_turnPatterns == null || _turnPatterns.Count == 0)
@@ -174,7 +203,43 @@ if (_intentContainer != null)
         
         return currentTurn.Actions;
     }
+public List<(EffectData data, int value)> GetAllEffects()
+{
+    var list = new List<(EffectData, int)>();
 
+    foreach (var kvp in Debuffs)
+    {
+        if (kvp.Value <= 0) continue;
+        var data = EffectManager.Instance.GetEffect(kvp.Key.ToLower());
+        if (data != null)
+            list.Add((data, kvp.Value));
+    }
+
+    if (Strength > 0)
+    {
+        var data = EffectManager.Instance.GetEffect("strength");
+        if (data != null)
+            list.Add((data, Strength));
+    }
+
+    var grouped = new Godot.Collections.Dictionary<string, int>();
+    foreach (var p in ActivePowers)
+    {
+        if (!grouped.ContainsKey(p.Id))
+            grouped[p.Id] = 0;
+        grouped[p.Id]++;
+    }
+
+   foreach (var kvp in grouped)
+{
+    var power = ActivePowers.Find(p => p.Id == kvp.Key);
+    var data = EffectManager.Instance.GetEffect(kvp.Key);
+    if (data != null)
+        list.Add((data, power?.EffectValue ?? kvp.Value));
+}
+
+    return list;
+}
 public void ShowIntent(Array<IntentData> intents)
 {
     if (_intentContainer == null || intents == null) return;
@@ -276,6 +341,7 @@ public void ShowIntent(Array<IntentData> intents)
     {
         CurrentHealth -= damage;
         SpawnDamageLabel(damage);
+        TriggerPowers(p => p.OnDamageTaken(this, damage));
 
         var player = PlayerManager.Instance.Player;
         
@@ -333,6 +399,8 @@ public void ShowIntent(Array<IntentData> intents)
         GD.Print("ActivePowers: " + combatManager?.Player.ActivePowers.Count);
         combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff, this));
         combatManager?.Player.TriggerPowers(p => p.OnDebuffApplied(combatManager.Player, debuff, finalValue, this)); 
+        EffectBar?.UpdateEffects(GetAllEffects()); // aqui
+
 
     }
      public int GetDebuffValue(string debuff)
@@ -366,6 +434,8 @@ public void ShowIntent(Array<IntentData> intents)
         }
 
         BuffedStrength = 0;
+        EffectBar?.UpdateEffects(GetAllEffects()); // no final
+
     }
     private int CalculateFinalDamage(int baseDamage)
 {

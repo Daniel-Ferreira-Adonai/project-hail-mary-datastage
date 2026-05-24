@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_hqyhl")
 RelicName = "Mestre Da Sangria"
+Description = "Toda sangria é aplicada em dobro"
 Icon = ExtResource("1_1lx0r")
 metadata/_custom_type_script = "uid://dfltw34u3vi63"

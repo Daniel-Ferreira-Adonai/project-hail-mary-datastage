@@ -18,6 +18,7 @@ public partial class Player : Node2D
 			UpdateLabelValues();
 		}
 	}
+	public Dictionary<string, int> Debuffs = new();
 	private int _currentHp;
 	[Export] public int currentHp
 	{
@@ -29,6 +30,7 @@ public partial class Player : Node2D
 			UpdateLabelValues();
 		}
 	}
+	[Export] public EffectBar EffectBar;
 	[Export] public PlayerEnum playerEnum {get; set;}
 	public List<PowerData> ActivePowers { get; set; } = new List<PowerData>();
 	[Export] private int _startingGold = 100;
@@ -133,8 +135,17 @@ public partial class Player : Node2D
             EmitSignal(SignalName.StatsChanged);
         }
     }
-	public int Weak { get; set; } = 0;
-    public int Frail { get; set; } = 0;
+	public int Weak
+{
+    get => Debuffs.ContainsKey("Weak") ? Debuffs["Weak"] : 0;
+    set => Debuffs["Weak"] = value;
+}
+
+public int Frail
+{
+    get => Debuffs.ContainsKey("Frail") ? Debuffs["Frail"] : 0;
+    set => Debuffs["Frail"] = value;
+}
 	[Export] public AnimatedSprite2D animation;
 	[Export] private PackedScene _damageLabelScene;
 
@@ -163,7 +174,11 @@ public partial class Player : Node2D
 			}
 		}
 	}
-
+public void AddPower(PowerData power)
+{
+    ActivePowers.Add(power);
+    EmitSignal(SignalName.StatsChanged);
+}
 	private void ApplyCharacterData()
 	{
 		var character = RunData.SelectedCharacter;
@@ -252,14 +267,38 @@ private void SpawnDamageLabel(int damage)
     
     _hpBar?.Setup(MaxHp, currentHp);
     _hpBar?.updateLabels(currentHp, MaxHp, BlockValue);
+	    EffectBar?.UpdateEffects(GetAllEffects()); // 🔥 AQUI
+
 }
-	public void UpdateTemporaryValues()
+public void UpdateTemporaryValues()
 {
     _temporaryStrength = 0;
     _TemporaryDexterity = 0;
     BlockValue = 0;
-    if (Weak > 0) Weak--;
-    if (Frail > 0) Frail--;
+
+    ApplyDebuffEffects();
+}
+
+private void ApplyDebuffEffects()
+{
+    var keys = new List<string>(Debuffs.Keys);
+    foreach (var key in keys)
+    {
+        if (key == "Sangria" && Debuffs[key] > 0)
+        {
+            TakeDamage(Debuffs[key]);
+
+            var enemies = GetTree().GetNodesInGroup("enemies");
+            foreach (var node in enemies)
+            {
+                if (node is Enemy enemy)
+                    enemy.CurrentHealth += Debuffs[key];
+            }
+        }
+
+        if (Debuffs[key] > 0) Debuffs[key]--;
+        if (Debuffs[key] <= 0) Debuffs.Remove(key);
+    }
 }
 	public void UpdatePerCombatTemporaryValues()
 	{
@@ -294,6 +333,14 @@ private void SpawnDamageLabel(int damage)
 
 		return removed;
 	}
+	public void ApplyDebuff(string debuff, int value)
+{
+    if (!Debuffs.ContainsKey(debuff))
+        Debuffs[debuff] = 0;
+
+    Debuffs[debuff] += value;
+    EmitSignal(SignalName.StatsChanged);
+}
 	public CardData UpgradeRandomCard()
 {
     var nonUpgraded = _BaseDeck.FindAll(cardData => !cardData.IsCardUpgraded);
@@ -304,6 +351,68 @@ private void SpawnDamageLabel(int damage)
 	CardData cardData = nonUpgraded[random]; 
 	cardData.IsCardUpgraded = true;
     return cardData;
+}
+public int GetTotalStrength()
+{
+    return Strength + TemporaryStrength + PerCombatTemporaryStrength;
+}
+
+public List<(EffectData data, int value)> GetAllEffects()
+{
+    var list = new List<(EffectData, int)>();
+
+    if (Weak > 0)
+    {
+        var data = EffectManager.Instance.GetEffect("weak");
+        if (data != null)
+            list.Add((data, Weak));
+    }
+
+    if (Frail > 0)
+    {
+        var data = EffectManager.Instance.GetEffect("frail");
+        if (data != null)
+            list.Add((data, Frail));
+    }
+
+    int totalStrength = GetTotalStrength();
+    if (totalStrength > 0)
+    {
+        var data = EffectManager.Instance.GetEffect("strength");
+        if (data != null)
+            list.Add((data, totalStrength));
+    }
+
+    int totalDex = GetTotalDexterity();
+    if (totalDex > 0)
+    {
+        var data = EffectManager.Instance.GetEffect("dexterity");
+        if (data != null)
+            list.Add((data, totalDex));
+    }
+
+    var grouped = new Dictionary<string, int>();
+
+    foreach (var p in ActivePowers)
+    {
+        if (!grouped.ContainsKey(p.Id))
+            grouped[p.Id] = 0;
+
+        grouped[p.Id]++;
+    }
+
+    foreach (var kvp in grouped)
+    {
+        var data = EffectManager.Instance.GetEffect(kvp.Key);
+        if (data != null)
+            list.Add((data, kvp.Value));
+    }
+
+    return list;
+}
+public int GetTotalDexterity()
+{
+    return Dexterity + TemporaryDexterity + PerCombatTemporaryDexterity;
 }
 public CardData RemoveRandomCard()
 {

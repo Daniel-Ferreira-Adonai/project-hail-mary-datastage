@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://cfd8w44engtv5"]
+
+[ext_resource type="Script" uid="uid://dgn4f8b64273e" path="res://src/Core/Effects/EffectTooltip.cs" id="1_b4m3c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.04, 0.03, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.46, 0.24, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 6
+
+[node name="RelicTooltip" type="Control" unique_id=1811058254]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_b4m3c")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=2140976053]
+layout_mode = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=304507098]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Header" type="HBoxContainer" parent="Panel/VBox" unique_id=118417779]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Panel/VBox/Header" unique_id=1088904209]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Panel/VBox/Header" unique_id=470135305]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "Nome da Relíquia"
+
+[node name="Separator" type="HSeparator" parent="Panel/VBox" unique_id=1144004410]
+layout_mode = 2
+
+[node name="Desc" type="Label" parent="Panel/VBox" unique_id=19687974]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Descrição"
+autowrap_mode = 3

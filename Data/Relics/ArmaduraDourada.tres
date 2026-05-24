@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_nrjp8")
 RelicName = "Armadura Dourada"
-Description = "Você encontrou ao lado de uma fogueira e uma espada"
+Description = "Dobra o bloquei uma vez por combate"
 Icon = ExtResource("1_4ykal")
 metadata/_custom_type_script = "uid://bnv6ym4gbg28u"

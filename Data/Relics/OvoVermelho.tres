@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_pfogy")
 RelicName = "OvoVermelho"
+Description = "1 de força permanente"
 Icon = ExtResource("1_bp7wq")
 metadata/_custom_type_script = "uid://clirw0hj5x1cv"

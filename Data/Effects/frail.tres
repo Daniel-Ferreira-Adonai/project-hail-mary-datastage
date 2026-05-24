@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://bquskuvijqr6x"]
+
+[ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_47uic"]
+
+[resource]
+script = ExtResource("1_47uic")
+Id = "frail"
+Name = "Frágil"
+Description = "Recebe 25% menos bloqueio"
+Category = 1
+metadata/_custom_type_script = "uid://cw54gno3mnb5t"

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_whph7")
 RelicName = "Bebida Suspeita"
-Description = "Um drink meio esquisito mas efeitvo"
+Description = "Aumenta 1 de vida maxima a cada combate"
 Icon = ExtResource("1_fej1w")
 metadata/_custom_type_script = "uid://bsoqseuvc3cy6"

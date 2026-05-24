@@ -10,7 +10,7 @@ public partial class GritoDaMasculinidade : RelicData
 			{
 				if (node is Enemy enemy)
 					{
-						enemy.ApplyDebuff("Vulnerable",1);
+						enemy.ApplyDebuff("vulnerable",1);
 					}
 	}
 		

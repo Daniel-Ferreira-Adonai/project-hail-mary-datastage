@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bi751ncoopocc" path="res://src/Core/card_display.tscn" id="1_qk06m"]
 [ext_resource type="Script" uid="uid://ct6lxwdw38nh1" path="res://src/Core/Reward/PickCardsReward/PickCardRewards.cs" id="1_th0e2"]
+[ext_resource type="Texture2D" uid="uid://b0f0qhwptkatv" path="res://src/Core/Card/CardAssets/TopCARD.png" id="3_pads8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x3lgp"]
 
@@ -49,6 +50,20 @@ text = "PULAR"
 [node name="voltar" type="Button" parent="VBoxContainer" unique_id=231317632]
 layout_mode = 2
 text = "Voltar"
+
+[node name="TopCard" type="Sprite2D" parent="." unique_id=1794050683]
+position = Vector2(609.80035, -109)
+scale = Vector2(0.6684323, 0.6285186)
+texture = ExtResource("3_pads8")
+
+[node name="Label" type="Label" parent="TopCard" unique_id=5076430]
+texture_filter = 1
+offset_left = -225.35599
+offset_top = -76.370056
+offset_right = 201.64401
+offset_bottom = 12.96328
+theme_override_font_sizes/font_size = 64
+text = "Recompensas"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="OnSkipPressed"]
 [connection signal="pressed" from="VBoxContainer/voltar" to="." method="OnBackPressed"]

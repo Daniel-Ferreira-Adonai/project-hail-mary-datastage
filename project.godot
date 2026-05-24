@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 MouseTracker="*uid://dwwhnkoqv51b4"
 UI="*uid://cr1qcdwrfv10i"
 PlayerManager="*uid://dasvrt836gvrb"
+EffectManager="*uid://csub640034ydl"
 
 [display]
 

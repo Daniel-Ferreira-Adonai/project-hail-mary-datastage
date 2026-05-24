@@ -380,7 +380,7 @@ public async void TryToPlayCard(Card card)
 	
 	if (card.Data is PowerData power)
 	{
-		PlayerManager.Instance.Player.ActivePowers.Add(power);
+		PlayerManager.Instance.Player.AddPower(power);
 		card.Data.IsExhausted = true;
 	}
 	if (card.Data.IsExhausted)

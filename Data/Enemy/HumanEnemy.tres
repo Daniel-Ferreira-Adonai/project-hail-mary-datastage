@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ct3ybqrail6jp"]
 
 [ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_dabiq"]
+[ext_resource type="Script" uid="uid://srvqgr14qxkn" path="res://src/Core/Enemy/EnemyPowerData.cs" id="1_kqqna"]
+[ext_resource type="Resource" uid="uid://i4if12nk4mx8" path="res://Data/EnemyPowers/ThornsPower.tres" id="2_3lo4k"]
 [ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="2_37whd"]
 [ext_resource type="Script" uid="uid://bkfgne38lx35i" path="res://src/Core/Enemy/IntentScripts/BuffForcaIntent.cs" id="3_fn8yx"]
 [ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="3_kqqna"]
@@ -32,4 +34,5 @@ MaxHealth = 30
 Strength = 5
 TurnPatterns = Array[Object]([SubResource("Resource_as1vh")])
 Size = 3
+StartingPowers = Array[ExtResource("1_kqqna")]([ExtResource("2_3lo4k")])
 metadata/_custom_type_script = "uid://b2o7r58snev8f"

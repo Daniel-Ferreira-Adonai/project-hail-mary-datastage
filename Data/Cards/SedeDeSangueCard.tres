@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_abjhm")
+Id = "SedeDeSangue"
 CardName = "Sede de Sangue"
 EnergyCost = 1
 EffectValue = 1

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://be1owsfkxmfbu"]
+
+[ext_resource type="Script" uid="uid://4ajvgmvccryf" path="res://src/Core/Effects/EffectBar.cs" id="1_gapkv"]
+
+[node name="EffectBar" type="HBoxContainer" unique_id=1561142865]
+alignment = 1
+script = ExtResource("1_gapkv")

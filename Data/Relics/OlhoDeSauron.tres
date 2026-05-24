@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_g0m5o")
 RelicName = "Olho do mauron"
-Description = "Um novo olho sempre é uma vantagem"
+Description = "Puxe duas cartas a mais ao iniciar o combate"
 Icon = ExtResource("1_jevsu")
 metadata/_custom_type_script = "uid://b63vs1i1p5mha"

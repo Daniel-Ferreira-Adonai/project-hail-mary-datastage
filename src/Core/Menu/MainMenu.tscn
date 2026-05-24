@@ -4,8 +4,6 @@
 [ext_resource type="VideoStream" uid="uid://bgbxd1k2qai2r" path="res://Test/MenuBackground_new.ogv" id="2_video"]
 [ext_resource type="FontFile" uid="uid://b1bqf5lm6q6uw" path="res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf" id="3_qdhen"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.02, 0.02, 0.04, 0.4)
 corner_radius_top_left = 16
@@ -14,16 +12,18 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_highlight"]
-bg_color = Color(0.04, 0.02, 0.0, 0.45)
+bg_color = Color(0.04, 0.02, 0, 0.45)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1.0, 0.75, 0.15, 1.0)
+border_color = Color(1, 0.75, 0.15, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1"]
 
 [node name="MainMenu" type="Control" unique_id=149446269]
 layout_mode = 3
@@ -95,13 +95,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="PlayHighlight" type="Panel" parent="Background/LoginPanel/VBox/PlayContainer" unique_id=211111111]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-modulate = Color(1, 1, 1, 0)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
 
@@ -112,19 +112,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-flat = true
-text = "Jogar"
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_fonts/font = ExtResource("3_qdhen")
 theme_override_font_sizes/font_size = 52
-theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+text = "Jogar"
+flat = true
 
 [node name="SettingsContainer" type="Control" parent="Background/LoginPanel/VBox" unique_id=111111112]
 custom_minimum_size = Vector2(450, 64)
@@ -132,13 +132,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="SettingsHighlight" type="Panel" parent="Background/LoginPanel/VBox/SettingsContainer" unique_id=211111112]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-modulate = Color(1, 1, 1, 0)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
 
@@ -149,19 +149,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-flat = true
-text = "Configurações"
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_fonts/font = ExtResource("3_qdhen")
 theme_override_font_sizes/font_size = 52
-theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+text = "Configurações"
+flat = true
 
 [node name="QuitContainer" type="Control" parent="Background/LoginPanel/VBox" unique_id=111111113]
 custom_minimum_size = Vector2(450, 64)
@@ -169,13 +169,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="QuitHighlight" type="Panel" parent="Background/LoginPanel/VBox/QuitContainer" unique_id=211111113]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-modulate = Color(1, 1, 1, 0)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_highlight")
 
@@ -186,19 +186,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-flat = true
-text = "Sair"
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_fonts/font = ExtResource("3_qdhen")
 theme_override_font_sizes/font_size = 52
-theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
-theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
+text = "Sair"
+flat = true
 
 [connection signal="pressed" from="Background/LoginPanel/VBox/PlayContainer/PlayButton" to="." method="OnPlayPressed"]
 [connection signal="pressed" from="Background/LoginPanel/VBox/SettingsContainer/SettingsButton" to="." method="OnSettingsPressed"]

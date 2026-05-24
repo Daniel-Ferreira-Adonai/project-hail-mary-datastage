@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_wsv4g")
 RelicName = "A prova de balas"
+Description = "Ao receber 10 ou mais de dano, puxe 4 cartas a mais na proxima rodada"
 Icon = ExtResource("1_5aypa")
 metadata/_custom_type_script = "uid://dmrbprlfs6o0s"

@@ -5,8 +5,8 @@ using System.Runtime.Serialization;
 [GlobalClass]
 public partial class DebuffFrailIntent : IntentData
 {
-	public override void Execute(Enemy enemy, Player player)
-	{
-		player.Frail = this.Value;
-	}
+    public override void Execute(Enemy enemy, Player player)
+    {
+        player.ApplyDebuff("Frail", this.Value);
+    }
 }

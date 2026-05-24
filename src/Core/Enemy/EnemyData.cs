@@ -24,6 +24,9 @@ public partial class EnemyData : Resource
     [Export] public Color Tint { get; set; } = Colors.White;
     
     [Export] public float VerticalOffset { get; set; } = 0f;
+
+    [ExportCategory("Powers")]
+    [Export] public Array<EnemyPowerData> StartingPowers { get; set; } = new Array<EnemyPowerData>();
 }
 
 
