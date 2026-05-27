@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://eg8erewyudam"]
 
 [ext_resource type="Script" uid="uid://bcmugiqmqkkgn" path="res://src/Core/Menu/MainMenu.cs" id="1_script"]
-[ext_resource type="VideoStream" uid="uid://bgbxd1k2qai2r" path="res://Test/MenuBackground_new.ogv" id="2_video"]
+[ext_resource type="VideoStream" uid="uid://d024wijh1wje4" path="res://Test/TestImagesSprites/art/f_e_c_b_b_mp_.mp4" id="2_agr3j"]
+[ext_resource type="Script" uid="uid://cxa6548nldyjq" path="res://src/Core/Menu/BackgroundVideo.cs" id="3_5h2db"]
 [ext_resource type="FontFile" uid="uid://b1bqf5lm6q6uw" path="res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf" id="3_qdhen"]
+[ext_resource type="VideoStream" uid="uid://cvv1jfha6c4h1" path="res://Test/TestImagesSprites/art/e_ce_d_f_e_mp_.mp4" id="4_qdhen"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.02, 0.02, 0.04, 0.4)
@@ -48,18 +50,18 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = 12.0
-offset_right = 14.0
-offset_bottom = 12.0
+offset_top = -2.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-stream = ExtResource("2_video")
+stream = ExtResource("2_agr3j")
 volume_db = -80.0
 autoplay = true
 expand = true
 loop = true
+script = ExtResource("3_5h2db")
+Videos = Array[Resource]([ExtResource("2_agr3j"), ExtResource("4_qdhen")])
 
 [node name="LoginPanel" type="PanelContainer" parent="Background" unique_id=1712253323]
 layout_mode = 0

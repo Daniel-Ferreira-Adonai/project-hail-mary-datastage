@@ -15,6 +15,8 @@ public partial class SedeDeSangueCard : PowerData
         GD.Print("SedeDeSangue executada, adicionando poder");
         GD.Print(player.ActivePowers.Count);
         GD.Print(player.ActivePowers.Count);
+        PlayerManager.Instance.Player.AddPower(this);
+
     }
 }
 

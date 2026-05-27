@@ -380,7 +380,6 @@ public async void TryToPlayCard(Card card)
 	
 	if (card.Data is PowerData power)
 	{
-		PlayerManager.Instance.Player.AddPower(power);
 		card.Data.IsExhausted = true;
 	}
 	if (card.Data.IsExhausted)
@@ -500,5 +499,9 @@ public void ResetDeck()
     _activeTweens.Clear();
     _currentHoveredCard = null;
     CardBeingDraged = null;
+	
+	PlayerManager.Instance.Player.ActivePowers.Clear(); // aqui
+    PlayerManager.Instance.Player.UpdateLabelValues();
+
 }
 }
