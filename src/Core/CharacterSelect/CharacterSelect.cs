@@ -158,7 +158,7 @@ public partial class CharacterSelect : Control
         _energyLabel.Text      = $"Energia: {character.StartingEnergy}";
         _goldLabel.Text        = $"Ouro: {character.StartingGold}";
 
-        if (_portrait is not null && character.Portrait is not null)
+        if (_portrait is not null)
             _portrait.Texture = character.Portrait;
 
         _confirmButton.Disabled = false;
