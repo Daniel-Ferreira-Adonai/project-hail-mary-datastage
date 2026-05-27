@@ -87,6 +87,7 @@ public partial class CharacterSelect : Control
             Portrait       = zeIdle,
             IdleSprite     = zeIdle,
             AttackSprite   = zeAtaque,
+            SpriteScale    = 0.8f,
         };
         _characters.Add(seZe);
     }

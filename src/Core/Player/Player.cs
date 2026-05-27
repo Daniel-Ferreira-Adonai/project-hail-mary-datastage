@@ -243,6 +243,7 @@ public void AddPower(PowerData power)
 			frames.AddFrame("attack", attackTex);
 
 		animation.SpriteFrames = frames;
+		animation.Scale *= character.SpriteScale;
 		animation.Play("idle");
 	}
 
