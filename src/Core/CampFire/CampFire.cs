@@ -27,6 +27,15 @@ public partial class CampFire : Control
 
         _fireLight = GetNodeOrNull<PointLight2D>("FireLight");
 
+        var playerArt = GetNodeOrNull<TextureRect>("PlayerArt");
+        var character = RunData.SelectedCharacter;
+        if (playerArt != null && character != null)
+        {
+            var tex = character.IdleSprite ?? character.Portrait;
+            if (tex != null)
+                playerArt.Texture = tex;
+        }
+
         RefreshHpBar();
         SetMessage("Escolha uma ação na fogueira.");
     }
