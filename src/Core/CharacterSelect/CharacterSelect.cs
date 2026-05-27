@@ -72,14 +72,20 @@ public partial class CharacterSelect : Control
         };
         _characters.Add(doutor);
 
+        var zeIdle   = GD.Load<Texture2D>("res://Test/TestMcFrames/Idle/Seu_zé.png");
+        var zeAtaque = GD.Load<Texture2D>("res://Test/TestMcFrames/Idle/Seu_zé_Ataque.png");
+
         var seZe = new CharacterData
         {
             CharacterName  = "Seu Zé",
-            Description    = "Em breve...",
+            Description    = "Um guerreiro da roça que desceu o Datastage de facão em punho.",
             StartingMaxHp  = 80,
             StartingGold   = 80,
             StartingEnergy = 3,
-            IsUnlocked     = false,
+            IsUnlocked     = true,
+            Portrait       = zeIdle,
+            IdleSprite     = zeIdle,
+            AttackSprite   = zeAtaque,
         };
         _characters.Add(seZe);
     }
@@ -115,11 +121,33 @@ public partial class CharacterSelect : Control
         var btn = new Godot.Button
         {
             CustomMinimumSize = new Vector2(180, 240),
-            Text              = character.IsUnlocked
-                                    ? character.CharacterName
-                                    : character.CharacterName + "\n\n[Em Breve]",
         };
-        btn.AddThemeFontSizeOverride("font_size", 20);
+
+        var vbox = new VBoxContainer();
+        vbox.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        vbox.Alignment = BoxContainer.AlignmentMode.Center;
+        btn.AddChild(vbox);
+
+        var portrait = character.Portrait ?? character.IdleSprite;
+        if (portrait is not null)
+        {
+            var tex = new TextureRect();
+            tex.Texture = portrait;
+            tex.CustomMinimumSize = new Vector2(160, 170);
+            tex.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+            tex.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+            tex.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+            vbox.AddChild(tex);
+        }
+
+        var nameLabel = new Label();
+        nameLabel.Text = character.IsUnlocked
+            ? character.CharacterName
+            : character.CharacterName + "\n[Em Breve]";
+        nameLabel.HorizontalAlignment = HorizontalAlignment.Center;
+        nameLabel.AddThemeFontSizeOverride("font_size", 20);
+        nameLabel.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
+        vbox.AddChild(nameLabel);
 
         if (character.IsUnlocked)
         {

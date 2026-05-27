@@ -210,6 +210,9 @@ public void AddPower(PowerData power)
 			_maxHp        = character.StartingMaxHp;
 			_currentHp    = character.StartingMaxHp;
 			Gold          = character.StartingGold;
+
+			if (character.IdleSprite != null || character.AttackSprite != null)
+				ApplyCharacterSprites(character);
 		}
 		else
 		{
@@ -217,6 +220,30 @@ public void AddPower(PowerData power)
 			_currentHp = _startingMaxHp;
 			Gold       = _startingGold;
 		}
+	}
+
+	private void ApplyCharacterSprites(CharacterData character)
+	{
+		var idleTex   = character.IdleSprite   ?? character.AttackSprite;
+		var attackTex = character.AttackSprite ?? character.IdleSprite;
+
+		var frames = new SpriteFrames();
+		frames.RemoveAnimation("default");
+
+		frames.AddAnimation("idle");
+		frames.SetAnimationLoop("idle", true);
+		frames.SetAnimationSpeed("idle", 2.0f);
+		frames.AddFrame("idle", idleTex);
+		frames.AddFrame("idle", idleTex);
+
+		frames.AddAnimation("attack");
+		frames.SetAnimationLoop("attack", false);
+		frames.SetAnimationSpeed("attack", 12.0f);
+		for (int i = 0; i < 7; i++)
+			frames.AddFrame("attack", attackTex);
+
+		animation.SpriteFrames = frames;
+		animation.Play("idle");
 	}
 
 private void SetupHpBar()
