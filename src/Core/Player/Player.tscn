@@ -98,7 +98,4 @@ offset_bottom = 65.69352
 scale = Vector2(0.4321996, 0.4340491)
 
 [node name="EffectBar_tscn" parent="." unique_id=1561142865 instance=ExtResource("12_scflc")]
-offset_left = -64.74646
-offset_top = -76.52964
-offset_right = -64.74646
-offset_bottom = -76.52964
+scale = Vector2(0.261, 0.28)

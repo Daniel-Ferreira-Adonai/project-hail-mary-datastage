@@ -16,7 +16,7 @@ public partial class Enemy : Node2D
     [Export] private Texture2D _unknownIcon;
     
     [Export] private PackedScene _healthBarScene;
-    [Export] private float _intentOffsetY = -160f;
+    [Export] private float _intentOffsetY = -230f;
 
     private EnemyHealthBar _healthBar;
 public List<EnemyPowerData> ActivePowers { get; set; } = new List<EnemyPowerData>();
@@ -106,14 +106,11 @@ public int BuffedStrength
 
 if (_intentContainer != null)
 {
-    _intentContainer.Position = new Vector2(-60, _intentOffsetY); 
-    _intentContainer.CustomMinimumSize = new Vector2(120, 56);
+    _intentContainer.CustomMinimumSize = new Vector2(200, 56);
     _intentContainer.AddThemeConstantOverride("separation", 4);
     _intentContainer.Alignment = BoxContainer.AlignmentMode.Center;
-    _intentContainer.AnchorLeft = 0.5f;
-    _intentContainer.AnchorRight = 0.5f;
-    _intentContainer.OffsetLeft = -100;
-    _intentContainer.OffsetRight = 60;
+    _intentContainer.Position = new Vector2(-100f, _intentOffsetY);
+    _intentContainer.ZIndex = 1;
 }
     else
     {

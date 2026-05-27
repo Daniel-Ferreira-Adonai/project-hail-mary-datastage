@@ -35,13 +35,13 @@ position = Vector2(0.5, -2.5)
 shape = SubResource("RectangleShape2D_d5873")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=463394984]
-offset_left = -18.0
-offset_top = -154.0
-offset_right = 22.0
-offset_bottom = -114.0
+offset_left = -100.0
+offset_top = -230.0
+offset_right = 100.0
+offset_bottom = -174.0
 
 [node name="EffectBar" parent="." unique_id=1561142865 instance=ExtResource("9_fj4c1")]
-offset_left = -22.0
-offset_top = -202.0
-offset_right = -22.0
-offset_bottom = -202.0
+offset_left = -80.0
+offset_top = -160.0
+offset_right = 80.0
+offset_bottom = -120.0

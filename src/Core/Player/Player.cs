@@ -162,6 +162,7 @@ public int Frail
 		PlayerManager.Instance.Player = this;
 		SetupHpBar();
 		UpdateLabelValues();
+		SetupEffectBar();
 
 		var relicFiles = DirAccess.GetFilesAt("res://Data/Relics/");
 		foreach (var file in relicFiles)
@@ -174,6 +175,17 @@ public int Frail
 			}
 		}
 	}
+private void SetupEffectBar()
+{
+    if (EffectBar == null) return;
+    // Container de 300px centrado acima da cabeça do player.
+    // Scale do Player (~3.83, 3.57) seria herdado pelo EffectBar,
+    // então já corrigimos com scale inverso no .tscn. Aqui só
+    // posicionamos: -150 world / scale.X = left edge, alignment=Center faz o resto.
+    EffectBar.CustomMinimumSize = new Vector2(300, 40);
+    EffectBar.Position = new Vector2(-150f / Scale.X, -65f);
+}
+
 public void AddPower(PowerData power)
 {
     ActivePowers.Add(power);
