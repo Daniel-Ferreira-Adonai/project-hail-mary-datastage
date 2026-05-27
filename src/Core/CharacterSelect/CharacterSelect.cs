@@ -121,33 +121,11 @@ public partial class CharacterSelect : Control
         var btn = new Godot.Button
         {
             CustomMinimumSize = new Vector2(180, 240),
+            Text              = character.IsUnlocked
+                                    ? character.CharacterName
+                                    : character.CharacterName + "\n\n[Em Breve]",
         };
-
-        var vbox = new VBoxContainer();
-        vbox.SetAnchorsPreset(Control.LayoutPreset.FullRect);
-        vbox.Alignment = BoxContainer.AlignmentMode.Center;
-        btn.AddChild(vbox);
-
-        var portrait = character.Portrait ?? character.IdleSprite;
-        if (portrait is not null)
-        {
-            var tex = new TextureRect();
-            tex.Texture = portrait;
-            tex.CustomMinimumSize = new Vector2(160, 170);
-            tex.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
-            tex.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
-            tex.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
-            vbox.AddChild(tex);
-        }
-
-        var nameLabel = new Label();
-        nameLabel.Text = character.IsUnlocked
-            ? character.CharacterName
-            : character.CharacterName + "\n[Em Breve]";
-        nameLabel.HorizontalAlignment = HorizontalAlignment.Center;
-        nameLabel.AddThemeFontSizeOverride("font_size", 20);
-        nameLabel.SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter;
-        vbox.AddChild(nameLabel);
+        btn.AddThemeFontSizeOverride("font_size", 20);
 
         if (character.IsUnlocked)
         {
