@@ -35,14 +35,17 @@ public partial class CardManager : Node2D
 	public bool IsArranging { get; set; } = false;
 	private Card _currentHoveredCard = null;
 
+	private AudioStreamPlayer _clickSound;
+	private AudioStreamPlayer _unclickSound;
+	private AudioStreamPlayer _drawSound;
+
 	public override void _Ready()
 	{
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
-
-
 		_combatManager = GetParent<CombatManager>();
-
-		
+		_clickSound   = GetNodeOrNull<AudioStreamPlayer>("ClickSound");
+		_unclickSound = GetNodeOrNull<AudioStreamPlayer>("UnclickSound");
+		_drawSound    = GetNodeOrNull<AudioStreamPlayer>("DrawSound");
 	}
 
 public async void DrawCard(int count)
@@ -70,6 +73,7 @@ public async void DrawCard(int count)
 
         _handNode.AddCard(card);
         _originalScales[card] = card.Scale;
+        _drawSound?.Play();
 
         await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
     }
@@ -278,6 +282,7 @@ public override void _Process(double delta)
 		Vector2 scale = _originalScales[card];
 		CardBeingDraged = card;
 		card.Scale = new Vector2(scale.X, scale.Y);
+		_clickSound?.Play();
 		GD.Print(card.Scale);
 	}
 	public void UpdateAllCardPreviews(Player player, Enemy target = null)
@@ -298,7 +303,7 @@ public override void _Process(double delta)
 		Vector2 scale = _originalScales[CardBeingDraged];
 		CardBeingDraged.Scale = new Vector2(scale.X, scale.Y);
 		CardBeingDraged.Rotation = 0f;
-		
+		_unclickSound?.Play();
 		TryToPlayCard(CardBeingDraged);
 
 		CardBeingDraged = null;

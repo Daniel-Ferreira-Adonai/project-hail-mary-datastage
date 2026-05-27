@@ -167,7 +167,13 @@ public partial class GameManager : Node
         UI.Instance.FadeIn();
 
     }
-     public void UpdateTopBar()
+     public async void GoToMainMenu()
+    {
+        await UI.Instance.FadeOut();
+        GetTree().ChangeSceneToFile("res://src/Core/Menu/MainMenu.tscn");
+    }
+
+    public void UpdateTopBar()
     {
         var player = PlayerManager.Instance.Player;
         if (player == null || _topHud == null) return;

@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://brqiojt1r3bx1" path="res://src/Core/Card/CardManager.cs" id="1_0e78l"]
 [ext_resource type="PackedScene" uid="uid://gxjift2bhc36" path="res://src/Core/Card/Card.tscn" id="2_20nbn"]
 [ext_resource type="PackedScene" uid="uid://dwyhfk5ns0ms7" path="res://src/Core/Card/Hand.tscn" id="3_uc40o"]
+[ext_resource type="AudioStream" path="res://Test/AudioTest/CardClickSound.wav" id="4_audio"]
+[ext_resource type="AudioStream" path="res://Test/AudioTest/unclickCardSound.wav" id="5_audio"]
+[ext_resource type="AudioStream" path="res://Test/AudioTest/oxidvideos-taking-playing-card-2-522516.mp3" id="6_audio"]
 
 [node name="CardManager" type="Node2D" unique_id=855153483 node_paths=PackedStringArray("_handNode")]
 script = ExtResource("1_0e78l")
@@ -10,3 +13,12 @@ _cardScene = ExtResource("2_20nbn")
 _handNode = NodePath("Hand")
 
 [node name="Hand" parent="." unique_id=175438194 instance=ExtResource("3_uc40o")]
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_audio")
+
+[node name="UnclickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_audio")
+
+[node name="DrawSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_audio")

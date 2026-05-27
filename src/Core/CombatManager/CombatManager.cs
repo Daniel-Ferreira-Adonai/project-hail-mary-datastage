@@ -492,13 +492,18 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
         _cardManager.SetProcessInput(false);
 
         if (victory)
-         {
-             CallDeferred(nameof(ShowVictoryScreen));
+        {
+            CallDeferred(nameof(ShowVictoryScreen));
         }
-        // else
-        // {
-        //     CallDeferred(nameof(ShowDefeatScreen));
-        // }
+        else
+        {
+            CallDeferred(nameof(ShowDefeatScreen));
+        }
+    }
+
+    private void ShowDefeatScreen()
+    {
+        GameManager.Instance.GoToMainMenu();
     }
 
     private async void ShowVictoryScreen()

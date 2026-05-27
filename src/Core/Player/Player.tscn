@@ -12,6 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://crevm2e6yqhwv" path="res://src/Core/UI/DamageLabel.tscn" id="11_scflc"]
 [ext_resource type="PackedScene" uid="uid://da5mcnljqamdr" path="res://Test/TestScenes/BarraDeVida.tscn" id="11_xmvw8"]
 [ext_resource type="PackedScene" uid="uid://be1owsfkxmfbu" path="res://src/Core/Effects/EffectBar.tscn" id="12_scflc"]
+[ext_resource type="AudioStream" path="res://Test/AudioTest/AttackAudio.wav" id="13_audio"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/slash.ogg" id="14_audio"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/block.ogg" id="15_audio"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/true_strength.ogg" id="16_audio"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_honyp"]
 size = Vector2(58, 54)
@@ -99,3 +103,15 @@ scale = Vector2(0.4321996, 0.4340491)
 
 [node name="EffectBar_tscn" parent="." unique_id=1561142865 instance=ExtResource("12_scflc")]
 scale = Vector2(0.261, 0.28)
+
+[node name="AttackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_audio")
+
+[node name="SlashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_audio")
+
+[node name="BlockSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_audio")
+
+[node name="StrengthSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_audio")

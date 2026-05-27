@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://dloawfqmvftpj" path="res://Test/TestImagesSprites/art/expose.png" id="7_rixbn"]
 [ext_resource type="PackedScene" path="res://src/Core/Enemy/EnemyHealthBar.tscn" id="8_hpbar"]
 [ext_resource type="PackedScene" uid="uid://be1owsfkxmfbu" path="res://src/Core/Effects/EffectBar.tscn" id="9_fj4c1"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/enemy_attack.ogg" id="10_audio"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/enemy_block.ogg" id="11_audio"]
+[ext_resource type="AudioStream" path="res://Test/TestImagesSprites/art/axe.ogg" id="12_audio"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d5873"]
 size = Vector2(163, 151)
@@ -45,3 +48,12 @@ offset_left = -80.0
 offset_top = -160.0
 offset_right = 80.0
 offset_bottom = -120.0
+
+[node name="AttackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_audio")
+
+[node name="BlockSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_audio")
+
+[node name="AxeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_audio")

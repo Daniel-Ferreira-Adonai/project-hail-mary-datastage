@@ -51,6 +51,7 @@ public partial class Player : Node2D
 		set
 		{
 			_BlockValue = value;
+			if (value > 0) _blockSound?.Play();
 			UpdateLabelValues();
 		}
 	}
@@ -91,6 +92,7 @@ public partial class Player : Node2D
         set
         {
             _temporaryStrength = value;
+            if (value > 0) _strengthSound?.Play();
             EmitSignal(SignalName.StatsChanged);
         }
     }
@@ -149,11 +151,16 @@ public int Frail
 	[Export] public AnimatedSprite2D animation;
 	[Export] private PackedScene _damageLabelScene;
 
+	private AudioStreamPlayer _attackSound;
+	private AudioStreamPlayer _slashSound;
+	private AudioStreamPlayer _blockSound;
+	private AudioStreamPlayer _strengthSound;
+
 	[Signal]
 	public delegate void AttackImpactEventHandler();
 
 	private bool isAlive;
-	
+
 
 		public override void _Ready()
 	{
@@ -163,6 +170,10 @@ public int Frail
 		SetupHpBar();
 		UpdateLabelValues();
 		SetupEffectBar();
+		_attackSound  = GetNodeOrNull<AudioStreamPlayer>("AttackSound");
+		_slashSound   = GetNodeOrNull<AudioStreamPlayer>("SlashSound");
+		_blockSound   = GetNodeOrNull<AudioStreamPlayer>("BlockSound");
+		_strengthSound = GetNodeOrNull<AudioStreamPlayer>("StrengthSound");
 
 		var relicFiles = DirAccess.GetFilesAt("res://Data/Relics/");
 		foreach (var file in relicFiles)
@@ -480,7 +491,7 @@ public async void PlayAttackAnimation()
 {
     if (_isAttacking) return;
     _isAttacking = true;
-    
+    _slashSound?.Play();
     animation.Play("attack");
     
     animation.FrameChanged += OnAttackFrameChanged;
@@ -531,6 +542,7 @@ private void OnAttackFrameChanged()
 {
     if (animation.Animation == "attack" && animation.Frame == ImpactFrame)
     {
+        _attackSound?.Play();
         EmitSignal(SignalName.AttackImpact);
     }
 }

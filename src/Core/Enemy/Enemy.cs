@@ -64,9 +64,12 @@ public int BuffedStrength
         set
         {
             _block = Mathf.Max(0, value);
+            if (value > 0) _blockSound?.Play();
             _healthBar?.UpdateBlock(_block);
         }
     }
+
+    public void PlayAttackSound() => _attackSound?.Play();
     public int Vulnerable
     {
         get => Debuffs.ContainsKey("vulnerable") ? Debuffs["vulnerable"] : 0;
@@ -79,6 +82,9 @@ public int BuffedStrength
         set => Debuffs["Weak"] = value;
     }
     [Export] public EffectBar EffectBar;
+
+    private AudioStreamPlayer _attackSound;
+    private AudioStreamPlayer _blockSound;
 
     private Sprite2D _sprite;
     
@@ -97,6 +103,8 @@ public int BuffedStrength
         _sprite          = GetNodeOrNull<Sprite2D>("Sprite");
         _collision       = GetNode<CollisionShape2D>("Area2D/CollisionShape2D");
         _intentContainer = GetNodeOrNull<HBoxContainer>("HBoxContainer");
+        _attackSound     = GetNodeOrNull<AudioStreamPlayer>("AttackSound");
+        _blockSound      = GetNodeOrNull<AudioStreamPlayer>("BlockSound");
 
         if (_healthBarScene is not null)
         {
