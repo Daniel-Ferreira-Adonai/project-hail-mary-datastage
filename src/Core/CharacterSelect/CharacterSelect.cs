@@ -69,6 +69,7 @@ public partial class CharacterSelect : Control
             StartingGold   = 100,
             StartingEnergy = 3,
             IsUnlocked     = true,
+            Portrait       = GD.Load<Texture2D>("res://Test/TestImagesSprites/Untitled design (9).png"),
         };
         _characters.Add(doutor);
 
