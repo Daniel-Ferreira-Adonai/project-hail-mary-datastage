@@ -324,6 +324,10 @@ public async void TryToPlayCard(Card card)
     {
         return;
     }
+	
+	foreach (var e in CombatManager.Instance._activeEnemies)
+    e.TriggerPowers(p => p.OnPlayerCardPlayed(e, CardBeingDraged.Data));
+
     if(CardBeingDraged.Data.tipoCarta == CardData.CardType.Attack
         || CardBeingDraged.Data.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
     {

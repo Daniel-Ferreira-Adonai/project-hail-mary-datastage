@@ -10,4 +10,5 @@
 script = ExtResource("2_u8yej")
 Enemies = Array[ExtResource("1_y0q5c")]([ExtResource("2_qdu5x"), ExtResource("3_u8vvm")])
 backgroundImage = ExtResource("4_vxdc7")
+PlayerOffset = Vector2(10, 10)
 metadata/_custom_type_script = "uid://bis7fspfw1fbq"

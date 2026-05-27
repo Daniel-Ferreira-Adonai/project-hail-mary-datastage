@@ -17,8 +17,8 @@ public partial class CombatManager : Node2D
 	public Label energyLabel;
 
 	public Player Player;
-	private List<Enemy> _activeEnemies = new();
-    [Export] Sprite2D background;
+	public List<Enemy> _activeEnemies = new();
+    [Export] TextureRect background;
 
     [Export] private PackedScene _rewardCardScene;
 
@@ -55,29 +55,23 @@ public partial class CombatManager : Node2D
 
 	}
 	public void AjustBackground()
-    {
-    var bg = GetNode<Sprite2D>("Sprite2D");
+{
+    var bg = GetNode<TextureRect>("TextureRect");
     var screenSize = GetViewport().GetVisibleRect().Size;
     
-    bg.Position = screenSize / 2;
-    
-    var textureSize = bg.Texture.GetSize();
-    bg.Scale = new Vector2(
-        screenSize.X / textureSize.X,
-        screenSize.Y / textureSize.Y
-    );
-    }
-    private void SetupPlayerPosition()
+    bg.Position = Vector2.Zero;
+    bg.Size = screenSize;
+    bg.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+    bg.StretchMode = TextureRect.StretchModeEnum.Scale;
+}
+private void SetupPlayerPosition()
 {
     var screenSize = GetViewport().GetVisibleRect().Size;
-    
 
     Player.GlobalPosition = new Vector2(
         screenSize.X * 0.25f, 
-        screenSize.Y * 0.55f 
-    );
-    
-    
+        screenSize.Y * 0.55f
+    ) + (_currentEncounterData?.PlayerOffset ?? Vector2.Zero);
 }
 	public void EndTurn()
 	{
@@ -130,7 +124,7 @@ foreach (var enemy in _activeEnemies)
 	}
 	public void InitializeCombat(EncounterData encounter)
     {
-        if (encounter is null) { GD.PushError("InitializeCombat: encounter is null — verifique os pools de encontros no editor."); return; }
+        if (encounter is null) { GD.PushError("InitializeCombat: encounter is null"); return; }
         _combatEnded = false;
         background.Texture = encounter.backgroundImage;
         _activeEnemies.Clear();
@@ -138,13 +132,11 @@ foreach (var enemy in _activeEnemies)
         currentEnergy = maxEnergy;
         UpdateEnergy(currentEnergy);
         _currentEncounterData = encounter;
+        SetupPlayerPosition(); 
         SpawnEnemies(encounter);
         Player.TriggerRelics(r => r.BeforeOnCombatStart(Player)); 
-
         StartGame();
-
         Player.TriggerRelics(r => r.OnCombatStart(Player)); 
-
     }
 	public void StartGame()
 	{

@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cymre33rbdho0"]
+
+[ext_resource type="Texture2D" uid="uid://bvxbkvwxa4x5f" path="res://Test/TestImagesSprites/art/Untitled design (59).png" id="1_tnio1"]
+[ext_resource type="Script" uid="uid://srvqgr14qxkn" path="res://src/Core/Enemy/EnemyPowerData.cs" id="2_5khnu"]
+[ext_resource type="Resource" uid="uid://t6ivde0p7osu" path="res://Data/EnemyPowers/StrengthOnSkillEnemyPower.tres" id="3_opkf1"]
+[ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="4_igu20"]
+[ext_resource type="Script" uid="uid://b45gi1o0cc2g2" path="res://src/Core/Enemy/IntentScripts/ApplySangriaIntent.cs" id="5_jh50g"]
+[ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="6_o0gy2"]
+[ext_resource type="Script" uid="uid://cierbh5kwpggb" path="res://src/Core/Enemy/EnemyTurn.cs" id="7_es7ui"]
+[ext_resource type="Script" uid="uid://4jup1ap6atny" path="res://src/Core/Enemy/IntentScripts/BlockIntent.cs" id="8_wj7y5"]
+[ext_resource type="Script" uid="uid://bkfgne38lx35i" path="res://src/Core/Enemy/IntentScripts/BuffForcaIntent.cs" id="9_geeb4"]
+[ext_resource type="Script" uid="uid://diibyxdp5lqyr" path="res://src/Core/Enemy/IntentScripts/HealIntent.cs" id="10_jcvah"]
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="11_6mh5k"]
+
+[sub_resource type="Resource" id="Resource_s4nna"]
+script = ExtResource("5_jh50g")
+Type = 2
+Value = 2
+metadata/_custom_type_script = "uid://b45gi1o0cc2g2"
+
+[sub_resource type="Resource" id="Resource_kkbgb"]
+script = ExtResource("6_o0gy2")
+Value = 12
+metadata/_custom_type_script = "uid://bccl3286c7bxr"
+
+[sub_resource type="Resource" id="Resource_43u1k"]
+script = ExtResource("7_es7ui")
+Actions = Array[ExtResource("4_igu20")]([SubResource("Resource_s4nna"), SubResource("Resource_kkbgb")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[sub_resource type="Resource" id="Resource_ai4dc"]
+script = ExtResource("6_o0gy2")
+Value = 20
+metadata/_custom_type_script = "uid://bccl3286c7bxr"
+
+[sub_resource type="Resource" id="Resource_8fknq"]
+script = ExtResource("7_es7ui")
+Actions = Array[ExtResource("4_igu20")]([SubResource("Resource_ai4dc")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[sub_resource type="Resource" id="Resource_s7r43"]
+script = ExtResource("8_wj7y5")
+Type = 1
+Value = 20
+metadata/_custom_type_script = "uid://4jup1ap6atny"
+
+[sub_resource type="Resource" id="Resource_m4xyx"]
+script = ExtResource("9_geeb4")
+Type = 2
+Value = 2
+metadata/_custom_type_script = "uid://bkfgne38lx35i"
+
+[sub_resource type="Resource" id="Resource_e5lti"]
+script = ExtResource("7_es7ui")
+Actions = Array[ExtResource("4_igu20")]([SubResource("Resource_s7r43"), SubResource("Resource_m4xyx")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[sub_resource type="Resource" id="Resource_estg5"]
+script = ExtResource("10_jcvah")
+Type = 2
+Value = 15
+metadata/_custom_type_script = "uid://diibyxdp5lqyr"
+
+[sub_resource type="Resource" id="Resource_v1wgd"]
+script = ExtResource("7_es7ui")
+Actions = Array[ExtResource("4_igu20")]([SubResource("Resource_estg5")])
+metadata/_custom_type_script = "uid://cierbh5kwpggb"
+
+[resource]
+script = ExtResource("11_6mh5k")
+Sprite = ExtResource("1_tnio1")
+MaxHealth = 120
+enemyType = 2
+TurnPatterns = Array[Object]([SubResource("Resource_43u1k"), SubResource("Resource_8fknq"), SubResource("Resource_e5lti"), SubResource("Resource_v1wgd")])
+Size = 4
+StartingPowers = Array[ExtResource("2_5khnu")]([ExtResource("3_opkf1")])
+metadata/_custom_type_script = "uid://b2o7r58snev8f"

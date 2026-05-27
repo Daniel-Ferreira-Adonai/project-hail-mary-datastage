@@ -16,4 +16,7 @@ public partial class EnemyPowerData : Resource
     public virtual void OnTurnEnd(Enemy enemy) {}
     public virtual void OnDamageTaken(Enemy enemy, int damage) {}
     public virtual void OnDebuffApplied(Enemy enemy, string debuff, int value) {}
+
+    public virtual void OnPlayerCardPlayed(Enemy enemy, CardData card) {}
+
 }

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cwq2hshdf0jlu" path="res://src/Core/Map/MapGenerator.cs" id="1_fu1mf"]
 [ext_resource type="Script" uid="uid://bib05hvin31w" path="res://src/Core/Map/Map.cs" id="1_q6b4c"]
 [ext_resource type="Resource" uid="uid://7bvg37q7dth4" path="res://Data/Encounters/TesteEncounter.tres" id="3_14n3b"]
+[ext_resource type="Resource" uid="uid://bogfuuptnixe" path="res://Data/Encounters/BossEncounterSkeleton.tres" id="6_xbaaq"]
 [ext_resource type="Resource" uid="uid://b3f1a0ud343pp" path="res://Data/Events/BibliotecarioCego.tres" id="11_gbfhp"]
 [ext_resource type="Resource" uid="uid://xiynavl5rabb" path="res://Data/Encounters/HumanEncounter.tres" id="12_52122"]
 
@@ -32,6 +33,7 @@ script = ExtResource("1_fu1mf")
 Events = [ExtResource("11_gbfhp")]
 EasyEncounters = [ExtResource("12_52122"), ExtResource("3_14n3b")]
 MediumEncounters = [ExtResource("3_14n3b")]
+BossEncounters = [ExtResource("6_xbaaq")]
 
 [node name="MapBackground" type="CanvasLayer" parent="." unique_id=1184612790]
 layer = -1

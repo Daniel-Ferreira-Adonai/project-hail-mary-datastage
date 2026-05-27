@@ -2,20 +2,21 @@
 
 [ext_resource type="Script" uid="uid://dusp2hbsrm3jl" path="res://src/Core/CombatManager/CombatManager.cs" id="1_4c6rb"]
 [ext_resource type="PackedScene" uid="uid://ddgr4rnfn0peg" path="res://src/Core/Reward/RewardCard.tscn" id="2_ovfdv"]
-[ext_resource type="Texture2D" uid="uid://cvjlcne6akki8" path="res://Test/TestImagesSprites/Gemini_Generated_Image_mrznromrznromrzn.png" id="3_418fw"]
 [ext_resource type="PackedScene" uid="uid://bwt41nmo2srig" path="res://src/Core/Card/CardManager.tscn" id="4_ni4mj"]
 [ext_resource type="Script" uid="uid://du0y7yffh65i" path="res://Test/TestScenes/endTurn.cs" id="6_418fw"]
 [ext_resource type="PackedScene" uid="uid://bye8bitcysp35" path="res://Test/TestScenes/EnergyCoin.tscn" id="6_divk8"]
 
 [node name="CombatManager" type="Node2D" unique_id=1684369228 node_paths=PackedStringArray("background")]
+texture_filter = 2
 script = ExtResource("1_4c6rb")
-background = NodePath("Sprite2D")
+background = NodePath("TextureRect")
 _rewardCardScene = ExtResource("2_ovfdv")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=637661068]
-texture = ExtResource("3_418fw")
-
 [node name="CardManager" parent="." unique_id=855153483 instance=ExtResource("4_ni4mj")]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=840639431]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="endTurn" type="Button" parent="." unique_id=1071846408]
 offset_left = 1458.0

@@ -13,6 +13,9 @@ public partial class EncounterData : Resource
     [Export] public Texture2D  backgroundImage { get; set; } 
 
     [Export] public Vector2[] EnemyPositions { get; set; }
+
+    [ExportCategory("Player")]
+    [Export] public Vector2 PlayerOffset { get; set; } = Vector2.Zero;
     
     [ExportCategory("Rewards")]
     [Export] public int RewardGold { get; set; } = 50;

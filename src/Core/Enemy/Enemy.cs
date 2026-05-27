@@ -15,10 +15,15 @@ public partial class Enemy : Node2D
     [Export] private Texture2D _debuffIcon;
     [Export] private Texture2D _unknownIcon;
     
+   
+
+
     [Export] private PackedScene _healthBarScene;
     [Export] private float _intentOffsetY = -230f;
 
     private EnemyHealthBar _healthBar;
+
+    
 public List<EnemyPowerData> ActivePowers { get; set; } = new List<EnemyPowerData>();
 
     private int _currentHealth;

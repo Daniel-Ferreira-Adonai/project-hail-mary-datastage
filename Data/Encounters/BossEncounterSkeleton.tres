@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EncounterData" format=3 uid="uid://bogfuuptnixe"]
+
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_gcevj"]
+[ext_resource type="Script" uid="uid://bis7fspfw1fbq" path="res://src/Core/CombatManager/EncounterData.cs" id="2_8khcu"]
+[ext_resource type="Resource" uid="uid://cymre33rbdho0" path="res://Data/Enemy/BossSkeletonEnemyBoss.tres" id="2_pqseu"]
+[ext_resource type="Texture2D" uid="uid://4q5rxiudm36v" path="res://Test/TestImagesSprites/art/BossRoom1.png" id="3_pqseu"]
+
+[resource]
+script = ExtResource("2_8khcu")
+Enemies = Array[ExtResource("1_gcevj")]([ExtResource("2_pqseu")])
+backgroundImage = ExtResource("3_pqseu")
+PlayerOffset = Vector2(100, 50)
+metadata/_custom_type_script = "uid://bis7fspfw1fbq"

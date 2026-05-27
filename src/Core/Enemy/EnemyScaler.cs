@@ -9,32 +9,35 @@ public static class EnemyScaler
         { EnemySize.Small,  120f },
         { EnemySize.Medium, 220f },
         { EnemySize.Large,  250f },
-        { EnemySize.Boss,   350f }
+        { EnemySize.Boss,   500f }
     };
     
     private const float MaxWidth = 300f;
-    
+    private const float BossWidth = 500f;
+
    
     public static Vector2 CalculateScale(Texture2D sprite, EnemySize size)
+{
+    if (sprite == null)
+        return Vector2.One;
+    
+    Vector2 spriteSize = sprite.GetSize();
+    float targetHeight = TargetHeights[size];
+    
+    float scaleByHeight = targetHeight / spriteSize.Y;
+    
+    float resultingWidth = spriteSize.X * scaleByHeight;
+    
+    float maxWidth = size == EnemySize.Boss ? BossWidth : MaxWidth;
+
+    if (resultingWidth > maxWidth)
     {
-        if (sprite == null)
-            return Vector2.One;
-        
-        Vector2 spriteSize = sprite.GetSize();
-        float targetHeight = TargetHeights[size];
-        
-        float scaleByHeight = targetHeight / spriteSize.Y;
-        
-        float resultingWidth = spriteSize.X * scaleByHeight;
-        
-        if (resultingWidth > MaxWidth)
-        {
-            float scaleByWidth = MaxWidth / spriteSize.X;
-            return new Vector2(scaleByWidth, scaleByWidth);
-        }
-        
-        return new Vector2(scaleByHeight, scaleByHeight);
+        float scaleByWidth = maxWidth / spriteSize.X;
+        return new Vector2(scaleByWidth, scaleByWidth);
     }
+    
+    return new Vector2(scaleByHeight, scaleByHeight);
+}
     
   
     public static float CalculateDisplayWidth(Texture2D sprite, EnemySize size)

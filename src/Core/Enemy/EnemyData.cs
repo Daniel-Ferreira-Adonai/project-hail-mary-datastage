@@ -9,6 +9,8 @@ public partial class EnemyData : Resource
     [Export] public Texture2D Sprite { get; set; }
     [Export] public int MaxHealth { get; set; } = 50;
     [Export] public int Gold { get; set; } = 10;
+        [Export] private EnemyEnum enemyType = EnemyEnum.enemy;
+
     
     [ExportCategory("Stats")]
     [Export] public int Strength { get; set; } = 0;
@@ -19,7 +21,7 @@ public partial class EnemyData : Resource
     [ExportCategory("Visual")]
     [Export] public EnemySize Size { get; set; } = EnemySize.Medium;
     
-   
+
     
     [Export] public Color Tint { get; set; } = Colors.White;
     
