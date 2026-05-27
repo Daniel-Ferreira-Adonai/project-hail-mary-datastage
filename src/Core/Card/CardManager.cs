@@ -20,7 +20,7 @@ public partial class CardManager : Node2D
 	[Export] public int cardsDrawedPerTurn = 5;
 
 	private List<Card> _deck = new List<Card>();  
-	private List<Card> _handList = new List<Card>();      
+	public List<Card> _handList = new List<Card>();      
 	private List<Card> _discard = new List<Card>();  
 
 	private List<Card> _exhausted = new List<Card>();
@@ -324,7 +324,7 @@ public async void TryToPlayCard(Card card)
     {
         return;
     }
-	
+
 	foreach (var e in CombatManager.Instance._activeEnemies)
     e.TriggerPowers(p => p.OnPlayerCardPlayed(e, CardBeingDraged.Data));
 
@@ -346,16 +346,17 @@ public async void TryToPlayCard(Card card)
 
         GD.Print(Enemy);
         if(Enemy is Enemy enemy)
-        {
-            PlayerManager.Instance.Player.PlayAttackAnimation();
-            GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
-            _combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-            CardBeingDraged.Play(enemy, _combatManager.getPlayer());
-            _combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, CardBeingDraged.Data)); 
-            UpdateAllCardPreviews(PlayerManager.Instance.Player, null);
-            handleCardDeckTurn(card);
-        } 
-        return;
+		{
+		var playedCard = CardBeingDraged;
+		PlayerManager.Instance.Player.PlayAttackAnimation();
+		GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
+		_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, playedCard.Data)); 
+		playedCard.Play(enemy, _combatManager.getPlayer());
+		_combatManager.Player.TriggerRelics(r => r.OnCardPlayed(_combatManager.Player, playedCard.Data)); 
+		UpdateAllCardPreviews(PlayerManager.Instance.Player, null);
+		handleCardDeckTurn(card);
+	} 
+	return;
     }
     
     if(CardBeingDraged.Data.tipoCarta != CardData.CardType.Attack)

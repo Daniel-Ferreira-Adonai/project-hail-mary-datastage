@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DeepCutEnemyPower" format=3 uid="uid://c8w4hop83be22"]
+
+[ext_resource type="Script" uid="uid://cro2c1pjdyl5m" path="res://src/Core/Enemy/EnemyPowerScripts/DeepCutEnemyPower.cs" id="1_0a40n"]
+
+[resource]
+script = ExtResource("1_0a40n")
+Id = "deepCut"
+EffectValue = 1
+metadata/_custom_type_script = "uid://srvqgr14qxkn"

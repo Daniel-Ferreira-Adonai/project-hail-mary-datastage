@@ -68,6 +68,7 @@ metadata/_custom_type_script = "uid://cierbh5kwpggb"
 
 [resource]
 script = ExtResource("11_6mh5k")
+EnemyName = "SkeletonKing"
 Sprite = ExtResource("1_tnio1")
 MaxHealth = 120
 enemyType = 2

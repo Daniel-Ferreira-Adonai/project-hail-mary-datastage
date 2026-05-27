@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://bquskuvijqr6x"]
 
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_47uic"]
+[ext_resource type="Texture2D" uid="uid://x3f2fn8i4rqc" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (68).png" id="1_m2d66"]
 
 [resource]
 script = ExtResource("1_47uic")
 Id = "frail"
 Name = "Frágil"
+Icon = ExtResource("1_m2d66")
 Description = "Recebe 25% menos bloqueio"
 Category = 1
 metadata/_custom_type_script = "uid://cw54gno3mnb5t"

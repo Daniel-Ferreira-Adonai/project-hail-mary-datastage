@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://b16axmfo117ju"]
 
+[ext_resource type="Texture2D" uid="uid://c0465h1ccogb3" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (63).png" id="1_8udqb"]
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_ls6j1"]
 
 [resource]
 script = ExtResource("1_ls6j1")
 Id = "Sangria"
 Name = "Sangria"
+Icon = ExtResource("1_8udqb")
 Description = "Recebe dano ao longo do tempo e recupera o dano causado como vida"
 Category = 1
 metadata/_custom_type_script = "uid://cw54gno3mnb5t"

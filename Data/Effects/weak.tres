@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://f1her4rjgu4c"]
 
+[ext_resource type="Texture2D" uid="uid://4piw4oqiulmo" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (70).png" id="1_gtrx7"]
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_m7gql"]
 
 [resource]
 script = ExtResource("1_m7gql")
 Id = "weak"
 Name = "Enfraquecido"
+Icon = ExtResource("1_gtrx7")
 Description = "Causa 25% menos dano"
 Category = 1
 metadata/_custom_type_script = "uid://cw54gno3mnb5t"

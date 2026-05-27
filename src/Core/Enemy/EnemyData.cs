@@ -9,9 +9,11 @@ public partial class EnemyData : Resource
     [Export] public Texture2D Sprite { get; set; }
     [Export] public int MaxHealth { get; set; } = 50;
     [Export] public int Gold { get; set; } = 10;
-        [Export] private EnemyEnum enemyType = EnemyEnum.enemy;
+    [Export] private EnemyEnum enemyType = EnemyEnum.enemy;
 
-    
+    [ExportCategory("Custom Size")]
+    [Export] public float CustomTargetHeight { get; set; } = 220f;
+    [Export] public float CustomMaxWidth { get; set; } = 300f;
     [ExportCategory("Stats")]
     [Export] public int Strength { get; set; } = 0;
     
@@ -38,5 +40,6 @@ public enum EnemySize
     Small,     
     Medium,   
     Large,     
-    Boss       
+    Boss      ,
+    Custom 
 }

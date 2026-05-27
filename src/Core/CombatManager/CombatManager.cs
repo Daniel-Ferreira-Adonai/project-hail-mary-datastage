@@ -348,7 +348,7 @@ private (Vector2[] positions, float scaleFactor) GenerateDefaultPositions(Encoun
     for (int i = 0; i < enemyCount; i++)
     {
         var data = encounter.Enemies[i];
-        widths[i] = EnemyScaler.CalculateDisplayWidth(data.Sprite, data.Size);
+        widths[i] = EnemyScaler.CalculateDisplayWidth(data.Sprite, data.Size,data);
     }
 
     float totalWidth = 0f;

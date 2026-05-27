@@ -16,48 +16,50 @@ public static class EnemyScaler
     private const float BossWidth = 500f;
 
    
-    public static Vector2 CalculateScale(Texture2D sprite, EnemySize size)
+   public static Vector2 CalculateScale(Texture2D sprite, EnemySize size, EnemyData data = null)
 {
     if (sprite == null)
         return Vector2.One;
-    
+
     Vector2 spriteSize = sprite.GetSize();
-    float targetHeight = TargetHeights[size];
     
+    float targetHeight = size == EnemySize.Custom && data != null && data.CustomTargetHeight > 0
+        ? data.CustomTargetHeight
+        : TargetHeights.ContainsKey(size) ? TargetHeights[size] : 220f;
+
+    float maxWidth = size == EnemySize.Boss ? BossWidth
+        : size == EnemySize.Custom && data != null && data.CustomMaxWidth > 0 ? data.CustomMaxWidth
+        : MaxWidth;
     float scaleByHeight = targetHeight / spriteSize.Y;
-    
     float resultingWidth = spriteSize.X * scaleByHeight;
-    
-    float maxWidth = size == EnemySize.Boss ? BossWidth : MaxWidth;
 
     if (resultingWidth > maxWidth)
     {
         float scaleByWidth = maxWidth / spriteSize.X;
         return new Vector2(scaleByWidth, scaleByWidth);
     }
-    
+
     return new Vector2(scaleByHeight, scaleByHeight);
 }
     
   
-    public static float CalculateDisplayWidth(Texture2D sprite, EnemySize size)
-    {
-        if (sprite == null)
-            return TargetHeights[size]; 
-        
-        Vector2 scale = CalculateScale(sprite, size);
-        return sprite.GetSize().X * scale.X;
-    }
+public static float CalculateDisplayWidth(Texture2D sprite, EnemySize size, EnemyData data = null)
+{
+    if (sprite == null)
+        return TargetHeights.ContainsKey(size) ? TargetHeights[size] : 220f;
     
+    Vector2 scale = CalculateScale(sprite, size, data);
+    return sprite.GetSize().X * scale.X;
+}
 
-    public static float CalculateDisplayHeight(Texture2D sprite, EnemySize size)
-    {
-        if (sprite == null)
-            return TargetHeights[size];
-        
-        Vector2 scale = CalculateScale(sprite, size);
-        return sprite.GetSize().Y * scale.Y;
-    }
+public static float CalculateDisplayHeight(Texture2D sprite, EnemySize size, EnemyData data = null)
+{
+    if (sprite == null)
+        return TargetHeights.ContainsKey(size) ? TargetHeights[size] : 220f;
+    
+    Vector2 scale = CalculateScale(sprite, size, data);
+    return sprite.GetSize().Y * scale.Y;
+}
     
    
     public static float GetIdealSpacing(EnemySize largestSize)

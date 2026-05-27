@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EncounterData" format=3 uid="uid://buc1nseux7aud"]
+
+[ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="1_lha4d"]
+[ext_resource type="Script" uid="uid://bis7fspfw1fbq" path="res://src/Core/CombatManager/EncounterData.cs" id="2_gqcos"]
+[ext_resource type="Texture2D" uid="uid://cuke1qi31i0dx" path="res://Test/TestImagesSprites/art/Gemini_Generated_Image_m9cr36m9cr36m9cr.png" id="2_nsmuc"]
+[ext_resource type="Resource" uid="uid://tkja4408hfaq" path="res://Data/Enemy/CervoMorto.tres" id="2_nx0q0"]
+
+[resource]
+script = ExtResource("2_gqcos")
+Enemies = Array[ExtResource("1_lha4d")]([ExtResource("2_nx0q0")])
+backgroundImage = ExtResource("2_nsmuc")
+metadata/_custom_type_script = "uid://bis7fspfw1fbq"

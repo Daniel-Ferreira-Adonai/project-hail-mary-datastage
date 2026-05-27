@@ -15,6 +15,7 @@ public partial class Enemy : Node2D
     [Export] private Texture2D _debuffIcon;
     [Export] private Texture2D _unknownIcon;
     
+    [Export] private EnemyEnum enemyType = EnemyEnum.enemy;
    
 
 
@@ -147,7 +148,7 @@ if (_intentContainer != null)
         if (_sprite != null && data.Sprite != null)
         {
             _sprite.Texture   = data.Sprite;
-            _sprite.Scale     = EnemyScaler.CalculateScale(data.Sprite, data.Size);
+            _sprite.Scale = EnemyScaler.CalculateScale(data.Sprite, data.Size, data);
             _sprite.Position  = new Vector2(_sprite.Position.X, data.VerticalOffset);
         }
 
@@ -155,8 +156,8 @@ if (_intentContainer != null)
 
         if (_healthBar is not null)
         {
-            float dispW = EnemyScaler.CalculateDisplayWidth(data.Sprite, data.Size);
-            float dispH = EnemyScaler.CalculateDisplayHeight(data.Sprite, data.Size);
+            float dispW = EnemyScaler.CalculateDisplayWidth(data.Sprite, data.Size, this.Data);
+            float dispH = EnemyScaler.CalculateDisplayHeight(data.Sprite, data.Size, this.Data);
             _healthBar.Setup(MaxHealth, data.Size, dispW);
             _healthBar.Position = new Vector2(_healthBar.Position.X,
                 data.VerticalOffset + dispH / 2f + 8f);
@@ -183,7 +184,7 @@ if (_intentContainer != null)
         if (Data?.Sprite == null)
             return 100f;
         
-        return EnemyScaler.CalculateDisplayWidth(Data.Sprite, Data.Size);
+        return EnemyScaler.CalculateDisplayWidth(Data.Sprite, Data.Size,Data);
     }
     
     public Array<IntentData> GetNextTurnIntents()

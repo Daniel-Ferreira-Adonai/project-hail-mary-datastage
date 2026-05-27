@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://5oo84nat71oc"]
 
-[ext_resource type="Texture2D" uid="uid://csy0ohto3gt87" path="res://Test/TestImagesSprites/art/muscle.png" id="1_j663a"]
+[ext_resource type="Texture2D" uid="uid://sv85dustpl15" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (66).png" id="1_j663a"]
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_o50g8"]
 
 [resource]

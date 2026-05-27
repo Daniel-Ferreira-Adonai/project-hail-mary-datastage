@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://dbbcf86vmc4ga"]
 
-[ext_resource type="Texture2D" uid="uid://cscg7j4dg8sjy" path="res://Test/TestImagesSprites/art/Sangramento.png" id="1_v2g53"]
+[ext_resource type="Texture2D" uid="uid://qjx3p0t3fetm" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (64).png" id="1_v2g53"]
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_yol0k"]
 
 [resource]

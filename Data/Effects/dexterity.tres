@@ -1,10 +1,12 @@
 [gd_resource type="Resource" script_class="EffectData" format=3 uid="uid://e6my7arbmsq0"]
 
 [ext_resource type="Script" uid="uid://cw54gno3mnb5t" path="res://src/Core/Effects/EffectData.cs" id="1_bofni"]
+[ext_resource type="Texture2D" uid="uid://t2fsgpx76136" path="res://Test/TestImagesSprites/DebuffBuffPowerIcons/Untitled design (61).png" id="1_hdtb4"]
 
 [resource]
 script = ExtResource("1_bofni")
 Id = "dexterity"
 Name = "Destreza"
+Icon = ExtResource("1_hdtb4")
 Description = "Aumenta o bloqueio recebido"
 metadata/_custom_type_script = "uid://cw54gno3mnb5t"
