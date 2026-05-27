@@ -17,7 +17,7 @@ public partial class CardManager : Node2D
 	[Export] private PackedScene _cardScene;  
 	[Export] private Hand _handNode;  
 
-	[Export] public int cardsDrawedPerTurn = 5;
+	public int cardsDrawedPerTurn = 5;
 
 	private List<Card> _deck = new List<Card>();  
 	public List<Card> _handList = new List<Card>();      
