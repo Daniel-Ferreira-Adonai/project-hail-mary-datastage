@@ -175,11 +175,10 @@ public partial class GameManager : Node
 
     public void UpdateTopBar()
     {
-        var player = PlayerManager.Instance.Player;
-        if (player == null || _topHud == null) return;
+        var player = PlayerManager.Instance?.Player;
+        if (!IsInstanceValid(player) || !IsInstanceValid(_topHud)) return;
 
         _topHud.UpdateTopBar(_map);
-
     }
 
     public void ShowDeckViewer(DeckViewer.ViewerMode mode = DeckViewer.ViewerMode.Inspect)

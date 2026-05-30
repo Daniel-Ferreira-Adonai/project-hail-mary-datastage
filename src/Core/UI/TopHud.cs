@@ -9,8 +9,8 @@ public partial class TopHud : VBoxContainer
 
     public void UpdateTopBar(Map map)
     {
-        var player = PlayerManager.Instance.Player;
-        if (player == null || _topBar == null) return;
+        var player = PlayerManager.Instance?.Player;
+        if (!IsInstanceValid(player) || !IsInstanceValid(_topBar) || !IsInstanceValid(_relicBar)) return;
 
         _topBar.UpdateHP(player.currentHp, player.MaxHp);
         _topBar.UpdateGold(player.Gold);

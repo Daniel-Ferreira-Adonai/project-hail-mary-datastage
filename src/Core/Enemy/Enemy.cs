@@ -75,7 +75,10 @@ public int BuffedStrength
         }
     }
 
-    public void PlayAttackSound() => _attackSound?.Play();
+    public void PlayAttackSound()
+    {
+        PlayLungeAttack();
+    }
     public int Vulnerable
     {
         get => Debuffs.ContainsKey("vulnerable") ? Debuffs["vulnerable"] : 0;
@@ -93,7 +96,13 @@ public int BuffedStrength
     private AudioStreamPlayer _blockSound;
 
     private Sprite2D _sprite;
-    
+    private Vector2  _baseSpriteScale;
+    private Vector2  _baseSpritePos;
+    private Tween    _idleTween;
+    private Tween    _nodeTween;
+    private Vector2  _baseEnemyPos;
+    private bool     _nodeResting = true;
+
     private CollisionShape2D _collision;
     private Array<EnemyTurn> _turnPatterns;
     private int _currentTurnIndex = 0;
@@ -169,10 +178,18 @@ if (_intentContainer != null)
         // Set HP after health bar is configured so the initial UpdateHp fires correctly
         CurrentHealth = MaxHealth;
         foreach (var power in data.StartingPowers)
-{
-    if (power != null)
-        ActivePowers.Add(power.Duplicate() as EnemyPowerData);
-}
+        {
+            if (power != null)
+                ActivePowers.Add(power.Duplicate() as EnemyPowerData);
+        }
+
+        if (_sprite is not null)
+        {
+            _baseSpriteScale = _sprite.Scale;
+            _baseSpritePos   = _sprite.Position;
+            StartIdle();
+        }
+        Callable.From(PositionOverlaysAboveSprite).CallDeferred();
     }
     public void TriggerPowers(Action<EnemyPowerData> trigger)
 {
@@ -383,6 +400,118 @@ public void ShowIntent(Array<IntentData> intents)
             Data?.Tint ?? Colors.White, 0.1f);
     }
     
+    private void StartIdle()
+    {
+        if (_sprite is null) return;
+        _idleTween?.Kill();
+        _sprite.Scale    = _baseSpriteScale;
+        _sprite.Position = _baseSpritePos;
+
+        Vector2 Mul(float fx, float fy) =>
+            new Vector2(_baseSpriteScale.X * fx, _baseSpriteScale.Y * fy);
+
+        _idleTween = CreateTween().SetLoops()
+            .SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+
+        _idleTween.TweenProperty(_sprite, "scale", Mul(0.99f, 1.02f), 1.1f);
+        _idleTween.Parallel().TweenProperty(_sprite, "position",
+            _baseSpritePos + new Vector2(0f, -3f), 1.1f);
+        _idleTween.TweenProperty(_sprite, "scale", _baseSpriteScale, 1.1f);
+        _idleTween.Parallel().TweenProperty(_sprite, "position", _baseSpritePos, 1.1f);
+    }
+
+    private void StopIdle()
+    {
+        _idleTween?.Kill();
+        _idleTween = null;
+        if (_sprite is not null)
+        {
+            _sprite.Scale    = _baseSpriteScale;
+            _sprite.Position = _baseSpritePos;
+        }
+    }
+
+    private void CaptureRestIfNeeded()
+    {
+        if (_nodeResting) _baseEnemyPos = Position;
+    }
+
+    private void PlayLungeAttack()
+    {
+        CaptureRestIfNeeded();
+        _nodeTween?.Kill();
+        Position = _baseEnemyPos;
+        _nodeResting = false;
+
+        StopIdle();
+        _attackSound?.Play();
+
+        _nodeTween = CreateTween();
+        _nodeTween.TweenProperty(this, "position",
+            _baseEnemyPos + new Vector2(-80f, 0f), 0.12f)
+            .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+        _nodeTween.TweenCallback(Callable.From(OnLungeImpact));
+        _nodeTween.TweenProperty(this, "position",
+            _baseEnemyPos, 0.38f)
+            .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+        _nodeTween.TweenCallback(Callable.From(() =>
+        {
+            _nodeResting = true;
+            StartIdle();
+        }));
+    }
+
+    private void OnLungeImpact()
+    {
+        CombatManager.Instance?.ShakeScreen(6f, 0.22f);
+        PlayerManager.Instance?.Player?.PlayHitReaction(new Vector2(-1f, 0f));
+    }
+
+    public void PlayHitReaction(Vector2 pushDir)
+    {
+        CaptureRestIfNeeded();
+        _nodeTween?.Kill();
+        Position = _baseEnemyPos;
+        _nodeResting = false;
+
+        Vector2 knock = pushDir.Normalized() * 40f;
+        _nodeTween = CreateTween();
+        _nodeTween.TweenProperty(this, "position", _baseEnemyPos + knock, 0.06f)
+            .SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.Out);
+        _nodeTween.TweenProperty(this, "position", _baseEnemyPos, 0.30f)
+            .SetTrans(Tween.TransitionType.Elastic).SetEase(Tween.EaseType.Out);
+        _nodeTween.TweenCallback(Callable.From(() => _nodeResting = true));
+    }
+
+    private float GetSpriteTopY()
+    {
+        if (_sprite?.Texture is null) return -160f;
+        float scaledH = _sprite.Texture.GetHeight() * Mathf.Abs(_baseSpriteScale.Y);
+        float centerY = _baseSpritePos.Y + _sprite.Offset.Y * _baseSpriteScale.Y;
+        return _sprite.Centered ? centerY - scaledH * 0.5f : centerY;
+    }
+
+    private void PositionOverlaysAboveSprite()
+    {
+        float topY        = GetSpriteTopY();
+        const float margin = 24f;
+
+        if (EffectBar is not null)
+        {
+            float barH = EffectBar.Size.Y > 0f ? EffectBar.Size.Y : 40f;
+            EffectBar.Position = new Vector2(EffectBar.Position.X, topY - margin - barH);
+        }
+
+        var intentBox = GetNodeOrNull<Control>("HBoxContainer");
+        if (intentBox is not null)
+        {
+            float barH    = EffectBar?.Size.Y > 0f ? EffectBar.Size.Y : 40f;
+            float intentH = intentBox.Size.Y > 0f ? intentBox.Size.Y : 56f;
+            intentBox.Position = new Vector2(intentBox.Position.X,
+                topY - margin - barH - intentH - 8f);
+        }
+    }
+
     private void Die()
     {
         GD.Print($"{Name} morreu!");
@@ -409,10 +538,9 @@ public void ShowIntent(Array<IntentData> intents)
         GD.Print("combatManager: " + combatManager);
         GD.Print("ActivePowers: " + combatManager?.Player.ActivePowers.Count);
         combatManager?.Player.TriggerRelics(r => r.OnDebuffApplied(combatManager.Player, debuff, this));
-        combatManager?.Player.TriggerPowers(p => p.OnDebuffApplied(combatManager.Player, debuff, finalValue, this)); 
-        EffectBar?.UpdateEffects(GetAllEffects()); // aqui
-
-
+        combatManager?.Player.TriggerPowers(p => p.OnDebuffApplied(combatManager.Player, debuff, finalValue, this));
+        EffectBar?.UpdateEffects(GetAllEffects());
+        Callable.From(PositionOverlaysAboveSprite).CallDeferred();
     }
      public int GetDebuffValue(string debuff)
     {
@@ -445,8 +573,8 @@ public void ShowIntent(Array<IntentData> intents)
         }
 
         BuffedStrength = 0;
-        EffectBar?.UpdateEffects(GetAllEffects()); // no final
-
+        EffectBar?.UpdateEffects(GetAllEffects());
+        Callable.From(PositionOverlaysAboveSprite).CallDeferred();
     }
     private int CalculateFinalDamage(int baseDamage)
 {

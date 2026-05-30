@@ -69,6 +69,17 @@ public partial class Player : Node2D
 	public bool _isAttacking = false;
 	[Export] public int ImpactFrame = 4;
 
+	private Vector2 _baseAnimScale;
+	private Tween _idleTween;
+	private bool _useSquashStretch = false;
+	private Tween   _hitTween;
+	private Vector2 _hitRestPos;
+	private bool    _hitResting;
+	[Export] private float _attackLungeDistance = 150f;
+	private Tween   _lungeTween;
+	private Vector2 _attackBasePos;
+	private Enemy   _attackTarget;
+
 
  	[Signal]
     public delegate void StatsChangedEventHandler();
@@ -165,6 +176,9 @@ public int Frail
 		public override void _Ready()
 	{
 		ApplyCharacterData();
+		_baseAnimScale = animation.Scale;
+		if (_useSquashStretch)
+			StartIdleBreathing();
 		setupBasicDeck();
 		PlayerManager.Instance.Player = this;
 		SetupHpBar();
@@ -204,6 +218,7 @@ public void AddPower(PowerData power)
 }
 	private void ApplyCharacterData()
 	{
+		_useSquashStretch = true;
 		var character = RunData.SelectedCharacter;
 		if (character is not null)
 		{
@@ -244,8 +259,25 @@ public void AddPower(PowerData power)
 
 		animation.SpriteFrames = frames;
 		animation.Scale *= character.SpriteScale;
+		_useSquashStretch = true;
 		animation.Play("idle");
 	}
+
+private void StartIdleBreathing()
+{
+	_idleTween?.Kill();
+	if (_baseAnimScale == Vector2.Zero) return;
+
+	_idleTween = CreateTween().SetLoops(0);
+	// Inspira: espreme levemente na horizontal, cresce na vertical
+	_idleTween.TweenProperty(animation, "scale",
+		new Vector2(_baseAnimScale.X * 0.97f, _baseAnimScale.Y * 1.04f), 0.9f)
+		.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+	// Expira: volta ao normal
+	_idleTween.TweenProperty(animation, "scale",
+		_baseAnimScale, 0.9f)
+		.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+}
 
 private void SetupHpBar()
 {
@@ -515,21 +547,76 @@ public CardData RemoveRandomCard()
 	}
 
 
-public async void PlayAttackAnimation()
+public async void PlayAttackAnimation(Enemy target = null)
 {
     if (_isAttacking) return;
     _isAttacking = true;
     _slashSound?.Play();
+    _idleTween?.Kill();
+
+    if (target is null || !IsInstanceValid(target))
+        target = CombatManager.Instance?.GetFirstEnemy();
+    _attackTarget = target;
+
+    _attackBasePos = Position;
+    Vector2 dir = (target is not null && IsInstanceValid(target))
+        ? (target.GlobalPosition - GlobalPosition).Normalized()
+        : Vector2.Right;
+    Vector2 lungePos = _attackBasePos + dir * _attackLungeDistance;
+
+    if (_useSquashStretch)
+    {
+        var anticipation = CreateTween().SetParallel();
+        anticipation.TweenProperty(animation, "scale",
+            new Vector2(_baseAnimScale.X * 0.88f, _baseAnimScale.Y * 1.12f), 0.08f)
+            .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+        anticipation.TweenProperty(this, "position",
+            _attackBasePos - dir * 24f, 0.08f)
+            .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+        await ToSignal(anticipation, Tween.SignalName.Finished);
+    }
+
+    _lungeTween?.Kill();
+    _lungeTween = CreateTween();
+    _lungeTween.TweenProperty(this, "position", lungePos, 0.12f)
+        .SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.Out);
+
     animation.Play("attack");
-    
     animation.FrameChanged += OnAttackFrameChanged;
-    
     await ToSignal(animation, AnimatedSprite2D.SignalName.AnimationFinished);
     animation.FrameChanged -= OnAttackFrameChanged;
-    
+
+    var bounce = CreateTween().SetParallel();
+    if (_useSquashStretch)
+        bounce.TweenProperty(animation, "scale", _baseAnimScale, 0.38f)
+            .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+    bounce.TweenProperty(this, "position", _attackBasePos, 0.38f)
+        .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+    await ToSignal(bounce, Tween.SignalName.Finished);
+
     animation.Play("idle");
+    if (_useSquashStretch)
+        StartIdleBreathing();
     _isAttacking = false;
+    _attackTarget = null;
 }
+	public void PlayHitReaction(Vector2 pushDir)
+	{
+		if (_hitResting) return;
+		_hitResting = true;
+		_hitRestPos = animation.Position;
+
+		_hitTween?.Kill();
+		_hitTween = CreateTween();
+		_hitTween.TweenProperty(animation, "position",
+			_hitRestPos + pushDir * 18f, 0.06f)
+			.SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+		_hitTween.TweenProperty(animation, "position",
+			_hitRestPos, 0.28f)
+			.SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+		_hitTween.TweenCallback(Callable.From(() => _hitResting = false));
+	}
+
 	public CardData DuplicateRandomCard()
 	{
 		if (_BaseDeck.Count == 0) return null;
@@ -572,6 +659,13 @@ private void OnAttackFrameChanged()
     {
         _attackSound?.Play();
         EmitSignal(SignalName.AttackImpact);
+
+        if (_attackTarget is not null && IsInstanceValid(_attackTarget))
+        {
+            Vector2 dir = (_attackTarget.GlobalPosition - GlobalPosition).Normalized();
+            _attackTarget.PlayHitReaction(dir);
+        }
+        CombatManager.Instance?.ShakeScreen(7f, 0.18f);
     }
 }
 }

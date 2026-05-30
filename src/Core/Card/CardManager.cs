@@ -77,8 +77,6 @@ public async void DrawCard(int count)
 
         await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
     }
-
-    _handNode.ArrangeFan();
 }
 
 	public void ShuffleDeck()
@@ -243,8 +241,8 @@ public override void _Process(double delta)
         tween.TweenProperty(shadow, "modulate:a", 0.25f, 0.15f);
         tween.TweenProperty(shadow, "scale", Vector2.One, 0.15f);
 
-        int index = _handList.IndexOf(card); 
-   		card.ZIndex = index >= 0 ? index : 0;
+        int index = _handList.IndexOf(card);
+        card.ZIndex = index >= 0 ? index + 1 : 1;
     }
 }
 
@@ -348,7 +346,7 @@ public async void TryToPlayCard(Card card)
         if(Enemy is Enemy enemy)
 		{
 		var playedCard = CardBeingDraged;
-		PlayerManager.Instance.Player.PlayAttackAnimation();
+		PlayerManager.Instance.Player.PlayAttackAnimation(enemy);
 		GD.Print(_combatManager.getPlayer() + " aaaaaaaa");
 		_combatManager.Player.TriggerRelics(r => r.BeforeCardIsPlayed(_combatManager.Player, playedCard.Data)); 
 		playedCard.Play(enemy, _combatManager.getPlayer());

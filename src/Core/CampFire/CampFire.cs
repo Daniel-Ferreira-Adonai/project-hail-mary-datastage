@@ -10,6 +10,8 @@ public partial class CampFire : Control
     private Label _messageLabel;
     private BarraDeVida _hpBar;
     private PointLight2D _fireLight;
+    private TextureRect _playerArt;
+    private Vector2 _playerArtBaseScale;
 
     public override void _Ready()
     {
@@ -27,14 +29,17 @@ public partial class CampFire : Control
 
         _fireLight = GetNodeOrNull<PointLight2D>("FireLight");
 
-        var playerArt = GetNodeOrNull<TextureRect>("PlayerArt");
+        _playerArt = GetNodeOrNull<TextureRect>("PlayerArt");
         var character = RunData.SelectedCharacter;
-        if (playerArt != null && character != null)
+        if (_playerArt != null && character != null)
         {
             var tex = character.IdleSprite ?? character.Portrait;
             if (tex != null)
-                playerArt.Texture = tex;
+                _playerArt.Texture = tex;
         }
+
+        if (_playerArt != null)
+            Callable.From(StartPlayerBreathing).CallDeferred();
 
         RefreshHpBar();
         SetMessage("Escolha uma ação na fogueira.");
@@ -103,6 +108,22 @@ public partial class CampFire : Control
 
         _hpBar.Setup(player.MaxHp, player.currentHp);
         _hpBar.updateLabels(player.currentHp, player.MaxHp, 0);
+    }
+
+    private void StartPlayerBreathing()
+    {
+        if (_playerArt == null) return;
+        _playerArt.PivotOffset = new Vector2(_playerArt.Size.X / 2f, _playerArt.Size.Y);
+        _playerArtBaseScale = _playerArt.Scale;
+        if (_playerArtBaseScale == Vector2.Zero) return;
+
+        var tween = _playerArt.CreateTween().SetLoops(0);
+        tween.TweenProperty(_playerArt, "scale",
+            new Vector2(_playerArtBaseScale.X * 0.97f, _playerArtBaseScale.Y * 1.04f), 0.9f)
+            .SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+        tween.TweenProperty(_playerArt, "scale",
+            _playerArtBaseScale, 0.9f)
+            .SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
     }
 
     private void SetMessage(string message)

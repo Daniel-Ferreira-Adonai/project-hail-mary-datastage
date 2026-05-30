@@ -1,46 +1,48 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://c428adtnd3iit"]
 
-[ext_resource type="Script" path="res://src/Core/CharacterSelect/CharacterSelect.cs" id="1_character_select"]
-[ext_resource type="Texture2D" path="res://BackgroundMenu.png" id="2_background"]
-[ext_resource type="Texture2D" path="res://Test/TestImagesSprites/Untitled design (9).png" id="3_portrait"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.12, 0.08, 0.07, 0.86)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.72, 0.46, 0.24, 0.95)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[ext_resource type="Script" uid="uid://dqbt7kc35uv65" path="res://src/Core/CharacterSelect/CharacterSelect.cs" id="1_character_select"]
+[ext_resource type="Texture2D" uid="uid://rr2s77hh2xf6" path="res://BackgroundCharacterSelector.png" id="2_background"]
+[ext_resource type="Texture2D" uid="uid://bje114i20sd85" path="res://Test/TestImagesSprites/Untitled design (9).png" id="3_portrait"]
+[ext_resource type="FontFile" uid="uid://b1bqf5lm6q6uw" path="res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf" id="4_font"]
+[ext_resource type="Texture2D" uid="uid://be00otclp78p0" path="res://Test/TestMcFrames/Idle/Seu_zé.png" id="5_p7g13"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
-bg_color = Color(0.06, 0.045, 0.04, 0.72)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.58, 0.38, 0.22, 0.85)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.36, 0.12, 0.08, 0.95)
+bg_color = Color(0.03, 0.018, 0.01, 0.88)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.9, 0.56, 0.24, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(1, 0.75, 0.15, 0.82)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[node name="CharacterSelect" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.05, 0.025, 0, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.75, 0.15, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.12, 0.06, 0, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.9, 0.35, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CharacterSelect" type="Control" unique_id=1623022346]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,7 +51,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_character_select")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1813290238]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,113 +62,160 @@ texture = ExtResource("2_background")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Panel" type="PanelContainer" parent="Background"]
-custom_minimum_size = Vector2(1400, 760)
+[node name="PanelTitle" type="Label" parent="Background" unique_id=414300634]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -700.0
-offset_top = -380.0
-offset_right = 700.0
-offset_bottom = 380.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 60.0
+offset_top = 24.0
+offset_right = -60.0
+offset_bottom = 96.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
-
-[node name="VBox" type="VBoxContainer" parent="Background/Panel"]
-layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="PanelTitle" type="Label" parent="Background/Panel/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 58
 text = "Escolha seu Personagem"
 horizontal_alignment = 1
 
-[node name="CharactersContainer" type="HBoxContainer" parent="Background/Panel/VBox"]
-custom_minimum_size = Vector2(0, 260)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 40
-alignment = 1
+[node name="CharactersContainer" type="Control" parent="Background" unique_id=1458325817]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="InfoPanel" type="PanelContainer" parent="Background/Panel/VBox"]
-custom_minimum_size = Vector2(1100, 280)
-layout_mode = 2
-size_flags_horizontal = 4
+[node name="SpriteCorvo" type="TextureRect" parent="Background/CharactersContainer" unique_id=464417974]
+layout_mode = 0
+offset_left = 237.00002
+offset_top = 178.0
+offset_right = 2897.0
+offset_bottom = 1778.0
+scale = Vector2(0.30262882, 0.40176404)
+texture = ExtResource("3_portrait")
+
+[node name="SpriteSeuZe" type="TextureRect" parent="Background/CharactersContainer" unique_id=36243199]
+layout_mode = 0
+offset_left = 1094.0001
+offset_top = 171.0
+offset_right = 3754.0
+offset_bottom = 2699.0
+scale = Vector2(0.16476141, 0.26623)
+texture = ExtResource("5_p7g13")
+flip_h = true
+
+[node name="InfoPanel" type="PanelContainer" parent="Background" unique_id=329196299]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -220.0
+offset_right = -60.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_info")
 
-[node name="InfoHBox" type="HBoxContainer" parent="Background/Panel/VBox/InfoPanel"]
+[node name="InfoHBox" type="HBoxContainer" parent="Background/InfoPanel" unique_id=968111128]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 28
 
-[node name="Portrait" type="TextureRect" parent="Background/Panel/VBox/InfoPanel/InfoHBox"]
-custom_minimum_size = Vector2(160, 240)
+[node name="Portrait" type="TextureRect" parent="Background/InfoPanel/InfoHBox" unique_id=1442478792]
+custom_minimum_size = Vector2(150, 170)
 layout_mode = 2
 texture = ExtResource("3_portrait")
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 6
 
-[node name="TextContent" type="VBoxContainer" parent="Background/Panel/VBox/InfoPanel/InfoHBox"]
+[node name="TextContent" type="VBoxContainer" parent="Background/InfoPanel/InfoHBox" unique_id=1049938382]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Name" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+[node name="Name" type="Label" parent="Background/InfoPanel/InfoHBox/TextContent" unique_id=1676998857]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 32
 text = "—"
-horizontal_alignment = 0
 
-[node name="Description" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+[node name="Description" type="Label" parent="Background/InfoPanel/InfoHBox/TextContent" unique_id=519185032]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.82, 0.75, 0.58, 1)
+theme_override_font_sizes/font_size = 16
 text = "Selecione um personagem para ver suas informações."
-horizontal_alignment = 0
 autowrap_mode = 3
 
-[node name="Stats" type="HBoxContainer" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent"]
+[node name="Stats" type="HBoxContainer" parent="Background/InfoPanel/InfoHBox/TextContent" unique_id=1496472590]
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 32
 
-[node name="HP" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+[node name="HP" type="Label" parent="Background/InfoPanel/InfoHBox/TextContent/Stats" unique_id=873001221]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 text = "Vida: —"
 
-[node name="Energy" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+[node name="Energy" type="Label" parent="Background/InfoPanel/InfoHBox/TextContent/Stats" unique_id=471160180]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.7, 1, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 text = "Energia: —"
 
-[node name="Gold" type="Label" parent="Background/Panel/VBox/InfoPanel/InfoHBox/TextContent/Stats"]
+[node name="Gold" type="Label" parent="Background/InfoPanel/InfoHBox/TextContent/Stats" unique_id=876717710]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 text = "Ouro: —"
 
-[node name="ConfirmButton" type="Button" parent="Background/Panel/VBox"]
-custom_minimum_size = Vector2(260, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 24
+[node name="ConfirmButton" type="Button" parent="Background" unique_id=1035510735]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -290.0
+offset_right = 150.0
+offset_bottom = -228.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.78, 1)
+theme_override_colors/font_hover_color = Color(1, 0.96, 0.78, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-text = "CONFIRMAR"
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button")
+text = "Confirmar"
 
-[node name="BackButton" type="Button" parent="Background/Panel/VBox"]
-custom_minimum_size = Vector2(260, 56)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 20
-text = "VOLTAR"
+[node name="BackButton" type="Button" parent="Background" unique_id=1452892805]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 40.0
+offset_top = 34.0
+offset_right = 190.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(0.72, 0.65, 0.48, 1)
+theme_override_colors/font_focus_color = Color(0.72, 0.65, 0.48, 1)
+theme_override_colors/font_pressed_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.88, 0.65, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button")
+text = "Voltar"
 
-[connection signal="pressed" from="Background/Panel/VBox/ConfirmButton" to="." method="OnConfirmPressed"]
-[connection signal="pressed" from="Background/Panel/VBox/BackButton" to="." method="OnBackPressed"]
+[connection signal="pressed" from="Background/ConfirmButton" to="." method="OnConfirmPressed"]
+[connection signal="pressed" from="Background/BackButton" to="." method="OnBackPressed"]

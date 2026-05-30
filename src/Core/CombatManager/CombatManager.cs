@@ -23,6 +23,7 @@ public partial class CombatManager : Node2D
     [Export] private PackedScene _rewardCardScene;
 
     private bool _combatEnded = false;
+    private Tween _shakeTween;
     public static CombatManager Instance { get; private set; }
     private EncounterData _currentEncounterData;
 	public override void _Ready()
@@ -284,6 +285,30 @@ foreach (var enemy in _activeEnemies)
 	{
 		energyLabel.Text = energy.ToString();
 	}
+
+    public void ShakeScreen(float intensity, float duration)
+    {
+        var cam = GetViewport().GetCamera2D();
+        if (cam is null) return;
+
+        _shakeTween?.Kill();
+        _shakeTween = CreateTween();
+
+        var origin = cam.Offset;
+        int steps = Mathf.CeilToInt(duration / 0.04f);
+        for (int i = 0; i < steps; i++)
+        {
+            float t   = (float)i / steps;
+            float amt = intensity * (1f - t);
+            var offset = new Vector2(
+                (float)GD.RandRange(-amt, amt),
+                (float)GD.RandRange(-amt, amt));
+            _shakeTween.TweenProperty(cam, "offset", origin + offset, 0.04f)
+                .SetTrans(Tween.TransitionType.Linear);
+        }
+        _shakeTween.TweenProperty(cam, "offset", origin, 0.05f)
+            .SetTrans(Tween.TransitionType.Linear);
+    }
 private void SpawnEnemies(EncounterData encounter)
 {
     if (encounter.Enemies == null || encounter.Enemies.Count == 0)
