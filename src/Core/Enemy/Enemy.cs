@@ -21,6 +21,9 @@ public partial class Enemy : Node2D
 
     [Export] private PackedScene _healthBarScene;
     [Export] private float _intentOffsetY = -230f;
+    [Export] private float _attackScaleAdjust = 1.0f;
+    [Export] private float _attackStopGap = 240f;
+    [Export] private float _attackTimeScale = 2.0f;
 
     private EnemyHealthBar _healthBar;
 
@@ -100,8 +103,14 @@ public int BuffedStrength
     private Vector2  _baseSpritePos;
     private Tween    _idleTween;
     private Tween    _nodeTween;
+    private Tween    _flashTween;
     private Vector2  _baseEnemyPos;
     private bool     _nodeResting = true;
+
+    private Texture2D _idleTexture;
+    private Godot.Collections.Array<Texture2D> _attackFrames;
+    private bool _hasAttackFrames;
+    private Vector2 _idleRendered;
 
     private CollisionShape2D _collision;
     private Array<EnemyTurn> _turnPatterns;
@@ -187,6 +196,12 @@ if (_intentContainer != null)
         {
             _baseSpriteScale = _sprite.Scale;
             _baseSpritePos   = _sprite.Position;
+
+            _idleTexture     = _sprite.Texture;
+            _attackFrames    = data.AttackFrames;
+            _hasAttackFrames = _attackFrames != null && _attackFrames.Count > 0;
+            _idleRendered    = (_idleTexture?.GetSize() ?? Vector2.One) * _baseSpriteScale;
+
             StartIdle();
         }
         Callable.From(PositionOverlaysAboveSprite).CallDeferred();
@@ -392,14 +407,38 @@ public void ShowIntent(Array<IntentData> intents)
         }
     }
     
-    private void FlashDamage()
+    public void FlashDamage()
     {
-        var tween = CreateTween();
-        tween.TweenProperty(this, "modulate", Colors.Red, 0.1f);
-        tween.TweenProperty(this, "modulate", 
-            Data?.Tint ?? Colors.White, 0.1f);
+        if (_sprite is null) return;
+        _flashTween?.Kill();
+        _sprite.Modulate = Colors.White;
+        _flashTween = CreateTween();
+        _flashTween.TweenProperty(_sprite, "modulate", new Color(1f, 0.35f, 0.35f), 0.05f);
+        _flashTween.TweenProperty(_sprite, "modulate", Colors.White, 0.18f);
     }
     
+    private void ShowAttackFrame(int index)
+    {
+        if (!_hasAttackFrames || _sprite is null) return;
+        if (index < 0 || index >= _attackFrames.Count) return;
+        var tex = _attackFrames[index];
+        if (tex is null) return;
+
+        _sprite.Texture = tex;
+        Vector2 sz = tex.GetSize();
+
+        float factor = (sz.Y > 0f ? _idleRendered.Y / sz.Y : 1f) * _attackScaleAdjust;
+        float signX = _baseSpriteScale.X < 0f ? -1f : 1f;
+        _sprite.Scale = new Vector2(factor * signX, factor);
+    }
+
+    private void RestoreIdleSprite()
+    {
+        if (_sprite is null) return;
+        if (_idleTexture is not null) _sprite.Texture = _idleTexture;
+        _sprite.Scale = _baseSpriteScale;
+    }
+
     private void StartIdle()
     {
         if (_sprite is null) return;
@@ -446,31 +485,77 @@ public void ShowIntent(Array<IntentData> intents)
         StopIdle();
         _attackSound?.Play();
 
-        _nodeTween = CreateTween();
-        _nodeTween.TweenProperty(this, "position",
-            _baseEnemyPos + new Vector2(-80f, 0f), 0.12f)
-            .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
-        _nodeTween.TweenCallback(Callable.From(OnLungeImpact));
-        _nodeTween.TweenProperty(this, "position",
-            _baseEnemyPos, 0.38f)
-            .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
-        _nodeTween.TweenCallback(Callable.From(() =>
+        var player = PlayerManager.Instance?.Player;
+        Vector2 dir;
+        Vector2 lungePos;
+        if (player is not null && IsInstanceValid(player))
         {
-            _nodeResting = true;
-            StartIdle();
-        }));
+            Vector2 toPlayer = player.GlobalPosition - GlobalPosition;
+            float gap = toPlayer.Length();
+            dir = gap > 0.001f ? toPlayer / gap : Vector2.Left;
+            float travel = Mathf.Max(0f, gap - _attackStopGap);
+            lungePos = _baseEnemyPos + dir * travel;
+        }
+        else
+        {
+            dir = Vector2.Left;
+            lungePos = _baseEnemyPos + dir * 200f;
+        }
+
+        float _travelLen = (lungePos - _baseEnemyPos).Length();
+        float dashTime   = Mathf.Clamp(_travelLen / 2600f, 0.16f, 0.32f) * _attackTimeScale;
+        float returnTime = Mathf.Clamp(_travelLen / 1800f, 0.32f, 0.55f) * _attackTimeScale;
+
+        _nodeTween = CreateTween();
+
+        if (_hasAttackFrames)
+        {
+            ShowAttackFrame(0);
+            Vector2 windupPos = _baseEnemyPos - dir * 26f;
+
+            _nodeTween.TweenProperty(this, "position", windupPos, 0.14f * _attackTimeScale)
+                .SetTrans(Tween.TransitionType.Cubic).SetEase(Tween.EaseType.Out);
+            _nodeTween.TweenProperty(this, "position", lungePos, dashTime)
+                .SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.In);
+            _nodeTween.TweenCallback(Callable.From(() => { ShowAttackFrame(Mathf.Min(1, _attackFrames.Count - 1)); OnLungeImpact(dir); }));
+            _nodeTween.TweenInterval(0.12f * _attackTimeScale);
+            _nodeTween.TweenProperty(this, "position", _baseEnemyPos, returnTime)
+                .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+            _nodeTween.TweenCallback(Callable.From(() =>
+            {
+                RestoreIdleSprite();
+                _nodeResting = true;
+                StartIdle();
+                Callable.From(PositionOverlaysAboveSprite).CallDeferred();
+            }));
+        }
+        else
+        {
+            var punch = new Vector2(_baseSpriteScale.X * 1.10f, _baseSpriteScale.Y * 0.90f);
+            _nodeTween.TweenProperty(this, "position", lungePos, 0.10f * _attackTimeScale)
+                .SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.Out);
+            _nodeTween.Parallel().TweenProperty(_sprite, "scale", punch, 0.10f * _attackTimeScale)
+                .SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.Out);
+            _nodeTween.TweenCallback(Callable.From(() => OnLungeImpact(dir)));
+            _nodeTween.TweenProperty(this, "position", _baseEnemyPos, 0.30f * _attackTimeScale)
+                .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+            _nodeTween.Parallel().TweenProperty(_sprite, "scale", _baseSpriteScale, 0.30f * _attackTimeScale)
+                .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
+            _nodeTween.TweenCallback(Callable.From(() => { _nodeResting = true; StartIdle(); }));
+        }
     }
 
-    private void OnLungeImpact()
+    private void OnLungeImpact(Vector2 dir)
     {
         CombatManager.Instance?.ShakeScreen(6f, 0.22f);
-        PlayerManager.Instance?.Player?.PlayHitReaction(new Vector2(-1f, 0f));
+        PlayerManager.Instance?.Player?.PlayHitReaction(dir);
     }
 
     public void PlayHitReaction(Vector2 pushDir)
     {
         CaptureRestIfNeeded();
         _nodeTween?.Kill();
+        if (_hasAttackFrames) RestoreIdleSprite();
         Position = _baseEnemyPos;
         _nodeResting = false;
 
@@ -485,10 +570,11 @@ public void ShowIntent(Array<IntentData> intents)
 
     private float GetSpriteTopY()
     {
-        if (_sprite?.Texture is null) return -160f;
-        float scaledH = _sprite.Texture.GetHeight() * Mathf.Abs(_baseSpriteScale.Y);
-        float centerY = _baseSpritePos.Y + _sprite.Offset.Y * _baseSpriteScale.Y;
-        return _sprite.Centered ? centerY - scaledH * 0.5f : centerY;
+        var idleTex = _idleTexture ?? _sprite?.Texture;
+        float idleH = idleTex != null ? _idleRendered.Y : 160f;
+        float centerY = _baseSpritePos.Y + (_sprite?.Offset.Y ?? 0f) * _baseSpriteScale.Y;
+        bool centered = _sprite == null || _sprite.Centered;
+        return centered ? centerY - idleH * 0.5f : centerY;
     }
 
     private void PositionOverlaysAboveSprite()

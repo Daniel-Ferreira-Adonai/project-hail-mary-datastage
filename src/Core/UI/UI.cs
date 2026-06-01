@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 public partial class UI : CanvasLayer
 {
     public static UI Instance { get; private set; }
-    public TopHud TopHud { get; private set; }
+    public TopHud       TopHud   { get; private set; }
+    public SettingsMenu Settings { get; private set; }
 
     [Export] private ColorRect _fadeRect;
 
@@ -16,6 +17,9 @@ public partial class UI : CanvasLayer
         FollowViewportEnabled = false;
 
         TopHud = GetNodeOrNull<TopHud>("TopHud");
+
+        Settings = new SettingsMenu();
+        AddChild(Settings);
     }
 
     public async Task FadeOut(float duration = 0.4f)
@@ -57,5 +61,16 @@ public partial class UI : CanvasLayer
     public void AddUI(Control control)
     {
         AddChild(control);
+    }
+
+    public override void _UnhandledInput(InputEvent e)
+    {
+        if (e is InputEventKey { Pressed: true, Echo: false, Keycode: Key.Escape }
+            && !Settings.Visible)
+        {
+            GetViewport().SetInputAsHandled();
+            bool inGame = GameManager.Instance != null;
+            Settings.Open(inGame);
+        }
     }
 }

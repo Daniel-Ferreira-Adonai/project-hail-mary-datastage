@@ -25,13 +25,12 @@ public partial class GameManager : Node
     }
     public void ShowMap()
     {
-        
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
-        PlayerManager.Instance.Player.Visible = false; 
+        _combatManager._cardManager?.SetCombatHUDVisible(false);
+        PlayerManager.Instance.Player.Visible = false;
 
         _map.ShowMap();
-        
     }
     public async void ShowMapFade()
     {
@@ -42,10 +41,11 @@ public partial class GameManager : Node
 
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
-        PlayerManager.Instance.Player.Visible = false; 
+        _combatManager._cardManager?.SetCombatHUDVisible(false);
+        PlayerManager.Instance.Player.Visible = false;
 
         _map.ShowMap();
-        
+
         UI.Instance.FadeIn();
 
     }
@@ -82,7 +82,8 @@ public partial class GameManager : Node
         _map.HideMap();
         _combatManager.Visible = true;
         _combatManager.ProcessMode = ProcessModeEnum.Inherit;
-        PlayerManager.Instance.Player.Visible = true; 
+        _combatManager._cardManager?.SetCombatHUDVisible(true);
+        PlayerManager.Instance.Player.Visible = true;
 
         _combatManager.CallDeferred(nameof(CombatManager.InitializeCombat), encounter);
         
@@ -161,11 +162,11 @@ public partial class GameManager : Node
 
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
+        _combatManager._cardManager?.SetCombatHUDVisible(false);
         _map.ShowMap();
 
-        PlayerManager.Instance.Player.Visible = false; 
+        PlayerManager.Instance.Player.Visible = false;
         UI.Instance.FadeIn();
-
     }
      public async void GoToMainMenu()
     {

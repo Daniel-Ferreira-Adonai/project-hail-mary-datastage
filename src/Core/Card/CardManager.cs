@@ -39,6 +39,13 @@ public partial class CardManager : Node2D
 	private AudioStreamPlayer _unclickSound;
 	private AudioStreamPlayer _drawSound;
 
+	private TargetingOverlay _targetingOverlay;
+	private Enemy            _highlightedEnemy;
+	private bool             _dragNeedsEnemy;
+
+	private DrawPileUI   _drawPileUI;
+	private CanvasLayer  _uiLayer;
+
 	public override void _Ready()
 	{
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
@@ -46,6 +53,39 @@ public partial class CardManager : Node2D
 		_clickSound   = GetNodeOrNull<AudioStreamPlayer>("ClickSound");
 		_unclickSound = GetNodeOrNull<AudioStreamPlayer>("UnclickSound");
 		_drawSound    = GetNodeOrNull<AudioStreamPlayer>("DrawSound");
+
+		CallDeferred(nameof(SetupCombatUI));
+	}
+
+	private void SetupCombatUI()
+	{
+		bool combatVisible = _combatManager.Visible;
+
+		_targetingOverlay = new TargetingOverlay { ZAsRelative = false, ZIndex = 100, Visible = combatVisible };
+		GetParent().AddChild(_targetingOverlay);
+
+		_uiLayer = new CanvasLayer { Layer = 10, Visible = combatVisible };
+		GetParent().AddChild(_uiLayer);
+
+		var uiRoot = new Control { MouseFilter = Control.MouseFilterEnum.Ignore };
+		uiRoot.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+		_uiLayer.AddChild(uiRoot);
+
+		_drawPileUI = new DrawPileUI();
+		uiRoot.AddChild(_drawPileUI);
+
+		RefreshDrawPileUI();
+	}
+
+	public void SetCombatHUDVisible(bool visible)
+	{
+		if (_uiLayer          != null) _uiLayer.Visible          = visible;
+		if (_targetingOverlay != null) _targetingOverlay.Visible = visible;
+	}
+
+	private void RefreshDrawPileUI()
+	{
+		_drawPileUI?.SetCount(_deck.Count);
 	}
 
 public async void DrawCard(int count)
@@ -62,16 +102,22 @@ public async void DrawCard(int count)
 
         Card card = _deck[0];
         _deck.RemoveAt(0);
+        RefreshDrawPileUI();
 
         _handNode.AddChild(card);
-        card.Setup(card.Data); 
+        card.Setup(card.Data);
         card.LoadVisuals();
         _handList.Add(card);
 
         card.UpdateDamagePreview(_combatManager.Player, _combatManager.RaycastCheckForEnemy());
         card.UpdateBlockPreview(_combatManager.Player);
+        card.UpdatePlayableVisual(_combatManager.currentEnergy >= card.Data.EnergyCost);
 
-        _handNode.AddCard(card);
+        Vector2 fromPos = new Vector2(-500, 50f);
+        if (_drawPileUI != null && IsInstanceValid(_drawPileUI))
+            fromPos = _handNode.ToLocal(_drawPileUI.GetCenter());
+
+        _handNode.AddCard(card, fromPos);
         _originalScales[card] = card.Scale;
         _drawSound?.Play();
 
@@ -89,6 +135,7 @@ public async void DrawCard(int count)
 			int j = (int)(GD.Randi() % (uint)(i + 1));
 			(_deck[i], _deck[j]) = (_deck[j], _deck[i]);
 		}
+		RefreshDrawPileUI();
 	}
 	public void DiscardHand()
 {
@@ -153,11 +200,16 @@ public override void _Process(double delta)
 {
     if (CardBeingDraged != null)
     {
-        DragLogic(delta);
-		Enemy hoveredEnemy = _combatManager.RaycastCheckForEnemy();
-		CardBeingDraged.UpdateDamagePreview(_combatManager.Player, hoveredEnemy);
+        var dd = CardBeingDraged.Data;
+        bool isInspect = (dd.tipoCarta == CardData.CardType.Attack
+                       || dd.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
+                       && !dd.IsAoe;
+        if (!isInspect)
+            DragLogic(delta);
 
-		
+        Enemy hoveredEnemy = _combatManager.RaycastCheckForEnemy();
+        CardBeingDraged.UpdateDamagePreview(_combatManager.Player, hoveredEnemy);
+        UpdateTargetingOverlay(hoveredEnemy);
         return;
     }
 	
@@ -277,11 +329,46 @@ public override void _Process(double delta)
 	private void StartDragging(Card card)
 	{
 		KillActiveTween(card);
-		Vector2 scale = _originalScales[card];
 		CardBeingDraged = card;
-		card.Scale = new Vector2(scale.X, scale.Y);
 		_clickSound?.Play();
-		GD.Print(card.Scale);
+
+		var d = card.Data;
+		bool isInspect = (d.tipoCarta == CardData.CardType.Attack
+		               || d.tipoCarta == CardData.CardType.SkillWithEnemyEffect)
+		               && !d.IsAoe;
+
+		if (isInspect)
+		{
+			Vector2 baseScale = _originalScales[card];
+
+			float centerX, lowY;
+			if (_originalPositions.Count > 0)
+			{
+				float minX = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+				foreach (var pos in _originalPositions.Values)
+				{
+					minX = Mathf.Min(minX, pos.X);
+					maxX = Mathf.Max(maxX, pos.X);
+					maxY = Mathf.Max(maxY, pos.Y);
+				}
+				centerX = (minX + maxX) * 0.5f;
+				lowY    = maxY;
+			}
+			else { centerX = card.Position.X; lowY = card.Position.Y; }
+
+			Vector2 inspectPos = new Vector2(centerX, lowY - 160f);
+			card.ZIndex = 50;
+			var t = CreateTween().SetParallel().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back);
+			t.TweenProperty(card, "position", inspectPos, 0.15f);
+			t.TweenProperty(card, "rotation_degrees", 0f, 0.15f);
+			t.TweenProperty(card, "scale", baseScale * 1.4f, 0.15f);
+		}
+		else
+		{
+			card.Scale = _originalScales[card];
+		}
+
+		UpdateTargetingOverlay(_combatManager.RaycastCheckForEnemy());
 	}
 	public void UpdateAllCardPreviews(Player player, Enemy target = null)
 {
@@ -291,12 +378,23 @@ public override void _Process(double delta)
         card.UpdateDamagePreview(player, target);
         card.UpdateBlockPreview(player);
 		GD.Print(card.GetNode<RichTextLabel>("Descricao").Text);
+    }
+    RefreshPlayableVisuals();
+}
 
+public void RefreshPlayableVisuals()
+{
+    int energy = _combatManager.currentEnergy;
+    foreach (var card in _handList)
+    {
+        if (GodotObject.IsInstanceValid(card) && !card.IsQueuedForDeletion())
+            card.UpdatePlayableVisual(energy >= card.Data.EnergyCost);
     }
 }
 	private void FinishDrag()
 	{
 		if (CardBeingDraged is null) return;
+		ClearTargeting();
 
 		Vector2 scale = _originalScales[CardBeingDraged];
 		CardBeingDraged.Scale = new Vector2(scale.X, scale.Y);
@@ -456,13 +554,13 @@ public void StartDeck()
     foreach (var cardData in playerDeck)
     {
         Card card = _cardScene.Instantiate<Card>();
-        card.Data = cardData; 
+        card.Data = cardData;
         _deck.Add(card);
     }
 
+    RefreshDrawPileUI();
     DrawCard(cardsDrawedPerTurn + PlayerManager.Instance.Player.BonusCardsToDraw);
-	PlayerManager.Instance.Player.BonusCardsToDraw = 0;
-	
+    PlayerManager.Instance.Player.BonusCardsToDraw = 0;
 }
 	private float GetPositionToMoveUpRelativeToBottom(Card card)
 	{
@@ -489,6 +587,72 @@ public void StartDeck()
         _activeTweens.Remove(card);
     }
 }
+
+private void UpdateTargetingOverlay(Enemy hoveredEnemy)
+{
+    if (_targetingOverlay is null || CardBeingDraged is null) return;
+    var d = CardBeingDraged.Data;
+    bool enemyCard = d.tipoCarta == CardData.CardType.Attack
+                  || d.tipoCarta == CardData.CardType.SkillWithEnemyEffect;
+
+    if (enemyCard && d.IsAoe)
+    {
+        _targetingOverlay.HideArrow();
+        SetHighlightedEnemy(null);
+        _targetingOverlay.ShowReticles(BuildEnemyReticles());
+    }
+    else if (enemyCard)
+    {
+        Vector2 origin = CardBeingDraged.GlobalPosition - new Vector2(0, 90f);
+        _targetingOverlay.ShowArrow(origin, _mouse.ScreenPosition);
+        SetHighlightedEnemy(hoveredEnemy);
+        _targetingOverlay.ShowReticles(hoveredEnemy != null
+            ? new List<Rect2> { ReticleFor(hoveredEnemy, 220f, 240f, -40f) }
+            : new List<Rect2>());
+    }
+    else
+    {
+        _targetingOverlay.HideArrow();
+        SetHighlightedEnemy(null);
+        _targetingOverlay.ShowReticles(new List<Rect2> { ReticleForPlayer() });
+    }
+}
+
+private Rect2 ReticleFor(Node2D unit, float w, float h, float yOff)
+{
+    Vector2 c = unit.GlobalPosition + new Vector2(0, yOff);
+    return new Rect2(c - new Vector2(w, h) * 0.5f, new Vector2(w, h));
+}
+
+private List<Rect2> BuildEnemyReticles()
+{
+    var list = new List<Rect2>();
+    foreach (var e in _combatManager._activeEnemies)
+        if (e != null && IsInstanceValid(e)) list.Add(ReticleFor(e, 220f, 240f, -40f));
+    return list;
+}
+
+private Rect2 ReticleForPlayer() => ReticleFor(_combatManager.Player, 180f, 280f, -40f);
+
+private void SetHighlightedEnemy(Enemy next)
+{
+    if (next == _highlightedEnemy) return;
+
+    if (_highlightedEnemy is not null && IsInstanceValid(_highlightedEnemy))
+        _highlightedEnemy.Modulate = _highlightedEnemy.Data?.Tint ?? Colors.White;
+
+    _highlightedEnemy = next;
+
+    if (_highlightedEnemy is not null && IsInstanceValid(_highlightedEnemy))
+        _highlightedEnemy.Modulate = new Color(1.25f, 1.18f, 0.8f, 1f);
+}
+
+private void ClearTargeting()
+{
+    _targetingOverlay?.HideArrow();
+    _targetingOverlay?.HideReticles();
+    SetHighlightedEnemy(null);
+}
 public void ResetDeck()
 {
     foreach (var card in _handNode.getHandCards())
@@ -507,9 +671,9 @@ public void ResetDeck()
     _activeTweens.Clear();
     _currentHoveredCard = null;
     CardBeingDraged = null;
-	
-	PlayerManager.Instance.Player.ActivePowers.Clear(); // aqui
-    PlayerManager.Instance.Player.UpdateLabelValues();
 
+    PlayerManager.Instance.Player.ActivePowers.Clear(); // aqui
+    PlayerManager.Instance.Player.UpdateLabelValues();
+    RefreshDrawPileUI();
 }
 }

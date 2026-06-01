@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Project hail mary datastage"
-run/main_scene="uid://dr02j4rn2wvb3"
+run/main_scene="res://src/Core/Menu/IntroScene.tscn"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,7 @@ MouseTracker="*uid://dwwhnkoqv51b4"
 UI="*uid://cr1qcdwrfv10i"
 PlayerManager="*uid://dasvrt836gvrb"
 EffectManager="*uid://csub640034ydl"
+MusicManager="*res://src/Core/Audio/MusicManager.cs"
 
 [display]
 

@@ -92,6 +92,7 @@ public void ShowMap()
     Show();
     _camera2D.Enabled = true;
     ZIndex = 10; // acima do combate
+    MusicManager.Instance?.PlayThemeMusic();
 }
 
 public void HideMap()

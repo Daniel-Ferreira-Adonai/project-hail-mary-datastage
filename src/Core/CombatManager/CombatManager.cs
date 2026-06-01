@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 
 public partial class CombatManager : Node2D
 {
@@ -24,6 +25,10 @@ public partial class CombatManager : Node2D
 
     private bool _combatEnded = false;
     private Tween _shakeTween;
+    [Export] private float _enemyAttackGap = 0.55f;
+    private bool _resolvingEnemyTurn = false;
+    private bool _isPlayerTurn = false;
+    private Button _endTurnButton;
     public static CombatManager Instance { get; private set; }
     private EncounterData _currentEncounterData;
 	public override void _Ready()
@@ -33,10 +38,12 @@ public partial class CombatManager : Node2D
 
 		_mouse = GetNode<MouseInputTracker>("/root/MouseTracker");
 		energyLabel = GetNode<Panel>("MoedaEnergia").GetNode<Label>("ValorEnergia");
-       
+
 		UpdateEnergy(maxEnergy);
 		_cardManager = GetNode<CardManager>("CardManager");
 		AjustBackground();
+        _endTurnButton = GetNodeOrNull<Button>("endTurn");
+        if (_endTurnButton != null) StyleEndTurnButton();
          CallDeferred(nameof(Initialize));
         
 	}
@@ -74,30 +81,40 @@ private void SetupPlayerPosition()
         screenSize.Y * 0.55f
     ) + (_currentEncounterData?.PlayerOffset ?? Vector2.Zero);
 }
-	public void EndTurn()
+	public async void EndTurn()
 	{
+		if (_resolvingEnemyTurn || _combatEnded || !_isPlayerTurn
+		    || (Player != null && Player._isAttacking)) return;
+		_isPlayerTurn = false;
+		_resolvingEnemyTurn = true;
+
 		GD.Print("Cheguei aqui");
 		currentEnergy = maxEnergy;
 		_cardManager.DiscardHand();
-           
+		_cardManager.SetProcessInput(false);
+
         Player.TriggerPowers(p => p.OnTurnEnd(Player));
+        Player.TriggerRelics(r => r.OnTurnEnd(Player));
 
-        Player.TriggerRelics(r => r.OnTurnEnd(Player)); 
-foreach (var enemy in _activeEnemies)
-    {
-        if (enemy != null && IsInstanceValid(enemy)){}
-            enemy.ClearIntent();
-    }
+        foreach (var enemy in _activeEnemies)
+        {
+            if (enemy != null && IsInstanceValid(enemy))
+                enemy.ClearIntent();
+        }
 
-		ExecuteEnemyTurns();
+		await ExecuteEnemyTurns();
+
         updateEnemyDebuffs();
 		Player.UpdateTemporaryValues();
 		Player.UpdateLabelValues();
+
+		_resolvingEnemyTurn = false;
+
 		if (!IsCombatOver())
         {
+			_cardManager.SetProcessInput(true);
             StartTurn();
         }
-		
 	}
     public void updateEnemyDebuffs()
     {
@@ -122,12 +139,16 @@ foreach (var enemy in _activeEnemies)
 		_cardManager.DrawCard(cardsToDraw);
 		UpdateEnergy(currentEnergy);
 		_cardManager.OrganizeHand();
+		_isPlayerTurn = true;
 	}
 	public void InitializeCombat(EncounterData encounter)
     {
         if (encounter is null) { GD.PushError("InitializeCombat: encounter is null"); return; }
         _combatEnded = false;
+        _isPlayerTurn = false;
         background.Texture = encounter.backgroundImage;
+        var music = encounter.Music ?? MusicManager.Instance?.CombatGeral;
+        MusicManager.Instance?.PlayTrack(music);
         _activeEnemies.Clear();
         _cardManager.SetProcessInput(true);
         currentEnergy = maxEnergy;
@@ -143,31 +164,78 @@ foreach (var enemy in _activeEnemies)
 	{
         _cardManager.ResetDeck();
 		_cardManager.StartDeck();
-        
         ShowEnemyIntents();
-
-		
+		_isPlayerTurn = true;
 	}
+    private void StyleEndTurnButton()
+    {
+        var screen = GetViewport().GetVisibleRect().Size;
+        _endTurnButton.Text = "End turn";
+        _endTurnButton.Scale = Vector2.One;
+        _endTurnButton.Size = new Vector2(240f, 56f);
+        _endTurnButton.Position = new Vector2(screen.X - 280f, screen.Y - 90f);
+
+        var font = GD.Load<Font>("res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf");
+        if (font != null) _endTurnButton.AddThemeFontOverride("font", font);
+        _endTurnButton.AddThemeFontSizeOverride("font_size", 22);
+        _endTurnButton.AddThemeColorOverride("font_color", new Color(0.95f, 0.88f, 0.65f, 1f));
+
+        var sb = new StyleBoxFlat
+        {
+            BgColor = new Color(0.10f, 0.07f, 0.03f, 0.93f),
+            BorderColor = new Color(0.7f, 0.55f, 0.15f),
+            CornerRadiusTopLeft = 8, CornerRadiusTopRight = 8,
+            CornerRadiusBottomLeft = 8, CornerRadiusBottomRight = 8,
+        };
+        sb.SetBorderWidthAll(2);
+        _endTurnButton.AddThemeStyleboxOverride("normal", sb);
+        var sbH = (StyleBoxFlat)sb.Duplicate();
+        sbH.BgColor = new Color(0.18f, 0.12f, 0.04f, 0.97f);
+        sbH.BorderColor = new Color(1f, 0.82f, 0.28f);
+        _endTurnButton.AddThemeStyleboxOverride("hover", sbH);
+        var sbP = (StyleBoxFlat)sb.Duplicate();
+        sbP.BgColor = new Color(0.06f, 0.04f, 0.02f, 0.93f);
+        _endTurnButton.AddThemeStyleboxOverride("pressed", sbP);
+        var sbD = (StyleBoxFlat)sb.Duplicate();
+        sbD.BgColor = new Color(0.07f, 0.06f, 0.04f, 0.55f);
+        sbD.BorderColor = new Color(0.35f, 0.30f, 0.12f);
+        _endTurnButton.AddThemeStyleboxOverride("disabled", sbD);
+        _endTurnButton.AddThemeColorOverride("font_disabled_color", new Color(0.5f, 0.45f, 0.3f, 0.6f));
+    }
+
 	public override void _Process(double delta)
 	{
+        if (_endTurnButton != null)
+        {
+            bool busy = _resolvingEnemyTurn || _combatEnded || !_isPlayerTurn
+                     || (Player != null && Player._isAttacking);
+            _endTurnButton.Disabled = busy;
+        }
 	}
-	public void ExecuteEnemyTurns()
-{
-    var enemies = GetTree().GetNodesInGroup("enemies");
-    foreach (var node in enemies)
-    {
-        if (node is Enemy enemy)
-			{
-				Array<IntentData> intents = enemy.getTurnIntents();
-				foreach(IntentData intent in intents)
-				{
-					intent.Execute(enemy,Player);
-                    enemy.TriggerPowers(p => p.OnTurnEnd(enemy)); // depois dos intents
 
-				}
-			}
+	public async Task ExecuteEnemyTurns()
+    {
+        var enemies = GetTree().GetNodesInGroup("enemies");
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i] is not Enemy enemy || !IsInstanceValid(enemy))
+                continue;
+
+            Array<IntentData> intents = enemy.getTurnIntents();
+            foreach (IntentData intent in intents)
+            {
+                if (!IsInstanceValid(enemy)) break;
+                intent.Execute(enemy, Player);
+                enemy.TriggerPowers(p => p.OnTurnEnd(enemy));
+            }
+
+            if (Player.currentHp <= 0) break;
+
+            if (i < enemies.Count - 1)
+                await ToSignal(GetTree().CreateTimer(_enemyAttackGap),
+                               SceneTreeTimer.SignalName.Timeout);
+        }
     }
-}
 	public Enemy getEnemy(Card card)
 	{
 		if(!canPlayCard(card)) return null;
@@ -284,6 +352,7 @@ foreach (var enemy in _activeEnemies)
 	public void UpdateEnergy(int energy)
 	{
 		energyLabel.Text = energy.ToString();
+		_cardManager?.RefreshPlayableVisuals();
 	}
 
     public void ShakeScreen(float intensity, float duration)

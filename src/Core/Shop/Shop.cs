@@ -40,6 +40,8 @@ public partial class Shop : Control
 
     public override void _Ready()
     {
+        MusicManager.Instance?.PlayShop();
+
         _cardDisplayScene ??= GD.Load<PackedScene>("res://src/Core/card_display.tscn");
 
         _cardsContainer  = GetNode<HBoxContainer>(CardsPath);
