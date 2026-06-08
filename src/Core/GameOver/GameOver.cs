@@ -10,6 +10,7 @@ public partial class GameOver : CanvasLayer
     {
         Layer = 50;
         ProcessMode = ProcessModeEnum.Always;
+        SaveManager.Instance?.DeleteSave();
 
         bool isSeuZe = RunData.SelectedCharacter?.CharacterName == "Seu Zé";
         string flavor = isSeuZe ? SeuZeFlavor : CorvoFlavor;
@@ -20,7 +21,7 @@ public partial class GameOver : CanvasLayer
         int relics = PlayerManager.Instance?.Player?.Relics?.Count ?? 0;
         int gold    = PlayerManager.Instance?.Player?.Gold ?? 0;
         int kills   = RunStats.EnemiesKilled;
-        int tower   = RunStats.CurrentTower;
+        int tower   = RunData.Tower;
         int floor   = RunStats.CurrentFloor;
 
         // Root control blocks input to game behind it

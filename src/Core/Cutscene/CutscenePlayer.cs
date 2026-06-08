@@ -11,6 +11,8 @@ public partial class CutscenePlayer : CanvasLayer
     private Button _skipButton;
     private ColorRect _fadeRect;
 
+    public string PendingSeenId { get; set; } = "";
+
     private CutsceneData _data;
     private bool _skipping;
     private Tween _kenBurnsTween;
@@ -57,11 +59,11 @@ public partial class CutscenePlayer : CanvasLayer
         _fadeRect.SetAnchorsPreset(Control.LayoutPreset.FullRect);
         root.AddChild(_fadeRect);
 
-        // ── text panel — starts below the screen, slides up per slide ─────────
+        // ── text panel — starts above the screen, slides down per slide ────────
         _textPanel = new Panel
         {
             Size        = new Vector2(vp.X, _panelH),
-            Position    = new Vector2(0f, _vpY),   // off-screen initially
+            Position    = new Vector2(0f, -_panelH),  // off-screen initially
             Modulate    = Colors.Transparent,
             MouseFilter = Control.MouseFilterEnum.Ignore,
         };
@@ -110,12 +112,6 @@ public partial class CutscenePlayer : CanvasLayer
     public void Play(CutsceneData data)
     {
         _data = data;
-
-        if (!string.IsNullOrEmpty(data.NextScene))
-            ResourceLoader.LoadThreadedRequest(data.NextScene);
-
-        // Music continues — do not stop
-
         PlaySlidesAsync();
     }
 
@@ -141,7 +137,7 @@ public partial class CutscenePlayer : CanvasLayer
         _imageRect.Scale     = Vector2.One;
         _imageRect.Position  = Vector2.Zero;
         _textPanel.Modulate  = Colors.Transparent;
-        _textPanel.Position  = new Vector2(0f, _vpY);
+        _textPanel.Position  = new Vector2(0f, -_panelH);
 
         // Fade image in (fadeRect: opaque → transparent)
         await FadeRect(1f, 0f, 0.4f);
@@ -150,11 +146,11 @@ public partial class CutscenePlayer : CanvasLayer
         // Ken Burns runs for the full slide duration
         StartKenBurns(index, slide.Duration);
 
-        // Text slides up from below (over the image, above fadeRect)
+        // Text slides down from above (over the image, above fadeRect)
         var textIn = CreateTween().SetParallel();
         textIn.TweenProperty(_textPanel, "modulate:a", 1f, 0.3f)
               .SetTrans(Tween.TransitionType.Sine);
-        textIn.TweenProperty(_textPanel, "position:y", _vpY - _panelH, 0.3f)
+        textIn.TweenProperty(_textPanel, "position:y", 0f, 0.3f)
               .SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.Out);
         await ToSignal(textIn, Tween.SignalName.Finished);
         if (_skipping || !IsInsideTree()) return;
@@ -163,11 +159,11 @@ public partial class CutscenePlayer : CanvasLayer
         await ToSignal(GetTree().CreateTimer(slide.Duration), SceneTreeTimer.SignalName.Timeout);
         if (_skipping || !IsInsideTree()) return;
 
-        // Text slides back down
+        // Text slides back up
         var textOut = CreateTween().SetParallel();
         textOut.TweenProperty(_textPanel, "modulate:a", 0f, 0.25f)
                .SetTrans(Tween.TransitionType.Sine);
-        textOut.TweenProperty(_textPanel, "position:y", _vpY, 0.25f)
+        textOut.TweenProperty(_textPanel, "position:y", -_panelH, 0.25f)
                .SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.In);
         await ToSignal(textOut, Tween.SignalName.Finished);
         if (_skipping || !IsInsideTree()) return;
@@ -202,24 +198,11 @@ public partial class CutscenePlayer : CanvasLayer
         await FadeRect(0f, 1f, 0.6f);
         if (!IsInsideTree()) return;
 
-        if (!string.IsNullOrEmpty(_data.NextScene))
-        {
-            float elapsed = 0f;
-            while (elapsed < 3f && IsInsideTree())
-            {
-                var status = ResourceLoader.LoadThreadedGetStatus(_data.NextScene);
-                if (status == ResourceLoader.ThreadLoadStatus.Loaded ||
-                    status == ResourceLoader.ThreadLoadStatus.Failed)
-                    break;
-                await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
-                elapsed += 0.1f;
-            }
-        }
-
-        if (!IsInsideTree()) return;
+        if (!string.IsNullOrEmpty(PendingSeenId))
+            MetaProgress.MarkCutsceneSeen(PendingSeenId);
 
         EmitSignal(SignalName.CutsceneFinished);
-        GetTree().ChangeSceneToFile(_data.NextScene);
+        SceneLoader.Instance?.GoTo(_data.NextScene);
     }
 
     // ── Skip ──────────────────────────────────────────────────────────────────
@@ -234,7 +217,10 @@ public partial class CutscenePlayer : CanvasLayer
         await FadeRect(_fadeRect.Color.A, 1f, 0.4f);
         if (!IsInsideTree()) return;
 
-        GetTree().ChangeSceneToFile(_data.NextScene);
+        if (!string.IsNullOrEmpty(PendingSeenId))
+            MetaProgress.MarkCutsceneSeen(PendingSeenId);
+
+        SceneLoader.Instance?.GoTo(_data.NextScene);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

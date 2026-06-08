@@ -284,6 +284,7 @@ public partial class CharacterSelect : Control
     {
         if (_selectedCharacter is null) return;
 
+        SaveManager.Instance?.DeleteSave();
         RunData.SelectedCharacter = _selectedCharacter;
 
         if (_selectedCharacter.CharacterName == "Seu Zé")
@@ -291,30 +292,34 @@ public partial class CharacterSelect : Control
         else
             CursorManager.Instance?.SetCorvo();
 
-        if (_selectedCharacter.CharacterName == "O Corvo")
+        string cutsceneId = $"intro_{_selectedCharacter.CharacterName}";
+        CutsceneData intro = _selectedCharacter.CharacterName switch
+        {
+            "O Corvo" => BuildCorvoIntro(),
+            "Seu Zé"  => BuildSeuZeIntro(),
+            _         => null,
+        };
+
+        const string GameMgrPath = "res://src/Core/GameManager/GameManager.tscn";
+
+        if (intro is not null && !MetaProgress.HasSeenCutscene(cutsceneId))
         {
             var cutsceneScene = GD.Load<PackedScene>("res://src/Core/Cutscene/CutscenePlayer.tscn");
             if (cutsceneScene is not null)
             {
+                SceneLoader.Instance?.StartLoad(GameMgrPath); // carrega durante a cutscene
                 var cutscene = cutsceneScene.Instantiate<CutscenePlayer>();
+                cutscene.PendingSeenId = cutsceneId;
                 AddChild(cutscene);
-                cutscene.Play(BuildCorvoCutsceneData());
+                cutscene.Play(intro);
                 return;
             }
         }
 
-        _gameManagerScene ??= GD.Load<PackedScene>("res://src/Core/GameManager/GameManager.tscn");
-
-        if (_gameManagerScene is null)
-        {
-            GD.PushError("CharacterSelect: GameManager.tscn não encontrado.");
-            return;
-        }
-
-        GetTree().ChangeSceneToPacked(_gameManagerScene);
+        SceneLoader.Instance?.GoTo(GameMgrPath, showLoading: true);
     }
 
-    private static CutsceneData BuildCorvoCutsceneData()
+    private static CutsceneData BuildCorvoIntro()
     {
         return new CutsceneData
         {
@@ -327,7 +332,7 @@ public partial class CharacterSelect : Control
                     NarrativeText = "Após anos vagando pelo reino, o Médico da Peste finalmente " +
                         "chegou à lendária Fortaleza de Unifor — a maior escola de magos e " +
                         "inovadores do reino.",
-                    Duration = 5.0f,
+                    Duration = 7.0f,
                 },
                 new CutsceneSlideData
                 {
@@ -335,7 +340,7 @@ public partial class CharacterSelect : Control
                     NarrativeText = "Sob a tutela do grande mago Narak, ele aprendeu a arte proibida " +
                         "de digitalizar monstros — aprisionando suas essências dentro de cartas " +
                         "com a antiga magia da modelagem.",
-                    Duration = 5.5f,
+                    Duration = 7.5f,
                 },
                 new CutsceneSlideData
                 {
@@ -343,7 +348,7 @@ public partial class CharacterSelect : Control
                     NarrativeText = "Após anos de dedicação, o Médico da Peste se formou na Fortaleza " +
                         "de Unifor. O grande mago Narak lhe entregou seu diploma pessoalmente — " +
                         "pronto para enfrentar os perigos do reino.",
-                    Duration = 5.0f,
+                    Duration = 7.0f,
                 },
                 new CutsceneSlideData
                 {
@@ -351,7 +356,48 @@ public partial class CharacterSelect : Control
                     NarrativeText = "Com seu diploma em mãos e suas cartas a tiracolo, o Médico da " +
                         "Peste deixou os muros de Unifor e partiu rumo ao reino de Valdermoor — " +
                         "onde a verdadeira aventura aguardava.",
-                    Duration = 5.5f,
+                    Duration = 7.5f,
+                },
+            },
+        };
+    }
+
+    private static CutsceneData BuildSeuZeIntro()
+    {
+        return new CutsceneData
+        {
+            NextScene = "res://src/Core/GameManager/GameManager.tscn",
+            Slides = new[]
+            {
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/SeuZe/dia_de_feira.png"),
+                    NarrativeText = "Mais um dia de feira. Seu Zé vendia suas frutas como em toda manhã " +
+                        "— sem saber que seria a última vez que sua vida seria simples.",
+                    Duration = 7.0f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/SeuZe/a_carta.png"),
+                    NarrativeText = "Entre as mangas, achou uma carta estranha, quente ao toque. Quando a " +
+                        "segurou, a fruta amadureceu num piscar de olhos — e o velho feirante descobriu, " +
+                        "tarde demais, o dom que sempre carregou.",
+                    Duration = 7.5f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/SeuZe/aluno_mais_velho.png"),
+                    NarrativeText = "Levou seu dom à lendária Fortaleza de Unifor, onde se tornou o aluno " +
+                        "mais velho que aqueles muros já viram. Sob a tutela do arquimago Narah, " +
+                        "formou-se invocador.",
+                    Duration = 7.0f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/SeuZe/partida.png"),
+                    NarrativeText = "Cartas a tiracolo e cajado em punho, Seu Zé partiu rumo a Valdermoor. " +
+                        "Algo o esperava lá — e sussurrava que ele precisava quebrar o loop.",
+                    Duration = 7.5f,
                 },
             },
         };

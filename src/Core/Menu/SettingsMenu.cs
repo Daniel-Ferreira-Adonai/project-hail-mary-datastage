@@ -5,7 +5,7 @@ public partial class SettingsMenu : CanvasLayer
     private CheckButton _fullscreenToggle;
     private HSlider     _musicSlider, _sfxSlider;
     private Label       _musicValueLabel, _sfxValueLabel;
-    private Button      _backToMenuBtn, _closeBtn;
+    private Button      _backToMenuBtn, _closeBtn, _saveBtn;
     private bool        _inGame;
 
     private const string CfgPath = "user://settings.cfg";
@@ -172,12 +172,17 @@ public partial class SettingsMenu : CanvasLayer
 
         panel.AddChild(Divider(pw, y)); y += 18f;
 
-        _backToMenuBtn = StyledButton("Voltar ao Menu", new Vector2(40f, y), 200f,
+        _backToMenuBtn = StyledButton("Voltar ao Menu", new Vector2(40f, y), 190f,
             new Color(0.60f, 0.10f, 0.10f));
         _backToMenuBtn.Pressed += OnBackToMenu;
         panel.AddChild(_backToMenuBtn);
 
-        _closeBtn = StyledButton("Fechar", new Vector2(pw - 178f, y), 138f,
+        _saveBtn = StyledButton("Salvar", new Vector2(243f, y), 74f,
+            new Color(0.15f, 0.35f, 0.60f));
+        _saveBtn.Pressed += OnSave;
+        panel.AddChild(_saveBtn);
+
+        _closeBtn = StyledButton("Fechar", new Vector2(pw - 170f, y), 130f,
             new Color(0.15f, 0.48f, 0.15f));
         _closeBtn.Pressed += OnClose;
         panel.AddChild(_closeBtn);
@@ -261,6 +266,7 @@ public partial class SettingsMenu : CanvasLayer
         RefreshLabel(_sfxValueLabel,   sfxVol);
 
         _backToMenuBtn.Visible = inGame;
+        _saveBtn.Visible       = inGame;
         _closeBtn.Text         = inGame ? "Continuar" : "Fechar";
 
         Visible = true;
@@ -285,6 +291,19 @@ public partial class SettingsMenu : CanvasLayer
         return cfg.Load(CfgPath) == Error.Ok
             ? (float)cfg.GetValue(Sect, key, fallback)
             : fallback;
+    }
+
+    private async void OnSave()
+    {
+        GameManager.Instance?.SaveCurrentRun();
+        _saveBtn.Text    = "Salvo!";
+        _saveBtn.Disabled = true;
+        await ToSignal(GetTree().CreateTimer(1.2f), SceneTreeTimer.SignalName.Timeout);
+        if (IsInstanceValid(_saveBtn))
+        {
+            _saveBtn.Text    = "Salvar";
+            _saveBtn.Disabled = false;
+        }
     }
 
     private void OnClose()    => SaveAndClose();

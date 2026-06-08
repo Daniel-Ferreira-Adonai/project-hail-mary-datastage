@@ -27,6 +27,8 @@ public partial class CardData : Resource
     [Export] public bool IsExhausted  {get; set;}
     [Export] public bool IsAoe  {get; set;}
 
+    // Set when duplicating so saves can restore the correct .tres path
+    public string SourcePath { get; set; } = "";
 
     public virtual void Execute(object target = null, object aux = null) { }
 

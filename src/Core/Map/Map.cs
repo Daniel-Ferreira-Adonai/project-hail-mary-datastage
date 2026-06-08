@@ -143,4 +143,102 @@ private void _OnMapRoomSelected(Room room)
     RunStats.CurrentFloor = _floorsClimbed;
     GameManager.Instance.OnMapRoomSelected(room);
 }
+
+// ── Save / Load ───────────────────────────────────────────────────────────────
+
+public MapSave BuildMapSave()
+{
+    int middle = Mathf.FloorToInt(MapGenerator.MAP_WIDTH * 0.5f);
+    var save = new MapSave
+    {
+        Floor         = _floorsClimbed,
+        CurrentNodeId = _lastRoom != null
+            ? _lastRoom.Row * MapGenerator.MAP_WIDTH + _lastRoom.Column
+            : -1,
+    };
+
+    for (int i = 0; i < MapGenerator.FLOORS; i++)
+    {
+        for (int j = 0; j < MapGenerator.MAP_WIDTH; j++)
+        {
+            var room = _mapData[i][j];
+            bool isBoss = (i == MapGenerator.FLOORS - 1 && j == middle);
+            if (room.NextRooms.Length == 0 && !isBoss && !room.Select) continue;
+
+            var rs = new RoomSave
+            {
+                Row           = room.Row,
+                Column        = room.Column,
+                PosX          = room.Position.X,
+                PosY          = room.Position.Y,
+                RoomType      = (int)room.EnumRoomType,
+                EncounterPath = room.Encounter?.ResourcePath ?? "",
+                EventPath     = room.Event?.ResourcePath    ?? "",
+                Select        = room.Select,
+            };
+            foreach (var next in room.NextRooms)
+                rs.NextRoomIds.Add(new[] { next.Row, next.Column });
+            save.Rooms.Add(rs);
+        }
+    }
+    return save;
+}
+
+public void LoadFromSave(MapSave save)
+{
+    // Clear existing visuals
+    foreach (var c in _rooms.GetChildren()) { _rooms.RemoveChild(c); c.QueueFree(); }
+    foreach (var c in _lines.GetChildren()) { _lines.RemoveChild(c); c.QueueFree(); }
+
+    // Fresh grid (all rooms initialised with row/column so unused slots are valid)
+    _mapData = new Room[MapGenerator.FLOORS][];
+    for (int i = 0; i < MapGenerator.FLOORS; i++)
+    {
+        _mapData[i] = new Room[MapGenerator.MAP_WIDTH];
+        for (int j = 0; j < MapGenerator.MAP_WIDTH; j++)
+            _mapData[i][j] = new Room { Row = i, Column = j };
+    }
+
+    // Fill saved rooms
+    foreach (var rs in save.Rooms)
+    {
+        var room = _mapData[rs.Row][rs.Column];
+        room.Position     = new Vector2(rs.PosX, rs.PosY);
+        room.EnumRoomType = (Room.RoomType)rs.RoomType;
+        room.Select       = rs.Select;
+        room.Encounter    = !string.IsNullOrEmpty(rs.EncounterPath) ? GD.Load<EncounterData>(rs.EncounterPath) : null;
+        room.Event        = !string.IsNullOrEmpty(rs.EventPath)     ? GD.Load<EventData>(rs.EventPath)         : null;
+    }
+
+    // Link NextRooms by coordinate
+    foreach (var rs in save.Rooms)
+    {
+        var room  = _mapData[rs.Row][rs.Column];
+        var nexts = new System.Collections.Generic.List<Room>();
+        foreach (var id in rs.NextRoomIds)
+            nexts.Add(_mapData[id[0]][id[1]]);
+        room.NextRooms = nexts.ToArray();
+    }
+
+    _floorsClimbed        = save.Floor;
+    RunStats.CurrentFloor = _floorsClimbed;
+
+    CreateMap();
+
+    // Scroll camera to current floor
+    float camY = -_floorsClimbed * MapGenerator.Y_DIST;
+    _camera2D.Position = new Vector2(_camera2D.Position.X, Mathf.Clamp(camY, -_cameraEdgeY, 0));
+
+    if (save.CurrentNodeId >= 0)
+    {
+        int row = save.CurrentNodeId / MapGenerator.MAP_WIDTH;
+        int col = save.CurrentNodeId % MapGenerator.MAP_WIDTH;
+        _lastRoom = _mapData[row][col];
+        UnlockNextRooms();
+    }
+    else
+    {
+        UnlockFloor(0);
+    }
+}
 }

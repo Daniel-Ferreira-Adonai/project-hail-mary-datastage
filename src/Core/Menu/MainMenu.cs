@@ -6,6 +6,7 @@ public partial class MainMenu : Control
 
     private Control _titleGroup;
     private Control _buttonsGroup;
+    private Godot.Button _continueButton;
 
     private record MenuEntry(Godot.Button Btn, Godot.Panel Highlight);
 
@@ -37,8 +38,111 @@ public partial class MainMenu : Control
             entry.Btn.ButtonDown   += () => OnButtonDown(entry);
         }
 
+        AddContinueButton();
         PlayIntroAnimation();
         AnimateTitle();
+    }
+
+    // ── Continue button ──────────────────────────────────────────────────────
+
+    private void AddContinueButton()
+    {
+        var vbox = GetNodeOrNull<VBoxContainer>("Background/LoginPanel/VBox");
+        if (vbox is null) return;
+
+        bool hasSave = SaveManager.Instance?.HasSave() ?? false;
+
+        var font = GD.Load<Font>("res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf");
+
+        var container = new Control
+        {
+            CustomMinimumSize   = new Vector2(450, 64),
+            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
+        };
+
+        var highlightStyle = new StyleBoxFlat
+        {
+            BgColor     = new Color(0.04f, 0.02f, 0f, 0.45f),
+            BorderColor = new Color(1f, 0.75f, 0.15f, 1f),
+            CornerRadiusTopLeft     = 10, CornerRadiusTopRight    = 10,
+            CornerRadiusBottomLeft  = 10, CornerRadiusBottomRight = 10,
+        };
+        highlightStyle.SetBorderWidthAll(2);
+
+        var highlight = new Godot.Panel
+        {
+            Modulate    = new Color(1, 1, 1, 0),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+        };
+        highlight.AddThemeStyleboxOverride("panel", highlightStyle);
+        container.AddChild(highlight);
+        highlight.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+
+        var btn = new Godot.Button { Text = "Continuar", Flat = true, Disabled = !hasSave };
+        btn.AddThemeColorOverride("font_color",          new Color(0.95f, 0.88f, 0.65f, 1f));
+        btn.AddThemeColorOverride("font_focus_color",    new Color(0.95f, 0.88f, 0.65f, 1f));
+        btn.AddThemeColorOverride("font_pressed_color",  new Color(0.95f, 0.88f, 0.65f, 1f));
+        btn.AddThemeColorOverride("font_hover_color",    new Color(0.95f, 0.88f, 0.65f, 1f));
+        btn.AddThemeColorOverride("font_disabled_color", new Color(0.60f, 0.55f, 0.40f, 0.55f));
+        if (font is not null) btn.AddThemeFontOverride("font", font);
+        btn.AddThemeFontSizeOverride("font_size", 52);
+        var empty = new StyleBoxEmpty();
+        foreach (var state in new[] { "normal", "pressed", "hover", "disabled", "focus" })
+            btn.AddThemeStyleboxOverride(state, empty);
+        container.AddChild(btn);
+        btn.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+
+        var playContainer = GetNodeOrNull<Node>("Background/LoginPanel/VBox/PlayContainer");
+        vbox.AddChild(container);
+        if (playContainer is not null)
+            vbox.MoveChild(container, playContainer.GetIndex() + 1);
+
+        _continueButton = btn;
+
+        if (!hasSave) return;
+
+        var entry = new MenuEntry(btn, highlight);
+        btn.MouseEntered += () => OnHoverEnter(entry);
+        btn.MouseExited  += () => OnHoverExit(entry);
+        btn.ButtonDown   += () => OnButtonDown(entry);
+        btn.Pressed      += OnContinuePressed;
+    }
+
+    private void OnContinuePressed()
+    {
+        var save = SaveManager.Instance?.LoadRun();
+        if (save is null) return;
+
+        RunData.SelectedCharacter = ResolveCharacterByName(save.CharacterName);
+        RunData.PendingLoad       = save;
+
+        if (save.CharacterName == "Seu Zé")
+            CursorManager.Instance?.SetSeuZe();
+        else
+            CursorManager.Instance?.SetCorvo();
+
+        GetTree().ChangeSceneToFile("res://src/Core/GameManager/GameManager.tscn");
+    }
+
+    private static CharacterData ResolveCharacterByName(string name)
+    {
+        using var dir = DirAccess.Open("res://Data/Characters");
+        if (dir is not null)
+        {
+            dir.ListDirBegin();
+            var file = dir.GetNext();
+            while (!string.IsNullOrEmpty(file))
+            {
+                if (!dir.CurrentIsDir() && file.EndsWith(".tres"))
+                {
+                    var c = GD.Load<CharacterData>($"res://Data/Characters/{file}");
+                    if (c?.CharacterName == name) { dir.ListDirEnd(); return c; }
+                }
+                file = dir.GetNext();
+            }
+            dir.ListDirEnd();
+        }
+        return new CharacterData { CharacterName = name };
     }
 
     // ── Hover effects ────────────────────────────────────────────────────────

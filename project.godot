@@ -23,6 +23,8 @@ PlayerManager="*uid://dasvrt836gvrb"
 EffectManager="*uid://csub640034ydl"
 MusicManager="*res://src/Core/Audio/MusicManager.cs"
 CursorManager="*res://src/Core/UI/CursorManager.cs"
+SaveManager="*res://src/Core/Save/SaveManager.cs"
+SceneLoader="*res://src/Core/Load/SceneLoader.cs"
 
 [display]
 

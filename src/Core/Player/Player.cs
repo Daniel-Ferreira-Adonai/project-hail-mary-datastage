@@ -180,31 +180,72 @@ public int Frail
 		_baseAnimScale = animation.Scale;
 		if (_useSquashStretch)
 			StartIdleBreathing();
-		setupBasicDeck();
+
+		if (RunData.PendingLoad == null)
+		{
+			setupBasicDeck();
+			var allRelics = Array.FindAll(
+				DirAccess.GetFilesAt("res://Data/Relics/"),
+				f => f.EndsWith(".tres"));
+			if (allRelics.Length > 0)
+			{
+				var chosen  = allRelics[GD.RandRange(0, allRelics.Length - 1)];
+				var starter = GD.Load<RelicData>($"res://Data/Relics/{chosen}");
+				if (starter != null) AddRelic(starter);
+			}
+		}
+
 		PlayerManager.Instance.Player = this;
 		SetupHpBar();
-		GD.Print($"[HPBar] parent={_hpBar?.GetParent()?.Name} scale={_hpBar?.Scale} " +
-		         $"pos={_hpBar?.Position} global={_hpBar?.GlobalPosition} " +
-		         $"anchors=({_hpBar?.AnchorTop},{_hpBar?.AnchorBottom}) " +
-		         $"offsets=({_hpBar?.OffsetTop},{_hpBar?.OffsetBottom}) " +
-		         $"visible={_hpBar?.Visible} size={_hpBar?.Size}");
 		UpdateLabelValues();
 		SetupEffectBar();
 		_attackSound  = GetNodeOrNull<AudioStreamPlayer>("AttackSound");
 		_slashSound   = GetNodeOrNull<AudioStreamPlayer>("SlashSound");
 		_blockSound   = GetNodeOrNull<AudioStreamPlayer>("BlockSound");
 		_strengthSound = GetNodeOrNull<AudioStreamPlayer>("StrengthSound");
+	}
 
-		var relicFiles = DirAccess.GetFilesAt("res://Data/Relics/");
-		foreach (var file in relicFiles)
+	public void ApplyPendingLoadToPlayer(RunSaveData save)
+	{
+		if (save == null) return;
+
+		_maxHp     = save.MaxHp;
+		_currentHp = save.CurrentHp;
+		Gold       = save.Gold;
+
+		_BaseDeck.Clear();
+		bool isSeuZe = RunData.SelectedCharacter?.CharacterName == "Seu Zé";
+		foreach (var cs in save.Deck)
 		{
-			if (file.EndsWith(".tres"))
-			{
-				var relic = GD.Load<RelicData>($"res://Data/Relics/{file}");
-				if (relic != null)
-					Relics.Add(relic);
-			}
+			if (string.IsNullOrEmpty(cs.Path)) continue;
+			var template = GD.Load<CardData>(cs.Path);
+			if (template == null) continue;
+			var card = (CardData)template.Duplicate();
+			card.SourcePath      = cs.Path;
+			card.IsCardUpgraded  = cs.Upgraded;
+			if (isSeuZe) ApplySeuZeArt(card);
+			_BaseDeck.Add(card);
 		}
+
+		Relics.Clear();
+		foreach (var path in save.Relics)
+		{
+			if (string.IsNullOrEmpty(path)) continue;
+			var relic = GD.Load<RelicData>(path);
+			if (relic != null) Relics.Add(relic);
+		}
+		RelicBar.Instance?.LoadRelics(Relics);
+
+		ActivePowers.Clear();
+		foreach (var path in save.Powers)
+		{
+			if (string.IsNullOrEmpty(path)) continue;
+			var power = GD.Load<PowerData>(path);
+			if (power != null) AddPower((PowerData)power.Duplicate());
+		}
+
+		SetupHpBar();
+		UpdateLabelValues();
 	}
 private void SetupEffectBar()
 {
@@ -543,16 +584,16 @@ public CardData RemoveRandomCard()
 
 		for(int i = 0; i < 3; i++)
 		{
-			AddCardToDeck((CardData)strikeData.Duplicate());
-			AddCardToDeck((CardData)defendData.Duplicate());
-			AddCardToDeck((CardData)blockVunarable.Duplicate());
-			AddCardToDeck((CardData)SangriaCard.Duplicate());
-			AddCardToDeck((CardData)CorteHemolitico.Duplicate());
-			AddCardToDeck((CardData)sedeDeSangue.Duplicate());
-			AddCardToDeck((CardData)DefesaSangue.Duplicate());
-			AddCardToDeck((CardData)Hemorragia.Duplicate());
-			AddCardToDeck((CardData)PactoDeSangue.Duplicate());
-			AddCardToDeck((CardData)coagualcao.Duplicate());
+			AddCardToDeck(DupWithSource(strikeData));
+			AddCardToDeck(DupWithSource(defendData));
+			AddCardToDeck(DupWithSource(blockVunarable));
+			AddCardToDeck(DupWithSource(SangriaCard));
+			AddCardToDeck(DupWithSource(CorteHemolitico));
+			AddCardToDeck(DupWithSource(sedeDeSangue));
+			AddCardToDeck(DupWithSource(DefesaSangue));
+			AddCardToDeck(DupWithSource(Hemorragia));
+			AddCardToDeck(DupWithSource(PactoDeSangue));
+			AddCardToDeck(DupWithSource(coagualcao));
 		}
 	}
 
@@ -586,14 +627,21 @@ public CardData RemoveRandomCard()
 		ApplySeuZeArt(cajado);
 		ApplySeuZeArt(facao);
 
-		for (int i = 0; i < 3; i++) AddCardToDeck((CardData)mangada.Duplicate());
-		for (int i = 0; i < 4; i++) AddCardToDeck((CardData)rosa.Duplicate());
-		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)pau.Duplicate());
-		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)leite.Duplicate());
-		for (int i = 0; i < 3; i++) AddCardToDeck((CardData)salada.Duplicate());
-		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)madura.Duplicate());
-		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)cajado.Duplicate());
-		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)facao.Duplicate());
+		for (int i = 0; i < 3; i++) AddCardToDeck(DupWithSource(mangada));
+		for (int i = 0; i < 4; i++) AddCardToDeck(DupWithSource(rosa));
+		for (int i = 0; i < 2; i++) AddCardToDeck(DupWithSource(pau));
+		for (int i = 0; i < 2; i++) AddCardToDeck(DupWithSource(leite));
+		for (int i = 0; i < 3; i++) AddCardToDeck(DupWithSource(salada));
+		for (int i = 0; i < 2; i++) AddCardToDeck(DupWithSource(madura));
+		for (int i = 0; i < 2; i++) AddCardToDeck(DupWithSource(cajado));
+		for (int i = 0; i < 2; i++) AddCardToDeck(DupWithSource(facao));
+	}
+
+	private static CardData DupWithSource(CardData template)
+	{
+		var dup = (CardData)template.Duplicate();
+		dup.SourcePath = template.ResourcePath;
+		return dup;
 	}
 
 	public static void ApplySeuZeArt(CardData card)
