@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MangaRosaCard" format=3]
+
+[ext_resource type="Script" path="res://src/Core/Card/CardsScripts/Ze/MangaRosaCard.cs" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+CardName = "Manga Rosa"
+EnergyCost = 1
+Block = 6
+EffectValue = 1
+Description = "$b de bloqueio. Ganha $ef de Força. [Fruta]"
+tipoCarta = 1

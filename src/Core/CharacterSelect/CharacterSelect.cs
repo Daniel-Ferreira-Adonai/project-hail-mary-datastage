@@ -286,6 +286,23 @@ public partial class CharacterSelect : Control
 
         RunData.SelectedCharacter = _selectedCharacter;
 
+        if (_selectedCharacter.CharacterName == "Seu Zé")
+            CursorManager.Instance?.SetSeuZe();
+        else
+            CursorManager.Instance?.SetCorvo();
+
+        if (_selectedCharacter.CharacterName == "O Corvo")
+        {
+            var cutsceneScene = GD.Load<PackedScene>("res://src/Core/Cutscene/CutscenePlayer.tscn");
+            if (cutsceneScene is not null)
+            {
+                var cutscene = cutsceneScene.Instantiate<CutscenePlayer>();
+                AddChild(cutscene);
+                cutscene.Play(BuildCorvoCutsceneData());
+                return;
+            }
+        }
+
         _gameManagerScene ??= GD.Load<PackedScene>("res://src/Core/GameManager/GameManager.tscn");
 
         if (_gameManagerScene is null)
@@ -297,8 +314,52 @@ public partial class CharacterSelect : Control
         GetTree().ChangeSceneToPacked(_gameManagerScene);
     }
 
+    private static CutsceneData BuildCorvoCutsceneData()
+    {
+        return new CutsceneData
+        {
+            NextScene = "res://src/Core/GameManager/GameManager.tscn",
+            Slides = new[]
+            {
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/Corvo/entrada_corvo.jpg"),
+                    NarrativeText = "Após anos vagando pelo reino, o Médico da Peste finalmente " +
+                        "chegou à lendária Fortaleza de Unifor — a maior escola de magos e " +
+                        "inovadores do reino.",
+                    Duration = 5.0f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/Corvo/aprendizado_corvo.jpg"),
+                    NarrativeText = "Sob a tutela do grande mago Narak, ele aprendeu a arte proibida " +
+                        "de digitalizar monstros — aprisionando suas essências dentro de cartas " +
+                        "com a antiga magia da modelagem.",
+                    Duration = 5.5f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/Corvo/formatura_corvo.png"),
+                    NarrativeText = "Após anos de dedicação, o Médico da Peste se formou na Fortaleza " +
+                        "de Unifor. O grande mago Narak lhe entregou seu diploma pessoalmente — " +
+                        "pronto para enfrentar os perigos do reino.",
+                    Duration = 5.0f,
+                },
+                new CutsceneSlideData
+                {
+                    Image = GD.Load<Texture2D>("res://Cutscenes/Corvo/partida_corvo.png"),
+                    NarrativeText = "Com seu diploma em mãos e suas cartas a tiracolo, o Médico da " +
+                        "Peste deixou os muros de Unifor e partiu rumo ao reino de Valdermoor — " +
+                        "onde a verdadeira aventura aguardava.",
+                    Duration = 5.5f,
+                },
+            },
+        };
+    }
+
     public void OnBackPressed()
     {
+        CursorManager.Instance?.SetCorvo();
         var menuScene = GD.Load<PackedScene>("res://src/Core/Menu/MainMenu.tscn");
         if (menuScene is null) return;
         GetTree().ChangeSceneToPacked(menuScene);

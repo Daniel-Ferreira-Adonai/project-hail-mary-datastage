@@ -17,6 +17,10 @@ public partial class EncounterData : Resource
     [ExportCategory("Player")]
     [Export] public Vector2 PlayerOffset { get; set; } = Vector2.Zero;
     
+    [ExportCategory("Music")]
+    [Export] public AudioStream Music { get; set; }
+    [Export] public float MusicVolumeDb { get; set; } = -21f;
+
     [ExportCategory("Rewards")]
     [Export] public int RewardGold { get; set; } = 50;
     [Export] public int CardRewardCount { get; set; } = 3; 

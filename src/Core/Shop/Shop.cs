@@ -68,7 +68,7 @@ public partial class Shop : Control
 
     private static void EnsureTooltip()
     {
-        if (RelicTooltip.Instance is not null) return;
+        if (GodotObject.IsInstanceValid(RelicTooltip.Instance)) return;
         var scene = GD.Load<PackedScene>("res://src/Core/UI/RelicTooltip.tscn");
         if (scene is null) return;
         var tooltip = scene.Instantiate<RelicTooltip>();
@@ -83,10 +83,13 @@ public partial class Shop : Control
 
         _cardPool.Clear();
 
-        using var dir = DirAccess.Open("res://Data/Cards");
+        bool isSeuZe = RunData.SelectedCharacter?.CharacterName == "Seu Zé";
+        string cardFolder = isSeuZe ? "res://Data/Cards/Ze" : "res://Data/Cards";
+
+        using var dir = DirAccess.Open(cardFolder);
         if (dir is null)
         {
-            GD.PushWarning("Shop: pasta res://Data/Cards nao encontrada.");
+            GD.PushWarning($"Shop: pasta {cardFolder} nao encontrada.");
             LoadKnownCardsFallback();
             return;
         }
@@ -102,7 +105,7 @@ public partial class Shop : Control
         {
             if (!dir.CurrentIsDir() && fileName.EndsWith(".tres", StringComparison.OrdinalIgnoreCase))
             {
-                var card = GD.Load<CardData>($"res://Data/Cards/{fileName}");
+                var card = GD.Load<CardData>($"{cardFolder}/{fileName}");
                 if (card is not null) _cardPool.Add(card);
             }
             fileName = dir.GetNext();

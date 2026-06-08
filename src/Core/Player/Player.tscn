@@ -106,12 +106,16 @@ scale = Vector2(0.261, 0.28)
 
 [node name="AttackSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_audio")
+bus = &"SFX"
 
 [node name="SlashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_audio")
+bus = &"SFX"
 
 [node name="BlockSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_audio")
+bus = &"SFX"
 
 [node name="StrengthSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_audio")
+bus = &"SFX"

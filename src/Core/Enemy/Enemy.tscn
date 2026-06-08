@@ -51,9 +51,12 @@ offset_bottom = -120.0
 
 [node name="AttackSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_audio")
+bus = &"SFX"
 
 [node name="BlockSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_audio")
+bus = &"SFX"
 
 [node name="AxeSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_audio")
+bus = &"SFX"

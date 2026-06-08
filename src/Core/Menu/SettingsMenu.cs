@@ -124,11 +124,11 @@ public partial class SettingsMenu : CanvasLayer
         {
             if (on)
             {
-                GetTree().Root.Mode = Window.ModeEnum.Fullscreen;
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
             }
             else
             {
-                GetTree().Root.Mode = Window.ModeEnum.Windowed;
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
                 var screen  = DisplayServer.ScreenGetSize();
                 var winSize = new Vector2I(screen.X * 3 / 4, screen.Y * 3 / 4);
                 DisplayServer.WindowSetSize(winSize);

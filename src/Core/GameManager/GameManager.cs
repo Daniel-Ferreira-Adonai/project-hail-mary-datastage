@@ -15,6 +15,7 @@ public partial class GameManager : Node
     [Export] private Map _map;
     [Export] private PackedScene _eventScene;
     public TopHud _topHud;
+    private bool _lastCombatWasBoss = false;
     public override void _Ready()
     {
         Instance = this;
@@ -54,7 +55,11 @@ public partial class GameManager : Node
         switch (room.EnumRoomType)
         {
             case Room.RoomType.Combat:
+                _lastCombatWasBoss = false;
+                StartCombat(room.Encounter);
+                break;
             case Room.RoomType.Boss:
+                _lastCombatWasBoss = true;
                 StartCombat(room.Encounter);
                 break;
             case Room.RoomType.Shop:
@@ -163,8 +168,16 @@ public partial class GameManager : Node
         _combatManager.Visible = false;
         _combatManager.ProcessMode = ProcessModeEnum.Disabled;
         _combatManager._cardManager?.SetCombatHUDVisible(false);
-        _map.ShowMap();
 
+        if (_lastCombatWasBoss)
+        {
+            _lastCombatWasBoss = false;
+            RunStats.CurrentTower++;
+            _map.GenerateNewMap();
+            _map.UnlockFloor(0);
+        }
+
+        _map.ShowMap();
         PlayerManager.Instance.Player.Visible = false;
         UI.Instance.FadeIn();
     }

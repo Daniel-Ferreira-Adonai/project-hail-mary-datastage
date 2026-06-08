@@ -1,13 +1,15 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://tkja4408hfaq"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cwm3p804e1syj"]
 
 [ext_resource type="Script" uid="uid://srvqgr14qxkn" path="res://src/Core/Enemy/EnemyPowerData.cs" id="1_5s8my"]
 [ext_resource type="Texture2D" uid="uid://d3bw3m7x5l6a0" path="res://Test/TestImagesSprites/art/Untitled design (60).png" id="1_x44dq"]
 [ext_resource type="Script" uid="uid://b2o7r58snev8f" path="res://src/Core/Enemy/EnemyData.cs" id="2_cgu3s"]
 [ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="2_s7jyy"]
-[ext_resource type="Resource" uid="uid://c8w4hop83be22" path="res://Data/EnemyPowers/DeepCut.tres" id="3_5odrn"]
+[ext_resource type="Resource" path="res://Data/EnemyPowers/DeepCut.tres" id="3_5odrn"]
 [ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="3_x44dq"]
 [ext_resource type="Script" uid="uid://cierbh5kwpggb" path="res://src/Core/Enemy/EnemyTurn.cs" id="4_5odrn"]
 [ext_resource type="Script" uid="uid://diibyxdp5lqyr" path="res://src/Core/Enemy/IntentScripts/HealIntent.cs" id="5_ik358"]
+[ext_resource type="Texture2D" uid="uid://dlisj1hjftpao" path="res://Test/TestImagesSprites/HomemCervoAtq.png" id="6_atq1"]
+[ext_resource type="Texture2D" uid="uid://bughsjueff4i6" path="res://Test/TestImagesSprites/HomemCervoAtq2.png" id="7_atq2"]
 
 [sub_resource type="Resource" id="Resource_18y4u"]
 script = ExtResource("3_x44dq")
@@ -55,6 +57,7 @@ CustomTargetHeight = 500.0
 CustomMaxWidth = 500.0
 TurnPatterns = Array[Object]([SubResource("Resource_pk2wv"), SubResource("Resource_3snop"), SubResource("Resource_er451")])
 Size = 5
+AttackFrames = Array[Texture2D]([ExtResource("6_atq1"), ExtResource("7_atq2")])
 VerticalOffset = -50.0
 StartingPowers = Array[ExtResource("1_5s8my")]([ExtResource("3_5odrn")])
 metadata/_custom_type_script = "uid://b2o7r58snev8f"

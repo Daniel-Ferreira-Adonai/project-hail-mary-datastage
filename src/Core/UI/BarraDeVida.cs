@@ -12,6 +12,9 @@ public partial class BarraDeVida : ProgressBar
 	[Export] public Panel energyCoin;
 	
 	[Export] bool isPlayer = true;
+
+	private Tween _lowHpPulse;
+
 	public void Setup(int maxHp, int currentHp)
 	{
 		if(!isPlayer)
@@ -20,17 +23,36 @@ public partial class BarraDeVida : ProgressBar
 		}
 		MaxValue = maxHp;
 		Value = currentHp;
+		UpdateLowHpPulse(currentHp, maxHp);
 	}
-	
+
 	public void UpdateHp(int currentHp)
 	{
 		Value = currentHp;
+		UpdateLowHpPulse(currentHp, (int)MaxValue);
 	}
-	  public void updateLabels(int currentHp, int maxHp, int block)
+
+	public void updateLabels(int currentHp, int maxHp, int block)
 	{
 		healthLabel.Text = currentHp.ToString() + "/" + maxHp.ToString();
 		blockLabel.Text = block.ToString();
-		
+		UpdateLowHpPulse(currentHp, maxHp);
+	}
+
+	private void UpdateLowHpPulse(int current, int max)
+	{
+		bool low = max > 0 && current > 0 && (float)current / max <= 0.25f;
+		if (low && _lowHpPulse is null)
+		{
+			_lowHpPulse = CreateTween().SetLoops()
+				.SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+			_lowHpPulse.TweenProperty(this, "modulate", new Color(1f, 0.55f, 0.55f), 0.5f);
+			_lowHpPulse.TweenProperty(this, "modulate", Colors.White, 0.5f);
+		}
+		else if (!low && _lowHpPulse is not null)
+		{
+			_lowHpPulse.Kill(); _lowHpPulse = null; Modulate = Colors.White;
+		}
 	}
 	//   public void updateLabels(int currentHp, int maxHp, int block)
 	// {

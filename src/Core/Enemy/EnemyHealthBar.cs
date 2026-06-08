@@ -8,6 +8,7 @@ public partial class EnemyHealthBar : ProgressBar
     private Label _blockLabel;
     private int   _maxHp;
     private float _barWidth;
+    private Tween _lowHpPulse;
 
     private static readonly Dictionary<EnemySize, Vector2> SizeMap = new()
     {
@@ -61,6 +62,23 @@ public partial class EnemyHealthBar : ProgressBar
         int clamped   = Mathf.Max(0, currentHp);
         Value         = clamped;
         _hpLabel.Text = $"{clamped}/{_maxHp}";
+        UpdateLowHpPulse(clamped, _maxHp);
+    }
+
+    private void UpdateLowHpPulse(int current, int max)
+    {
+        bool low = max > 0 && current > 0 && (float)current / max <= 0.25f;
+        if (low && _lowHpPulse is null)
+        {
+            _lowHpPulse = CreateTween().SetLoops()
+                .SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            _lowHpPulse.TweenProperty(this, "modulate", new Color(1f, 0.55f, 0.55f), 0.5f);
+            _lowHpPulse.TweenProperty(this, "modulate", Colors.White, 0.5f);
+        }
+        else if (!low && _lowHpPulse is not null)
+        {
+            _lowHpPulse.Kill(); _lowHpPulse = null; Modulate = Colors.White;
+        }
     }
 
     public void UpdateBlock(int block)

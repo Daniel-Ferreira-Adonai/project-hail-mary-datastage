@@ -200,7 +200,6 @@ text = "Confirmar"
 
 [node name="BackButton" type="Button" parent="Background" unique_id=1452892805]
 layout_mode = 1
-anchors_preset = 0
 offset_left = 40.0
 offset_top = 34.0
 offset_right = 190.0

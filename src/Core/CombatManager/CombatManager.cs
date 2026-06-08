@@ -19,6 +19,7 @@ public partial class CombatManager : Node2D
 
 	public Player Player;
 	public List<Enemy> _activeEnemies = new();
+    private int _combatStartEnemyCount = 0;
     [Export] TextureRect background;
 
     [Export] private PackedScene _rewardCardScene;
@@ -144,6 +145,7 @@ private void SetupPlayerPosition()
 	public void InitializeCombat(EncounterData encounter)
     {
         if (encounter is null) { GD.PushError("InitializeCombat: encounter is null"); return; }
+        MangaMaduraCard.ResetCombat();
         _combatEnded = false;
         _isPlayerTurn = false;
         background.Texture = encounter.backgroundImage;
@@ -417,6 +419,7 @@ private void SpawnEnemies(EncounterData encounter)
         _activeEnemies.Add(enemy);
     }
 
+    _combatStartEnemyCount = _activeEnemies.Count;
     GD.Print($"Spawned {_activeEnemies.Count} enemies");
 }
 
@@ -572,10 +575,12 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     private void EndCombat(bool victory)
     {
         GD.Print(victory ? "VITÓRIA!" : "DERROTA!");
-         if (_combatEnded) return; 
+         if (_combatEnded) return;
          _combatEnded = true;
         PlayerManager.Instance.Player.UpdatePerCombatTemporaryValues();
         _cardManager.SetProcessInput(false);
+
+        if (victory) RunStats.EnemiesKilled += _combatStartEnemyCount;
 
         if (victory)
         {
@@ -589,7 +594,8 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
 
     private void ShowDefeatScreen()
     {
-        GameManager.Instance.GoToMainMenu();
+        var gameOver = new GameOver();
+        GetTree().Root.AddChild(gameOver);
     }
 
     private async void ShowVictoryScreen()
@@ -604,15 +610,21 @@ private float CalculateVerticalVariation(int index, int totalCount, EnemySize si
     public List<CardData> GetRandomCards(int amount)
 {
     var allCards = new List<CardData>();
-    
-    var files = DirAccess.GetFilesAt("res://Data/Cards/");
+
+    bool isSeuZe = RunData.SelectedCharacter?.CharacterName == "Seu Zé";
+    string cardFolder = isSeuZe ? "res://Data/Cards/Ze" : "res://Data/Cards";
+
+    var files = DirAccess.GetFilesAt(cardFolder);
     foreach (var file in files)
     {
         if (file.EndsWith(".tres"))
         {
-            var card = GD.Load<CardData>($"res://Data/Cards/{file}");
+            var card = GD.Load<CardData>($"{cardFolder}/{file}");
             if (card != null)
+            {
+                if (isSeuZe) Player.ApplySeuZeArt(card);
                 allCards.Add(card);
+            }
         }
     }
 

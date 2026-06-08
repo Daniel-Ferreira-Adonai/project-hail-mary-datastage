@@ -50,8 +50,12 @@ public override void _Input(InputEvent @event)
 public void GenerateNewMap()
 {
     _floorsClimbed = 0;
-    _mapData       = _mapGenerator.GenerateMap();
+    RunStats.CurrentFloor = 0;
+    foreach (var c in _rooms.GetChildren()) { _rooms.RemoveChild(c); c.QueueFree(); }
+    foreach (var c in _lines.GetChildren()) { _lines.RemoveChild(c); c.QueueFree(); }
+    _mapData = _mapGenerator.GenerateMap();
     CreateMap();
+    _camera2D.Position = new Vector2(_camera2D.Position.X, 0);
 }
 
 private void CreateMap()
@@ -136,6 +140,7 @@ private void _OnMapRoomSelected(Room room)
 
     _lastRoom = room;
     _floorsClimbed += 1;
+    RunStats.CurrentFloor = _floorsClimbed;
     GameManager.Instance.OnMapRoomSelected(room);
 }
 }

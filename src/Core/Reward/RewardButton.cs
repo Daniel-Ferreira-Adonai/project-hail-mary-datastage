@@ -18,7 +18,14 @@ public partial class RewardButton : Button
 	{
     	MouseFilter = MouseFilterEnum.Pass;
 		DecideIcon(this.RewardType);
-		
+		var label = GetNodeOrNull<Label>("PanelContainer/MarginContainer/HBoxContainer/Label");
+		if (label is not null)
+		{
+			if (RewardType == RewardType.Gold)
+				label.Text = $"Ouro +{goldReward}";
+			else if (RewardType == RewardType.Card)
+				label.Text = "Escolha uma carta";
+		}
 	}
 
 public void DecideIcon(RewardType rewardType)

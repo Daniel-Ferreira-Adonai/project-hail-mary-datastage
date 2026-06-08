@@ -26,18 +26,19 @@ public partial class Hand : Node2D
 	public override void _Process(double delta)
 	{
 	}
-	public void AddCard(Card card)
+	public void AddCard(Card card, Vector2? fromPosition = null)
 {
     _cards.Add(card);
-    
-    card.Position = new Vector2(-500, 50f);
+
+    card.Position = fromPosition ?? new Vector2(-500, 50f);
     card.Modulate = new Color(1, 1, 1, 0f);
 
-    // anima entrada
-    var tween = card.CreateTween().SetParallel();
-    tween.TweenProperty(card, "modulate", new Color(1, 1, 1, 1f), 0.3f);
-
     ArrangeFan();
+
+    // fade in starts after position tween (0.2s) to avoid racing with modulate
+    var fadeTween = card.CreateTween();
+    fadeTween.TweenInterval(0.2f);
+    fadeTween.TweenProperty(card, "modulate", new Color(1, 1, 1, 1f), 0.2f);
 }
 	public void RemoveCard(Card card)
 	{
@@ -79,8 +80,10 @@ public void ArrangeFan()
     {
         _cards[0].Position = new Vector2(offset, _yMin);
         _cards[0].RotationDegrees = 0f;
+        _cards[0].ZIndex = 1;
         manager._originalPositions[_cards[0]] = new Vector2(offset, _yMin);
         manager._originalRotations[_cards[0]] = 0f;
+        manager.IsArranging = false;
         return;
     }
 
@@ -99,7 +102,7 @@ public void ArrangeFan()
         // Salva a posição FINAL antes do tween rodar
         manager._originalPositions[_cards[i]] = new Vector2(x, y);
         manager._originalRotations[_cards[i]] = angle;
-        _cards[i].ZIndex = i; // <- adicione aqui
+        _cards[i].ZIndex = i + 1;
 
         var tween = _cards[i].CreateTween().SetParallel();
         tween.TweenProperty(_cards[i], "position", new Vector2(x, y), 0.2f)

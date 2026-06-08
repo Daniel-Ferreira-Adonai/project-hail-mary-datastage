@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cymre33rbdho0"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://brdti8e8n4h24"]
 
 [ext_resource type="Texture2D" uid="uid://bvxbkvwxa4x5f" path="res://Test/TestImagesSprites/art/Untitled design (59).png" id="1_tnio1"]
 [ext_resource type="Script" uid="uid://srvqgr14qxkn" path="res://src/Core/Enemy/EnemyPowerData.cs" id="2_5khnu"]
-[ext_resource type="Resource" uid="uid://t6ivde0p7osu" path="res://Data/EnemyPowers/StrengthOnSkillEnemyPower.tres" id="3_opkf1"]
+[ext_resource type="Resource" path="res://Data/EnemyPowers/StrengthOnSkillEnemyPower.tres" id="3_opkf1"]
 [ext_resource type="Script" uid="uid://3mvxj3fv4f1g" path="res://src/Core/Enemy/IntentData.cs" id="4_igu20"]
 [ext_resource type="Script" uid="uid://b45gi1o0cc2g2" path="res://src/Core/Enemy/IntentScripts/ApplySangriaIntent.cs" id="5_jh50g"]
 [ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="6_o0gy2"]

@@ -15,6 +15,8 @@ public partial class CampFire : Control
 
     public override void _Ready()
     {
+        MusicManager.Instance?.PlayTrack(GD.Load<AudioStream>("res://Audio/Music/Fogueira.mp3"));
+
         _restButton    = GetNode<Godot.Button>("ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/RestChoice/RestButton");
         _upgradeButton = GetNode<Godot.Button>("ActionPanel/MarginContainer/VBoxContainer/ChoicesContainer/UpgradeChoice/UpgradeButton");
         _messageLabel  = GetNode<Label>("ActionPanel/MarginContainer/VBoxContainer/MessageLabel");
@@ -98,6 +100,7 @@ public partial class CampFire : Control
 
     public void OnExitPressed()
     {
+        MusicManager.Instance?.Stop(1.5f);
         EmitSignal(SignalName.ExitRequested);
     }
 

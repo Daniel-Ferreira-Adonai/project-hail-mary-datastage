@@ -22,9 +22,9 @@ public partial class EnemyData : Resource
     
     [ExportCategory("Visual")]
     [Export] public EnemySize Size { get; set; } = EnemySize.Medium;
-    
+    [Export] public Godot.Collections.Array<Texture2D> AttackFrames { get; set; } = new();
 
-    
+
     [Export] public Color Tint { get; set; } = Colors.White;
     
     [Export] public float VerticalOffset { get; set; } = 0f;

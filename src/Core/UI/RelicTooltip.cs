@@ -22,6 +22,11 @@ public partial class RelicTooltip : Control
         _icon      = GetNode<TextureRect>("Panel/VBox/Header/Icon");
     }
 
+    public override void _ExitTree()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     public override void _Process(double delta)
     {
         if (!Visible) return;

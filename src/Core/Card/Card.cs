@@ -150,6 +150,11 @@ public void UpdateDamagePreview(Player player, Enemy target = null)
     
     await ToSignal(animPlayer, AnimationPlayer.SignalName.AnimationFinished);
 }
+	public void UpdatePlayableVisual(bool playable)
+	{
+		Modulate = playable ? Colors.White : new Color(0.55f, 0.55f, 0.6f, 0.9f);
+	}
+
 	public void Setup(CardData data)
 	{
 		Data = data;

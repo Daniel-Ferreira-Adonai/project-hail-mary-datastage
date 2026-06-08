@@ -16,9 +16,12 @@ _handNode = NodePath("Hand")
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_audio")
+bus = &"SFX"
 
 [node name="UnclickSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_audio")
+bus = &"SFX"
 
 [node name="DrawSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_audio")
+bus = &"SFX"

@@ -22,6 +22,8 @@ _eventScene = ExtResource("4_3djrt")
 [node name="CombatManager" parent="." unique_id=1684369228 instance=ExtResource("3_3djrt")]
 
 [node name="Player" parent="." unique_id=1708444179 instance=ExtResource("2_2yajh")]
+playerEnum = 1
+_BlockValue = 10
 PerCombatTemporaryStrength = 10
 
 [node name="UI" parent="." unique_id=2146334214 instance=ExtResource("7_sne5l")]

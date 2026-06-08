@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bfvi02kojsa00" path="res://Test/TestImagesSprites/art/tile_0103.png" id="1_v21tb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fv7i8"]
+radius = 50.0
 
 [sub_resource type="Animation" id="Animation_s25ra"]
 length = 0.001

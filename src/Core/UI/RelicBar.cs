@@ -15,7 +15,7 @@ public partial class RelicBar : MarginContainer
 
     private void InitTooltip()
     {
-        if (RelicTooltip.Instance is not null) return;
+        if (GodotObject.IsInstanceValid(RelicTooltip.Instance)) return;
 
         var scene = GD.Load<PackedScene>("res://src/Core/UI/RelicTooltip.tscn");
         if (scene is null) return;

@@ -133,20 +133,6 @@ texture = ExtResource("2_a6osl")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Dimmer" type="ColorRect" parent="." unique_id=981774519]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -67.0
-offset_top = -24.0
-offset_right = -67.0
-offset_bottom = -24.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.28)
-
 [node name="PlayerArt" type="TextureRect" parent="." unique_id=1834690406]
 layout_mode = 1
 anchors_preset = 7

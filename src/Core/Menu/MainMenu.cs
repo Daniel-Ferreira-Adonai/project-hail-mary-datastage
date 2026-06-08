@@ -131,11 +131,7 @@ public partial class MainMenu : Control
 
     public void OnSettingsPressed()
     {
-        var comingSoonScene = GD.Load<PackedScene>("res://src/Core/Menu/ComingSoon.tscn");
-        if (comingSoonScene is null) return;
-
-        var popup = comingSoonScene.Instantiate<ComingSoon>();
-        AddChild(popup);
+        UI.Instance.Settings.Open(false);
     }
 
     public void OnQuitPressed()

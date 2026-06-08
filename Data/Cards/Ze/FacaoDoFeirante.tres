@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FacaoDoFeiranteCard" format=3]
+
+[ext_resource type="Script" path="res://src/Core/Card/CardsScripts/Ze/FacaoDoFeiranteCard.cs" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+CardName = "Facão do Feirante"
+EnergyCost = 2
+Damage = 10
+Description = "Causa $d de dano. (10 + 2x Força)"

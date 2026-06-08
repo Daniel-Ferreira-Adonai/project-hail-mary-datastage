@@ -22,6 +22,7 @@ UI="*uid://cr1qcdwrfv10i"
 PlayerManager="*uid://dasvrt836gvrb"
 EffectManager="*uid://csub640034ydl"
 MusicManager="*res://src/Core/Audio/MusicManager.cs"
+CursorManager="*res://src/Core/UI/CursorManager.cs"
 
 [display]
 

@@ -39,11 +39,13 @@ public partial class EffectTooltip : Control
 
     public void ShowTooltip(EffectData effect, int value)
     {
+        string desc = effect.GetDescription(value);
+        if (string.IsNullOrEmpty(desc)) return;
+
         _icon.Texture   = effect.Icon;
         _icon.Visible   = effect.Icon is not null;
         _nameLabel.Text = effect.Name ?? "";
-        _descLabel.Text = effect.GetDescription(value); // 🔥 diferença importante
-
+        _descLabel.Text = desc;
         Visible = true;
     }
 

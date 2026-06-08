@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://eg8erewyudam"]
 
 [ext_resource type="Script" uid="uid://bcmugiqmqkkgn" path="res://src/Core/Menu/MainMenu.cs" id="1_script"]
-[ext_resource type="VideoStream" uid="uid://d024wijh1wje4" path="res://Test/TestImagesSprites/art/f_e_c_b_b_mp_.mp4" id="2_agr3j"]
+[ext_resource type="VideoStream" path="res://Test/TestImagesSprites/art/f_e_c_b_b_mp_.mp4" id="2_agr3j"]
 [ext_resource type="Script" uid="uid://cxa6548nldyjq" path="res://src/Core/Menu/BackgroundVideo.cs" id="3_5h2db"]
 [ext_resource type="FontFile" uid="uid://b1bqf5lm6q6uw" path="res://Data/Fonte/citadel_of_blackrose/Enchanted Land.otf" id="3_qdhen"]
-[ext_resource type="VideoStream" uid="uid://cvv1jfha6c4h1" path="res://Test/TestImagesSprites/art/e_ce_d_f_e_mp_.mp4" id="4_qdhen"]
+[ext_resource type="VideoStream" path="res://Test/TestImagesSprites/art/e_ce_d_f_e_mp_.mp4" id="4_qdhen"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.02, 0.02, 0.04, 0.4)

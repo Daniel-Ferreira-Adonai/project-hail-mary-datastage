@@ -2,21 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cwq2hshdf0jlu" path="res://src/Core/Map/MapGenerator.cs" id="1_fu1mf"]
 [ext_resource type="Script" uid="uid://bib05hvin31w" path="res://src/Core/Map/Map.cs" id="1_q6b4c"]
-[ext_resource type="Resource" uid="uid://7bvg37q7dth4" path="res://Data/Encounters/TesteEncounter.tres" id="3_14n3b"]
 [ext_resource type="Resource" uid="uid://j2ikgj44sxp6" path="res://Data/Events/AmigoSapo.tres" id="3_iglaa"]
 [ext_resource type="Resource" uid="uid://cttqfcqp4t80k" path="res://Data/Events/ArvoreDourada.tres" id="4_65rrk"]
 [ext_resource type="Resource" uid="uid://8cxmr4dhbfh6" path="res://Data/Events/AventureirosMortos.tres" id="5_a0xip"]
-[ext_resource type="Resource" uid="uid://buc1nseux7aud" path="res://Data/Encounters/CervoEncounter.tres" id="6_i58sm"]
+[ext_resource type="Resource" path="res://Data/Encounters/CervoEncounter.tres" id="6_i58sm"]
 [ext_resource type="Resource" uid="uid://bogfuuptnixe" path="res://Data/Encounters/BossEncounterSkeleton.tres" id="6_xbaaq"]
 [ext_resource type="Resource" uid="uid://nx4cn3ru15i6" path="res://Data/Events/CovilDeApostas.tres" id="7_dfcg2"]
 [ext_resource type="Resource" uid="uid://bnbqpcj1sftt8" path="res://Data/Events/EquilibroPerfeito.tres" id="8_8lo1c"]
 [ext_resource type="Resource" uid="uid://c11sqaxx2ihhu" path="res://Data/Events/EventoTulipa.tres" id="9_tmv2f"]
-[ext_resource type="Resource" uid="uid://bu2bxed76tads" path="res://Data/Events/FerreiroBebado.tres" id="10_83fk7"]
+[ext_resource type="Resource" path="res://Data/Events/FerreiroBebado.tres" id="10_83fk7"]
 [ext_resource type="Resource" uid="uid://dl5vqhe3glk3m" path="res://Data/Events/MercadorSuspeitoEvento.tres" id="11_6s78w"]
 [ext_resource type="Resource" uid="uid://b3f1a0ud343pp" path="res://Data/Events/BibliotecarioCego.tres" id="11_gbfhp"]
 [ext_resource type="Resource" uid="uid://xiynavl5rabb" path="res://Data/Encounters/HumanEncounter.tres" id="12_52122"]
 [ext_resource type="Resource" uid="uid://cwclebisiqsp4" path="res://Data/Events/OEsqueletoNegociante.tres" id="12_w2nrx"]
 [ext_resource type="Resource" uid="uid://4eq81estukpd" path="res://Data/Events/OMercadorMorto.tres" id="13_7or4l"]
+[ext_resource type="Resource" uid="uid://7bvg37q7dth4" path="res://Data/Encounters/TesteEncounter.tres" id="16_iglaa"]
 
 [sub_resource type="Gradient" id="Gradient_fu1mf"]
 colors = PackedColorArray(0.24840015, 0.24840018, 0.24840015, 1, 0.4, 0.21960784, 0.20392157, 1)
@@ -42,7 +42,7 @@ offset = Vector2(960, 540)
 [node name="MapGenerator" type="Node" parent="." unique_id=1635660364]
 script = ExtResource("1_fu1mf")
 Events = [ExtResource("3_iglaa"), ExtResource("4_65rrk"), ExtResource("5_a0xip"), ExtResource("11_gbfhp"), ExtResource("7_dfcg2"), ExtResource("8_8lo1c"), ExtResource("9_tmv2f"), ExtResource("10_83fk7"), ExtResource("11_6s78w"), ExtResource("12_w2nrx"), ExtResource("13_7or4l")]
-EasyEncounters = [ExtResource("12_52122"), ExtResource("3_14n3b"), ExtResource("6_i58sm")]
+EasyEncounters = [ExtResource("12_52122"), ExtResource("16_iglaa"), ExtResource("6_i58sm")]
 MediumEncounters = [ExtResource("6_i58sm")]
 BossEncounters = [ExtResource("6_xbaaq")]
 

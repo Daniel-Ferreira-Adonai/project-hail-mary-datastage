@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MangaMaduraCard" format=3]
+
+[ext_resource type="Script" path="res://src/Core/Card/CardsScripts/Ze/MangaMaduraCard.cs" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+CardName = "Manga Madura"
+EnergyCost = 1
+Block = 6
+Description = "$b de bloqueio. A cada 3ª jogada, +10 de dano no próximo turno."
+tipoCarta = 1

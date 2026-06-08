@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bccl3286c7bxr" path="res://src/Core/Enemy/IntentScripts/AttackIntent.cs" id="3_ajkav"]
 [ext_resource type="Script" uid="uid://cierbh5kwpggb" path="res://src/Core/Enemy/EnemyTurn.cs" id="4_tj68f"]
 [ext_resource type="Script" uid="uid://cxiepvdk4td6n" path="res://src/Core/Enemy/IntentScripts/DebuffFrailIntent.cs" id="5_5we83"]
+[ext_resource type="Texture2D" uid="uid://cm77sow404mjr" path="res://Test/TestImagesSprites/art/MulherAtq1.png" id="6_atq1"]
 
 [sub_resource type="Resource" id="Resource_vtksm"]
 script = ExtResource("3_ajkav")
@@ -35,4 +36,5 @@ Sprite = ExtResource("1_j54iv")
 Strength = 3
 TurnPatterns = Array[Object]([SubResource("Resource_l7oy0"), SubResource("Resource_o2x60")])
 Size = 3
+AttackFrames = Array[Texture2D]([ExtResource("6_atq1")])
 metadata/_custom_type_script = "uid://b2o7r58snev8f"

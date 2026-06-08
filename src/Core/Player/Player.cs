@@ -76,6 +76,7 @@ public partial class Player : Node2D
 	private Vector2 _hitRestPos;
 	private bool    _hitResting;
 	[Export] private float _attackLungeDistance = 150f;
+	[Export] private float _seuZeBarNudge = 18f;
 	private Tween   _lungeTween;
 	private Vector2 _attackBasePos;
 	private Enemy   _attackTarget;
@@ -182,6 +183,11 @@ public int Frail
 		setupBasicDeck();
 		PlayerManager.Instance.Player = this;
 		SetupHpBar();
+		GD.Print($"[HPBar] parent={_hpBar?.GetParent()?.Name} scale={_hpBar?.Scale} " +
+		         $"pos={_hpBar?.Position} global={_hpBar?.GlobalPosition} " +
+		         $"anchors=({_hpBar?.AnchorTop},{_hpBar?.AnchorBottom}) " +
+		         $"offsets=({_hpBar?.OffsetTop},{_hpBar?.OffsetBottom}) " +
+		         $"visible={_hpBar?.Visible} size={_hpBar?.Size}");
 		UpdateLabelValues();
 		SetupEffectBar();
 		_attackSound  = GetNodeOrNull<AudioStreamPlayer>("AttackSound");
@@ -261,6 +267,12 @@ public void AddPower(PowerData power)
 		animation.Scale *= character.SpriteScale;
 		_useSquashStretch = true;
 		animation.Play("idle");
+
+		if (_hpBar is not null)
+		{
+			_hpBar.OffsetTop    += _seuZeBarNudge;
+			_hpBar.OffsetBottom += _seuZeBarNudge;
+		}
 	}
 
 private void StartIdleBreathing()
@@ -282,9 +294,9 @@ private void StartIdleBreathing()
 private void SetupHpBar()
 {
     if (_hpBar == null) return;
-    
     _hpBar.Setup(MaxHp, currentHp);
-}	
+    _hpBar.Visible = true;
+}
 	public override void _Process(double delta)
 	{
 		
@@ -331,7 +343,7 @@ private void SetupHpBar()
 }
 public void TriggerPowers(Action<PowerData> trigger)
 {
-    foreach (var power in ActivePowers)
+    foreach (var power in new System.Collections.Generic.List<PowerData>(ActivePowers))
         trigger(power);
 }
 private void SpawnDamageLabel(int damage)
@@ -507,6 +519,17 @@ public CardData RemoveRandomCard()
 }
 	public void setupBasicDeck()
 	{
+		RunStats.Reset();
+		if (RunData.SelectedCharacter?.CharacterName == "Seu Zé")
+		{
+			SetupSeuZeDeck();
+			return;
+		}
+		SetupCorvoDeck();
+	}
+
+	private void SetupCorvoDeck()
+	{
 		CardData strikeData = GD.Load<CardData>("res://Data/Cards/StrikeCard.tres");
         CardData defendData = GD.Load<CardData>("res://Data/Cards/BlockCard.tres");
         CardData blockVunarable = GD.Load<CardData>("res://Data/Cards/BlockVunarable.tres");
@@ -517,7 +540,6 @@ public CardData RemoveRandomCard()
 		CardData PactoDeSangue = GD.Load<CardData>("res://Data/Cards/PactoDeSangueCard.tres");
 		CardData sedeDeSangue = GD.Load<CardData>("res://Data/Cards/SedeDeSangueCard.tres");
 		CardData coagualcao = GD.Load<CardData>("res://Data/Cards/CoagulacaoCard.tres");
-
 
 		for(int i = 0; i < 3; i++)
 		{
@@ -532,6 +554,66 @@ public CardData RemoveRandomCard()
 			AddCardToDeck((CardData)PactoDeSangue.Duplicate());
 			AddCardToDeck((CardData)coagualcao.Duplicate());
 		}
+	}
+
+	private void SetupSeuZeDeck()
+	{
+		// básicas: Mangada×3 (ataque), MangaRosa×4 (defesa)
+		// extras:  Pau×2, Leite×2, Salada×3, Madura×2, Cajado×2, Facão×2  (=20 total)
+		var mangada = GD.Load<CardData>("res://Data/Cards/Ze/Mangada.tres");
+		var rosa    = GD.Load<CardData>("res://Data/Cards/Ze/MangaRosa.tres");
+		var pau     = GD.Load<CardData>("res://Data/Cards/Ze/PauDeCatarManga.tres");
+		var leite   = GD.Load<CardData>("res://Data/Cards/Ze/MangaComLeite.tres");
+		var salada  = GD.Load<CardData>("res://Data/Cards/Ze/SaladaDeFruta.tres");
+		var madura  = GD.Load<CardData>("res://Data/Cards/Ze/MangaMadura.tres");
+		var cajado  = GD.Load<CardData>("res://Data/Cards/Ze/CajadoDoLampiao.tres");
+		var facao   = GD.Load<CardData>("res://Data/Cards/Ze/FacaoDoFeirante.tres");
+
+		if (mangada is null || rosa is null || pau is null || leite is null ||
+		    salada is null || madura is null || cajado is null || facao is null)
+		{
+			GD.PushError("SetupSeuZeDeck: falha ao carregar uma ou mais cartas do Seu Zé — verifique os .tres em Data/Cards/Ze/");
+			SetupCorvoDeck();
+			return;
+		}
+
+		ApplySeuZeArt(mangada);
+		ApplySeuZeArt(rosa);
+		ApplySeuZeArt(pau);
+		ApplySeuZeArt(leite);
+		ApplySeuZeArt(salada);
+		ApplySeuZeArt(madura);
+		ApplySeuZeArt(cajado);
+		ApplySeuZeArt(facao);
+
+		for (int i = 0; i < 3; i++) AddCardToDeck((CardData)mangada.Duplicate());
+		for (int i = 0; i < 4; i++) AddCardToDeck((CardData)rosa.Duplicate());
+		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)pau.Duplicate());
+		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)leite.Duplicate());
+		for (int i = 0; i < 3; i++) AddCardToDeck((CardData)salada.Duplicate());
+		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)madura.Duplicate());
+		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)cajado.Duplicate());
+		for (int i = 0; i < 2; i++) AddCardToDeck((CardData)facao.Duplicate());
+	}
+
+	public static void ApplySeuZeArt(CardData card)
+	{
+		if (card is null) return;
+		string path = card.GetType().Name switch
+		{
+			"MangadaCard"         => "res://Test/CardArtsZe/mangada.png",
+			"MangaRosaCard"       => "res://Test/CardArtsZe/manga_rosa.png",
+			"PauDeCatarMangaCard" => "res://Test/CardArtsZe/pau_de_catar_manga.png",
+			"MangaComLeiteCard"   => "res://Test/CardArtsZe/manga_com_leite.png",
+			"SaladaDeFrutaCard"   => "res://Test/CardArtsZe/salada_de_fruta.png",
+			"MangaMaduraCard"     => "res://Test/CardArtsZe/manga_madura.png",
+			"CajadoDoLampiaoCard" => "res://Test/CardArtsZe/cajado_do_lampiao.png",
+			"FacaoDoFeiranteCard" => "res://Test/CardArtsZe/facao_do_feirante.png",
+			_                     => null,
+		};
+		if (path is null) return;
+		var tex = GD.Load<Texture2D>(path);
+		if (tex is not null) card.Art = tex;
 	}
 	public void TryToHeal(int healValue)
 	{
