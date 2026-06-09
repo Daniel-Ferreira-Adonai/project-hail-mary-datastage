@@ -316,7 +316,13 @@ public partial class CharacterSelect : Control
             }
         }
 
-        SceneLoader.Instance?.GoTo(GameMgrPath, showLoading: true);
+        if (SceneLoader.Instance is not null)
+            SceneLoader.Instance.GoTo(GameMgrPath, showLoading: true);
+        else
+        {
+            _gameManagerScene ??= GD.Load<PackedScene>(GameMgrPath);
+            GetTree().ChangeSceneToPacked(_gameManagerScene);
+        }
     }
 
     private static CutsceneData BuildCorvoIntro()

@@ -187,11 +187,10 @@ public int Frail
 			var allRelics = Array.FindAll(
 				DirAccess.GetFilesAt("res://Data/Relics/"),
 				f => f.EndsWith(".tres"));
-			if (allRelics.Length > 0)
+			foreach (var file in allRelics)
 			{
-				var chosen  = allRelics[GD.RandRange(0, allRelics.Length - 1)];
-				var starter = GD.Load<RelicData>($"res://Data/Relics/{chosen}");
-				if (starter != null) AddRelic(starter);
+				var relic = GD.Load<RelicData>($"res://Data/Relics/{file}");
+				if (relic != null) AddRelic(relic);
 			}
 		}
 

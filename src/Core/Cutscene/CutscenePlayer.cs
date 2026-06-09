@@ -202,7 +202,7 @@ public partial class CutscenePlayer : CanvasLayer
             MetaProgress.MarkCutsceneSeen(PendingSeenId);
 
         EmitSignal(SignalName.CutsceneFinished);
-        SceneLoader.Instance?.GoTo(_data.NextScene);
+        GoToNext();
     }
 
     // ── Skip ──────────────────────────────────────────────────────────────────
@@ -220,7 +220,15 @@ public partial class CutscenePlayer : CanvasLayer
         if (!string.IsNullOrEmpty(PendingSeenId))
             MetaProgress.MarkCutsceneSeen(PendingSeenId);
 
-        SceneLoader.Instance?.GoTo(_data.NextScene);
+        GoToNext();
+    }
+
+    private void GoToNext()
+    {
+        if (SceneLoader.Instance is not null)
+            SceneLoader.Instance.GoTo(_data.NextScene);
+        else
+            GetTree().ChangeSceneToFile(_data.NextScene);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
