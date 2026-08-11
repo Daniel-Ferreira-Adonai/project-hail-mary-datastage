@@ -9,6 +9,7 @@
 [resource]
 script = ExtResource("1_7uoef")
 Sprite = ExtResource("1_74ikc")
+MaxHealth = 20
 Strength = 10
 TurnPatterns = Array[Object]([ExtResource("2_eowqw")])
 AttackFrames = Array[Texture2D]([ExtResource("2_atq1")])
